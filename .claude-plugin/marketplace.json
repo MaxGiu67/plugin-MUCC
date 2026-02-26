@@ -1,0 +1,31 @@
+{
+  "name": "MaxGiu67-plugin-MUCC",
+  "owner": {
+    "name": "MaxGiu67"
+  },
+  "metadata": {
+    "description": "Plugin di sviluppo strutturato a 8 fasi con agenti specializzati e supporto multi-LLM",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "dev-methodology",
+      "description": "Spec-Driven Development: 8-phase workflow con team di 7 agenti AI specializzati, tracking in specs/*.md, supporto multi-LLM (Claude, Gemini, GPT, Mistral)",
+      "source": "./dev-methodology",
+      "strict": false,
+      "skills": [
+        "./dev-methodology/skills/dev-init",
+        "./dev-methodology/skills/dev-vision",
+        "./dev-methodology/skills/dev-prd",
+        "./dev-methodology/skills/dev-stories",
+        "./dev-methodology/skills/dev-spec",
+        "./dev-methodology/skills/dev-sprint",
+        "./dev-methodology/skills/dev-implement",
+        "./dev-methodology/skills/dev-validate",
+        "./dev-methodology/skills/dev-status",
+        "./dev-methodology/skills/dev-sync",
+        "./dev-methodology/skills/dev-structure"
+      ]
+    }
+  ]
+}
