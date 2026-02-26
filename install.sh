@@ -15,11 +15,25 @@ BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 PLUGIN_NAME="dev-methodology"
-PLUGIN_REGISTRY_KEY="dev-methodology@MaxGiu67-plugin-MUCC"
-PLUGIN_DIR="$HOME/.claude/plugins/$PLUGIN_NAME"
-INSTALLED_PLUGINS="$HOME/.claude/plugins/installed_plugins.json"
+SKILLS_DIR="$HOME/.claude/skills"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_DIR="$SCRIPT_DIR/dev-methodology"
+SKILLS_SOURCE="$SOURCE_DIR/skills"
+
+# Lista delle skill da installare
+SKILLS=(
+  dev-init
+  dev-vision
+  dev-prd
+  dev-stories
+  dev-spec
+  dev-sprint
+  dev-implement
+  dev-validate
+  dev-status
+  dev-sync
+  dev-structure
+)
 
 # ============================================================================
 # Funzioni di utilità
@@ -29,87 +43,6 @@ info()    { echo -e "${BLUE}ℹ${NC}  $1"; }
 success() { echo -e "${GREEN}✔${NC}  $1"; }
 warn()    { echo -e "${YELLOW}⚠${NC}  $1"; }
 error()   { echo -e "${RED}✖${NC}  $1"; }
-
-# Registra il plugin in installed_plugins.json
-register_plugin() {
-  local install_path="$1"
-  local now
-  now=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
-
-  if [ ! -f "$INSTALLED_PLUGINS" ]; then
-    # Crea il file da zero
-    cat > "$INSTALLED_PLUGINS" <<JSONEOF
-{
-  "version": 2,
-  "plugins": {
-    "$PLUGIN_REGISTRY_KEY": [
-      {
-        "scope": "user",
-        "installPath": "$install_path",
-        "version": "1.0.0",
-        "installedAt": "$now",
-        "lastUpdated": "$now"
-      }
-    ]
-  }
-}
-JSONEOF
-    success "Registry creato: $INSTALLED_PLUGINS"
-    return
-  fi
-
-  # Rimuovi entry esistente se presente, poi aggiungi la nuova
-  local tmp_file
-  tmp_file=$(mktemp)
-
-  if command -v python3 &>/dev/null; then
-    python3 -c "
-import json, sys
-with open('$INSTALLED_PLUGINS', 'r') as f:
-    data = json.load(f)
-data.setdefault('plugins', {})
-data['plugins']['$PLUGIN_REGISTRY_KEY'] = [{
-    'scope': 'user',
-    'installPath': '$install_path',
-    'version': '1.0.0',
-    'installedAt': '$now',
-    'lastUpdated': '$now'
-}]
-with open('$tmp_file', 'w') as f:
-    json.dump(data, f, indent=2)
-    f.write('\n')
-"
-    mv "$tmp_file" "$INSTALLED_PLUGINS"
-    success "Plugin registrato in installed_plugins.json"
-  else
-    warn "python3 non trovato — registrazione automatica non disponibile"
-    warn "Il plugin è installato ma potrebbe non comparire in /plugin list"
-    rm -f "$tmp_file"
-  fi
-}
-
-# Rimuovi il plugin da installed_plugins.json
-unregister_plugin() {
-  if [ ! -f "$INSTALLED_PLUGINS" ]; then
-    return
-  fi
-
-  if command -v python3 &>/dev/null; then
-    local tmp_file
-    tmp_file=$(mktemp)
-    python3 -c "
-import json
-with open('$INSTALLED_PLUGINS', 'r') as f:
-    data = json.load(f)
-data.get('plugins', {}).pop('$PLUGIN_REGISTRY_KEY', None)
-with open('$tmp_file', 'w') as f:
-    json.dump(data, f, indent=2)
-    f.write('\n')
-"
-    mv "$tmp_file" "$INSTALLED_PLUGINS"
-    success "Plugin rimosso da installed_plugins.json"
-  fi
-}
 
 print_banner() {
   echo ""
@@ -187,51 +120,58 @@ install_plugin() {
   echo ""
   check_prerequisites
 
-  # Crea directory plugins se non esiste
-  mkdir -p "$HOME/.claude/plugins"
+  # Crea directory skills se non esiste
+  mkdir -p "$SKILLS_DIR"
 
-  # Gestisci installazione esistente
-  if [ -e "$PLUGIN_DIR" ] || [ -L "$PLUGIN_DIR" ]; then
-    warn "Installazione esistente trovata: $PLUGIN_DIR"
-
-    if [ -L "$PLUGIN_DIR" ]; then
-      local target
-      target=$(readlink "$PLUGIN_DIR")
-      info "  Tipo: symlink -> $target"
-    else
-      info "  Tipo: copia"
+  # Verifica se ci sono skill già installate
+  local existing=0
+  for skill in "${SKILLS[@]}"; do
+    if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
+      existing=$((existing + 1))
     fi
+  done
 
+  if [ "$existing" -gt 0 ]; then
+    warn "$existing skill già installate trovate"
     echo ""
     read -rp "Sovrascrivere? [s/N] " confirm
     if [[ ! "$confirm" =~ ^[sS]$ ]]; then
       info "Installazione annullata."
       exit 0
     fi
-
-    # Rimuovi installazione esistente
-    rm -rf "$PLUGIN_DIR"
-    success "Installazione precedente rimossa"
   fi
 
-  # Installa in base alla modalità
+  # Installa le skill
   echo ""
-  if [ "$mode" = "copy" ]; then
-    info "Installazione in modalità copia..."
-    cp -r "$SOURCE_DIR" "$PLUGIN_DIR"
-    success "Plugin copiato in $PLUGIN_DIR"
-  else
-    info "Installazione in modalità symlink..."
-    ln -s "$SOURCE_DIR" "$PLUGIN_DIR"
-    success "Symlink creato: $PLUGIN_DIR -> $SOURCE_DIR"
-  fi
+  local installed=0
+  for skill in "${SKILLS[@]}"; do
+    # Rimuovi eventuale installazione esistente
+    if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
+      rm -rf "$SKILLS_DIR/$skill"
+    fi
 
-  # Registra in installed_plugins.json
-  register_plugin "$PLUGIN_DIR"
+    if [ "$mode" = "copy" ]; then
+      cp -r "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+    else
+      ln -s "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+    fi
+    installed=$((installed + 1))
+  done
+
+  if [ "$mode" = "copy" ]; then
+    success "$installed skill copiate in $SKILLS_DIR/"
+  else
+    success "$installed skill linkate in $SKILLS_DIR/"
+  fi
 
   # Post-installazione
   echo ""
   echo -e "${GREEN}${BOLD}Installazione completata!${NC}"
+  echo ""
+  echo -e "${BOLD}Skill installate:${NC}"
+  for skill in "${SKILLS[@]}"; do
+    echo "  /$skill"
+  done
   echo ""
   echo -e "${BOLD}Prossimi passi:${NC}"
   echo "  1. Riavvia Claude Code (chiudi e riapri la sessione)"
@@ -256,31 +196,38 @@ uninstall_plugin() {
   info "Disinstallazione $PLUGIN_NAME..."
   echo ""
 
-  if [ -e "$PLUGIN_DIR" ] || [ -L "$PLUGIN_DIR" ]; then
-    if [ -L "$PLUGIN_DIR" ]; then
-      info "Tipo: symlink (la sorgente non verrà toccata)"
-    else
-      info "Tipo: copia"
+  local found=0
+  for skill in "${SKILLS[@]}"; do
+    if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
+      found=$((found + 1))
     fi
+  done
 
+  if [ "$found" -eq 0 ]; then
+    warn "Nessuna skill dev-methodology trovata — nulla da rimuovere."
     echo ""
-    read -rp "Confermi la rimozione di $PLUGIN_DIR? [s/N] " confirm
-    if [[ ! "$confirm" =~ ^[sS]$ ]]; then
-      info "Disinstallazione annullata."
-      exit 0
-    fi
-
-    rm -rf "$PLUGIN_DIR"
-    success "Plugin rimosso da $PLUGIN_DIR"
-
-    # Rimuovi dal registry
-    unregister_plugin
-
-    echo ""
-    info "Riavvia Claude Code per completare la disinstallazione."
-  else
-    warn "Plugin non trovato in $PLUGIN_DIR — nulla da rimuovere."
+    return
   fi
+
+  info "$found skill trovate"
+  echo ""
+  read -rp "Confermi la rimozione? [s/N] " confirm
+  if [[ ! "$confirm" =~ ^[sS]$ ]]; then
+    info "Disinstallazione annullata."
+    exit 0
+  fi
+
+  local removed=0
+  for skill in "${SKILLS[@]}"; do
+    if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
+      rm -rf "$SKILLS_DIR/$skill"
+      removed=$((removed + 1))
+    fi
+  done
+
+  success "$removed skill rimosse da $SKILLS_DIR/"
+  echo ""
+  info "Riavvia Claude Code per completare la disinstallazione."
   echo ""
 }
 
@@ -297,9 +244,11 @@ show_help() {
   echo "  bash install.sh --help       Mostra questo messaggio"
   echo ""
   echo "Modalità:"
-  echo "  symlink (default)  Crea un link simbolico. Le modifiche al repo si"
-  echo "                     riflettono automaticamente. Ideale per sviluppo."
-  echo "  copy (--copy)      Copia i file. Installazione indipendente dal repo."
+  echo "  symlink (default)  Crea link simbolici in ~/.claude/skills/."
+  echo "                     Le modifiche al repo si riflettono automaticamente."
+  echo "                     Ideale per sviluppo."
+  echo "  copy (--copy)      Copia i file in ~/.claude/skills/."
+  echo "                     Installazione indipendente dal repo."
   echo "                     Serve rieseguire lo script per aggiornare."
   echo ""
 }
