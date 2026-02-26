@@ -1,10 +1,6 @@
 ---
 name: dev-implement
-description: >
-  Fase 7: Implementa story per story con test generation e tracking. Usa questa skill quando
-  l'utente vuole implementare una story, scrivere codice, generare test, o dice "fase 7",
-  "implementa", "scrivi il codice", "implementa story US-XXX", "genera test".
-version: 1.0.0
+description: "Fase 7: Implementa story per story con test generation e tracking. Usa questa skill quando l'utente vuole implementare una story, scrivere codice, generare test, o dice fase 7, implementa, scrivi il codice, implementa story, genera test."
 ---
 
 # dev-implement — Fase 7: Implementation + Test Generation

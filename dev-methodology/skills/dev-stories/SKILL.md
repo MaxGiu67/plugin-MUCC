@@ -1,10 +1,6 @@
 ---
 name: dev-stories
-description: >
-  Fase 3: Genera User Stories con Acceptance Criteria. Usa questa skill quando l'utente vuole
-  creare user stories, definire AC, criteri di accettazione, o dice "fase 3", "user stories",
-  "stories", "acceptance criteria", "DATO QUANDO ALLORA".
-version: 1.0.0
+description: "Fase 3: Genera User Stories con Acceptance Criteria. Usa questa skill quando l'utente vuole creare user stories, definire AC, criteri di accettazione, o dice fase 3, user stories, stories, acceptance criteria, DATO QUANDO ALLORA."
 ---
 
 # dev-stories — Fase 3: User Stories e Acceptance Criteria

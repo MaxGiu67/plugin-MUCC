@@ -1,10 +1,6 @@
 ---
 name: dev-validate
-description: >
-  Fase 8: Valida implementazione con test automatici e E2E browser. Usa questa skill quando
-  l'utente vuole validare, testare, fare QA, o dice "fase 8", "valida", "validazione",
-  "QA", "test e2e", "verifica implementazione".
-version: 1.0.0
+description: "Fase 8: Valida implementazione con test automatici e E2E browser. Usa questa skill quando l'utente vuole validare, testare, fare QA, o dice fase 8, valida, validazione, QA, test e2e, verifica implementazione."
 ---
 
 # dev-validate — Fase 8: Validation & QA (Auto + E2E)

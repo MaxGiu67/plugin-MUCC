@@ -1,10 +1,6 @@
 ---
 name: dev-sprint
-description: >
-  Fase 5: Pianifica sprint con task breakdown. Usa questa skill quando l'utente vuole
-  pianificare gli sprint, organizzare le stories, fare il planning, o dice "fase 5",
-  "sprint planning", "pianifica sprint", "organizza stories in sprint".
-version: 1.0.0
+description: "Fase 5: Pianifica sprint con task breakdown. Usa questa skill quando l'utente vuole pianificare gli sprint, organizzare le stories, fare il planning, o dice fase 5, sprint planning, pianifica sprint, organizza stories in sprint."
 ---
 
 # dev-sprint — Fase 5: Sprint Planning

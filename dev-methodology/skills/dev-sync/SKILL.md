@@ -1,10 +1,6 @@
 ---
 name: dev-sync
-description: >
-  Integra risultati da LLM esterni nei file specs/. Usa questa skill quando l'utente vuole
-  integrare output da Gemini, GPT, Mistral, o dice "sincronizza", "integra risultati",
-  "sync LLM", "importa da Gemini/GPT".
-version: 1.0.0
+description: "Integra risultati da LLM esterni nei file specs/. Usa questa skill quando l'utente vuole integrare output da Gemini, GPT, Mistral, o dice sincronizza, integra risultati, sync LLM, importa da Gemini/GPT."
 ---
 
 # dev-sync — External LLM Integration

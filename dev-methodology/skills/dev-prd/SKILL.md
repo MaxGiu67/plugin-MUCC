@@ -1,10 +1,6 @@
 ---
 name: dev-prd
-description: >
-  Fase 2: Crea il Product Requirements Document. Usa questa skill quando l'utente vuole
-  creare il PRD, definire requisiti, personas, priorità MoSCoW, o dice "fase 2", "PRD",
-  "requisiti di prodotto", "definiamo i requisiti".
-version: 1.0.0
+description: "Fase 2: Crea il Product Requirements Document. Usa questa skill quando l'utente vuole creare il PRD, definire requisiti, personas, priorita MoSCoW, o dice fase 2, PRD, requisiti di prodotto, definiamo i requisiti."
 ---
 
 # dev-prd — Fase 2: Product Requirements Document

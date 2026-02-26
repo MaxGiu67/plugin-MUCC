@@ -1,10 +1,6 @@
 ---
 name: dev-init
-description: >
-  Inizializza un nuovo progetto con struttura specs/. Usa questa skill quando l'utente vuole
-  creare un nuovo progetto, inizializzare la metodologia SDD, o dice "inizia un nuovo progetto",
-  "crea progetto", "setup progetto", "nuovo progetto".
-version: 1.0.0
+description: "Inizializza un nuovo progetto con struttura specs/. Usa questa skill quando l'utente vuole creare un nuovo progetto, inizializzare la metodologia SDD, o dice inizia un nuovo progetto, crea progetto, setup progetto, nuovo progetto."
 ---
 
 # dev-init — Inizializza progetto

@@ -1,10 +1,6 @@
 ---
 name: dev-vision
-description: >
-  Fase 1: Definisci vision e strategia del progetto. Usa questa skill quando l'utente vuole
-  definire la visione, gli obiettivi strategici, o dice "definiamo la vision", "fase 1",
-  "vision del progetto", "strategia progetto".
-version: 1.0.0
+description: "Fase 1: Definisci vision e strategia del progetto. Usa questa skill quando l'utente vuole definire la visione, gli obiettivi strategici, o dice definiamo la vision, fase 1, vision del progetto, strategia progetto."
 ---
 
 # dev-vision — Fase 1: Vision e Strategia

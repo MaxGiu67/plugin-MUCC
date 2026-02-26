@@ -1,10 +1,6 @@
 ---
 name: dev-status
-description: >
-  Mostra stato corrente del progetto. Usa questa skill quando l'utente vuole vedere
-  lo stato, il progresso, la dashboard, o dice "stato progetto", "a che punto siamo",
-  "progresso", "dashboard", "status".
-version: 1.0.0
+description: "Mostra stato corrente del progetto. Usa questa skill quando l'utente vuole vedere lo stato, il progresso, la dashboard, o dice stato progetto, a che punto siamo, progresso, dashboard, status."
 ---
 
 # dev-status — Project Status Dashboard

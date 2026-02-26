@@ -1,10 +1,6 @@
 ---
 name: dev-structure
-description: >
-  Mostra struttura file specs/ del progetto. Usa questa skill quando l'utente vuole vedere
-  la struttura dei file, l'albero del progetto, o dice "struttura", "albero file",
-  "mostra file specs", "quali file esistono".
-version: 1.0.0
+description: "Mostra struttura file specs/ del progetto. Usa questa skill quando l'utente vuole vedere la struttura dei file, l'albero del progetto, o dice struttura, albero file, mostra file specs, quali file esistono."
 ---
 
 # dev-structure — Project Structure Explorer

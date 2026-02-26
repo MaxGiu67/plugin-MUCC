@@ -1,10 +1,6 @@
 ---
 name: dev-spec
-description: >
-  Fase 4: Progetta architettura e specifiche tecniche. Usa questa skill quando l'utente vuole
-  creare la tech spec, definire architettura, schema DB, API, o dice "fase 4", "tech spec",
-  "architettura", "specifiche tecniche", "schema database", "API design".
-version: 1.0.0
+description: "Fase 4: Progetta architettura e specifiche tecniche. Usa questa skill quando l'utente vuole creare la tech spec, definire architettura, schema DB, API, o dice fase 4, tech spec, architettura, specifiche tecniche, schema database, API design."
 ---
 
 # dev-spec — Fase 4: Technical Specification
