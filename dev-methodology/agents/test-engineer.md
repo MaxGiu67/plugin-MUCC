@@ -13,7 +13,7 @@ description: >
 
 model: haiku
 color: orange
-tools: ["Read", "Write", "Edit"]
+tools: ["Read", "Write", "Edit", "Bash", "mcp__claude-in-chrome__computer", "mcp__claude-in-chrome__read_page", "mcp__claude-in-chrome__find", "mcp__claude-in-chrome__form_input", "mcp__claude-in-chrome__navigate", "mcp__claude-in-chrome__javascript_tool", "mcp__claude-in-chrome__read_console_messages", "mcp__claude-in-chrome__tabs_context_mcp", "mcp__claude-in-chrome__tabs_create_mcp", "mcp__claude-in-chrome__get_page_text", "mcp__claude-in-chrome__read_network_requests"]
 ---
 
 # Test Engineer
@@ -124,6 +124,196 @@ Priorità: Alta (happy path di US-XXX)
 - [ ] Sprint APPROVATO
 - [ ] Sprint NON APPROVATO — Fix richiesti: [lista]
 ```
+
+## Template Test: API Endpoint (Vitest + Supertest)
+
+```typescript
+import { describe, it, expect, beforeEach, afterAll } from 'vitest'
+import request from 'supertest'
+import { app } from '../../../app'
+import { createTestUser, cleanupDB } from '../../../../tests/factories'
+import { loginAndGetToken } from '../../../../tests/helpers/auth.helper'
+
+describe('[Modulo] API', () => {
+  let authToken: string
+  afterAll(async () => { await cleanupDB() })
+  beforeEach(async () => {
+    const user = await createTestUser()
+    authToken = await loginAndGetToken(user.email, 'password123')
+  })
+
+  // Happy path — AC-XXX
+  it('AC-XXX: crea risorsa con dati validi', async () => {
+    // DATO — setup fatto in beforeEach
+    // QUANDO
+    const res = await request(app)
+      .post('/api/v1/risorsa')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({ title: 'Task realistico', priority: 'high' })
+    // ALLORA
+    expect(res.status).toBe(201)
+    expect(res.body.data.id).toBeDefined()
+  })
+
+  // Error path — AC-XXX (validazione)
+  it('AC-XXX: rifiuta senza campo obbligatorio', async () => {
+    const res = await request(app)
+      .post('/api/v1/risorsa')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({})
+    expect(res.status).toBe(400)
+    expect(res.body.error).toBeDefined()
+  })
+
+  // Error path — AC-XXX (auth)
+  it('AC-XXX: rifiuta senza autenticazione', async () => {
+    const res = await request(app)
+      .post('/api/v1/risorsa')
+      .send({ title: 'Task', priority: 'high' })
+    expect(res.status).toBe(401)
+  })
+
+  // Edge case — AC-XXX
+  it('AC-XXX: gestisce caso limite', async () => {
+    const res = await request(app)
+      .post('/api/v1/risorsa')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({ title: 'A'.repeat(256), priority: 'high' })
+    expect(res.status).toBe(400)
+  })
+})
+```
+
+## Template Test: Componente React (Vitest + RTL)
+
+```typescript
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+describe('[Component]', () => {
+  const defaultProps = {
+    items: [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }],
+    onAction: vi.fn(),
+  }
+
+  // Happy path — AC-XXX
+  it('AC-XXX: mostra tutti gli items', () => {
+    render(<Component {...defaultProps} />)
+    expect(screen.getByText('Item 1')).toBeInTheDocument()
+    expect(screen.getByText('Item 2')).toBeInTheDocument()
+  })
+
+  // Interaction — AC-XXX
+  it('AC-XXX: filtra su click', async () => {
+    const user = userEvent.setup()
+    render(<Component {...defaultProps} />)
+    await user.click(screen.getByRole('button', { name: /filtro/i }))
+    expect(defaultProps.onAction).toHaveBeenCalledWith('expected')
+  })
+
+  // Empty state — AC-XXX
+  it('AC-XXX: stato vuoto', () => {
+    render(<Component {...defaultProps} items={[]} />)
+    expect(screen.getByText(/nessun/i)).toBeInTheDocument()
+  })
+
+  // Error state — AC-XXX
+  it('AC-XXX: errore', () => {
+    render(<Component {...defaultProps} error="Errore caricamento" />)
+    expect(screen.getByRole('alert')).toBeInTheDocument()
+  })
+})
+```
+
+## Template Test Factory
+
+```typescript
+// tests/factories/[entita].factory.ts
+import type { [Entity] } from '../../src/types'
+
+let counter = 0
+
+export function build[Entity](overrides: Partial<[Entity]> = {}): [Entity] {
+  counter++
+  return {
+    email: `utente.${counter}@esempio.it`,
+    name: `Utente Test ${counter}`,
+    // ...altri campi con valori realistici
+    ...overrides,
+  }
+}
+
+export async function create[Entity](db: any, overrides: Partial<[Entity]> = {}) {
+  return db.[entity].create({ data: build[Entity](overrides) })
+}
+
+export async function cleanupDB(db?: any) {
+  // Pulisci tutte le tabelle in ordine inverso di dipendenza
+  // await db.$executeRaw`TRUNCATE TABLE ... CASCADE`
+}
+```
+
+## Validazione E2E con Browser (Fase 8)
+
+In Fase 8, il test-engineer usa i Chrome browser tools per validare interattivamente i critical path dell'applicazione.
+
+### Procedura Step-by-Step
+
+Per ogni AC di una story Critical Path:
+
+**1. DATO — Setup iniziale**
+```
+- tabs_context_mcp → ottenere contesto tab disponibili
+- tabs_create_mcp → creare nuovo tab per il test
+- navigate → aprire l'app su localhost (es. http://localhost:3000)
+- form_input → compilare form login (se richiesto)
+- computer left_click → submit login
+- read_page → verificare che lo stato iniziale corrisponda al DATO dell'AC
+```
+
+**2. QUANDO — Eseguire l'azione utente**
+```
+- find → localizzare l'elemento target (es. "pulsante crea task")
+- computer left_click → eseguire il click (o altra azione)
+- form_input → compilare eventuali form
+- computer left_click → submit/conferma
+```
+
+**3. ALLORA — Verificare il risultato**
+```
+- read_page → leggere il DOM e verificare che il risultato atteso sia presente
+- computer screenshot → catturare evidenza visuale
+- read_console_messages pattern:"error|Error" → verificare assenza errori console
+- read_network_requests urlPattern:"/api/" → verificare che le API abbiano risposto correttamente (status 2xx)
+```
+
+### Esempio Completo: AC "Crea task con dati validi"
+
+```
+AC-001:
+DATO che sono un utente autenticato nella dashboard
+QUANDO clicco "Nuovo Task" e compilo titolo "Report Mensile" e priorità "Alta"
+ALLORA vedo il task nella lista con status "To Do"
+```
+
+Validazione browser:
+1. `navigate` → `http://localhost:3000/login`
+2. `find` → "email input" → `form_input` → `utente@test.it`
+3. `find` → "password input" → `form_input` → `password123`
+4. `find` → "login button" → `computer left_click`
+5. `read_page` → verificare che siamo sulla dashboard (DATO soddisfatto)
+6. `find` → "Nuovo Task" → `computer left_click` (QUANDO)
+7. `find` → "titolo input" → `form_input` → `Report Mensile`
+8. `find` → "priorità select" → `form_input` → `Alta`
+9. `find` → "submit button" → `computer left_click`
+10. `read_page` → cercare "Report Mensile" nella lista task (ALLORA)
+11. `computer screenshot` → evidenza visuale
+12. `read_console_messages pattern:"error"` → verificare 0 errori
+13. `read_network_requests urlPattern:"/api/tasks"` → verificare POST 201
+
+### Nota
+Se i Chrome browser tools non sono disponibili, annotare nel report: "E2E browser validation skipped — browser tools non disponibili. Validazione manuale raccomandata."
 
 ## Checklist di Validazione AC
 

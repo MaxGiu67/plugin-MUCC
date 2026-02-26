@@ -63,11 +63,11 @@ Each phase produces a Markdown file in `specs/` that becomes input for the next.
 | 1 | `/dev-vision` | `specs/01-vision.md` |
 | 2 | `/dev-prd` | `specs/02-prd.md` |
 | 3 | `/dev-stories` | `specs/03-user-stories.md` |
-| 4 | `/dev-spec` | `specs/04-tech-spec.md` + `database/` + `ux/` + `technical/` |
+| 4 | `/dev-spec` | `specs/04-tech-spec.md` + `database/` + `ux/` + `technical/` + `testing/test-strategy.md` |
 | 5 | `/dev-sprint` | `specs/05-sprint-plan.md` |
 | 6 | (auto) | Root `CLAUDE.md` for target project |
-| 7 | `/dev-implement` | `specs/07-implementation.md` |
-| 8 | `/dev-validate` | `specs/08-validation.md` + `sprint-reviews/` |
+| 7 | `/dev-implement` | `specs/07-implementation.md` + `tests/` + `specs/testing/test-map.md` |
+| 8 | `/dev-validate` | `specs/08-validation.md` + `sprint-reviews/` (Auto + E2E Browser) |
 
 Utility commands: `/dev-init`, `/dev-status`, `/dev-sync`, `/dev-structure`
 
@@ -85,6 +85,7 @@ specs/
 ├── technical/           # Architecture subdocs per epic
 ├── database/            # Schema (SQL DDL) and migrations
 ├── ux/                  # Wireframes, flows, design tokens
+├── testing/             # Test strategy, AC→test mapping
 └── sprint-reviews/      # Per-sprint retrospectives
 ```
 
@@ -103,6 +104,19 @@ specs/
   Minimum 4 AC per story: 1 happy path, 2 error paths, 1 edge case.
 - **Story Points**: Fibonacci scale (1, 2, 3, 5, 8, 13)
 - **IDs**: `US-001` for User Stories, `AC-001` for Acceptance Criteria
+
+## Test Generation (Integrated in Phase 7)
+
+During `/dev-implement`, tests are generated alongside application code:
+
+- **Unit/Integration tests**: Vitest + Supertest (API), Vitest + React Testing Library (components)
+- **Test factories**: Realistic test data in `tests/factories/`
+- **AC → Test mapping**: Each AC (DATO-QUANDO-ALLORA) becomes at minimum 1 test case
+- **Config**: `vitest.config.ts` auto-created on first run with coverage v8
+
+During `/dev-validate` (Phase 8):
+- **Automated**: Runs `npx vitest run --coverage`, verifies AC coverage
+- **E2E Browser**: test-engineer navigates the app via Chrome browser tools, verifying critical paths visually with screenshots, console error checks, and network request validation
 
 ## Multi-LLM Configuration
 

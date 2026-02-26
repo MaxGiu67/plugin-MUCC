@@ -28,8 +28,8 @@ Questa skill fornisce la conoscenza metodologica per guidare lo sviluppo di qual
 | 4 | Technical Spec | BE Architect + DB Expert + UX | `specs/04-tech-spec.md` | 30-60 min |
 | 5 | Sprint Planning | Scrum Master | `specs/05-sprint-plan.md` | 15-20 min |
 | 6 | CLAUDE.md Setup | App Expert | `CLAUDE.md` aggiornato | 10 min |
-| 7 | Implementation | Tutti (coordinati) | `src/`, `tests/` | Variabile |
-| 8 | Validation & QA | Test Engineer | `specs/08-validation.md` | 15-30 min |
+| 7 | Implementation | Tutti (coordinati) | `src/`, `tests/`, `specs/testing/test-map.md` | Variabile |
+| 8 | Validation & QA (Auto + E2E) | Test Engineer | `specs/08-validation.md` | 15-30 min |
 
 ## Flusso Sequenziale
 
@@ -78,6 +78,25 @@ ALLORA [risultato atteso — verificabile oggettivamente]
 ```
 
 Questo formato è direttamente trasformabile in test automatici.
+
+## Test Integration
+
+Il plugin integra generazione e validazione test nel flusso di sviluppo:
+
+### Level 1: Test Automatici (Fase 7 — `/dev-implement`)
+- **Framework**: Vitest (configurato automaticamente in base allo stack scelto in Fase 4)
+- **API tests**: Vitest + Supertest per endpoint backend
+- **Component tests**: Vitest + React Testing Library per componenti frontend
+- **Test factories**: Dati realistici in `tests/factories/`
+- **Ciclo**: Red (scrivi test da AC) → Green (implementa codice) → Fix (correggi fino a PASS)
+- **Tracking**: Ogni AC mappato a test in `specs/testing/test-map.md`
+
+### Level 2: Validazione E2E Browser (Fase 8 — `/dev-validate`)
+- **Tool**: Chrome browser tools (navigate, find, click, read_page, screenshot)
+- **Scope**: Critical path delle story Must Have
+- **Metodo**: Segue il flusso DATO-QUANDO-ALLORA di ogni AC nel browser reale
+- **Evidenza**: Screenshots, console errors, network request validation
+- **Fallback**: Se browser tools non disponibili, validazione manuale raccomandata
 
 ## Per Approfondire
 

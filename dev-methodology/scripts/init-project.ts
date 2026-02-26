@@ -66,6 +66,7 @@ function main() {
     path.join(baseDir, 'database'),
     path.join(baseDir, 'ux'),
     path.join(baseDir, 'sprint-reviews'),
+    path.join(baseDir, 'testing'),
   ];
 
   dirs.forEach(dir => ensureDir(dir));
@@ -88,6 +89,53 @@ function main() {
       writeTemplate(filePath, title);
     }
   });
+
+  // Create testing/ template files
+  const testStrategyPath = path.join(baseDir, 'testing', 'test-strategy.md');
+  if (!fs.existsSync(testStrategyPath)) {
+    const testStrategyContent = `# Test Strategy
+
+## Framework e Librerie
+| Livello | Framework | Librerie | Coverage Target |
+|---------|-----------|----------|-----------------|
+| Unit | — | — | —% |
+| Integration | — | — | —% |
+| E2E | — | — | Critical paths |
+
+## Configurazione
+- **Config file**: —
+- **Directory test**: —
+- **Setup file**: —
+
+## Coverage Targets
+- **Globale**: —%
+- **Per modulo critico**: —%
+
+---
+_Da popolare in Fase 4 (/dev-spec) basandosi sullo stack tecnologico scelto._
+`;
+    fs.writeFileSync(testStrategyPath, testStrategyContent, 'utf-8');
+  }
+
+  const testMapPath = path.join(baseDir, 'testing', 'test-map.md');
+  if (!fs.existsSync(testMapPath)) {
+    const testMapContent = `# AC → Test Mapping
+
+## Legenda Status
+- **PASS**: test superato
+- **FAIL**: test fallito
+- **FAIL→PASS**: fallito e poi fixato
+- **SKIP**: non eseguibile
+
+## Mapping
+| AC ID | Story | Test File | Test Name | Tipo | Status | Last Run |
+|-------|-------|-----------|-----------|------|--------|----------|
+
+---
+_Da popolare in Fase 7 (/dev-implement) durante la generazione dei test._
+`;
+    fs.writeFileSync(testMapPath, testMapContent, 'utf-8');
+  }
 
   // Create _status.md
   const statusPath = path.join(baseDir, '_status.md');
@@ -169,6 +217,8 @@ _Ultimo aggiornamento: ${new Date().toISOString()}_
   });
   console.log(`  ✓ _status.md`);
   console.log(`  ✓ _changelog.md`);
+  console.log(`  ✓ testing/test-strategy.md`);
+  console.log(`  ✓ testing/test-map.md`);
   if (!fs.existsSync(llmConfigPath)) {
     console.log(`  ✓ llm-config.json`);
   }

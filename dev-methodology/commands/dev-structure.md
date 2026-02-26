@@ -42,6 +42,9 @@ Visualizza la struttura completa della directory specs/ con metadati.
    │   └── schema.md [Phase 4] [Missing, ----]
    ├── ux/
    │   └── wireframes.md [Phase 4] [Template, 105 B, ----]
+   ├── testing/
+   │   ├── test-strategy.md [Phase 4] [Complete/Template]
+   │   └── test-map.md [Phase 7-8] [Template/Complete]
    ├── technical/
    │   └── (Empty)
    └── sprint-reviews/

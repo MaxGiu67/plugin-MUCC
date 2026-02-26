@@ -30,7 +30,10 @@ Questo comando crea la struttura completa per un nuovo progetto con la metodolog
    ├── technical/
    ├── database/
    ├── ux/
-   └── sprint-reviews/
+   ├── sprint-reviews/
+   └── testing/
+       ├── test-strategy.md
+       └── test-map.md
    ```
 
 3. Inizializza file principali:
