@@ -1,0 +1,30 @@
+{
+  "hooks": [
+    {
+      "matcher": {
+        "event": "PostToolUse",
+        "tool_name": "Write"
+      },
+      "hooks": [
+        {
+          "type": "command",
+          "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'specs/0[0-8]'; then npx tsx \"${CLAUDE_PLUGIN_ROOT}/scripts/update-status.ts\" --project-dir \"$(pwd)\" 2>/dev/null; fi",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
+      "matcher": {
+        "event": "PostToolUse",
+        "tool_name": "Edit"
+      },
+      "hooks": [
+        {
+          "type": "command",
+          "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'specs/0[0-8]'; then npx tsx \"${CLAUDE_PLUGIN_ROOT}/scripts/update-status.ts\" --project-dir \"$(pwd)\" 2>/dev/null; fi",
+          "timeout": 10000
+        }
+      ]
+    }
+  ]
+}

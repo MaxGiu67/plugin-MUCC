@@ -1,0 +1,89 @@
+{
+  "version": "1.0",
+  "project_name": "Il Tuo Progetto",
+  "default_provider": "claude",
+  "providers": {
+    "claude": {
+      "type": "anthropic",
+      "note": "Usato nativamente dagli agenti Claude Code. Non richiede API key separata.",
+      "models": {
+        "coordinator": "claude-opus-4-6",
+        "agent": "claude-sonnet-4-20250514",
+        "helper": "claude-haiku-4-5-20251001"
+      }
+    },
+    "gemini": {
+      "type": "google",
+      "api_key_env": "GEMINI_API_KEY",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta",
+      "models": {
+        "default": "gemini-2.5-pro",
+        "fast": "gemini-2.0-flash"
+      }
+    },
+    "gpt": {
+      "type": "openai",
+      "api_key_env": "OPENAI_API_KEY",
+      "base_url": "https://api.openai.com/v1",
+      "models": {
+        "default": "gpt-4o",
+        "fast": "gpt-4o-mini"
+      }
+    },
+    "mistral": {
+      "type": "mistral",
+      "api_key_env": "MISTRAL_API_KEY",
+      "base_url": "https://api.mistral.ai/v1",
+      "models": {
+        "default": "mistral-large-latest",
+        "fast": "mistral-small-latest"
+      }
+    }
+  },
+  "agent_llm_mapping": {
+    "app-expert": { "provider": "claude", "model": "coordinator" },
+    "pm-agent": { "provider": "claude", "model": "agent" },
+    "ux-designer": { "provider": "gemini", "model": "default", "fallback": "claude/agent" },
+    "be-architect": { "provider": "claude", "model": "agent" },
+    "db-expert": { "provider": "claude", "model": "agent" },
+    "test-engineer": { "provider": "claude", "model": "helper" },
+    "scrum-master": { "provider": "claude", "model": "helper" }
+  },
+  "phase_tasks": {
+    "1-vision": {
+      "discovery": { "provider": "claude", "agent": "pm-agent" }
+    },
+    "2-prd": {
+      "requirements": { "provider": "claude", "agent": "pm-agent" },
+      "ux-review": { "provider": "gemini", "model": "default" }
+    },
+    "3-stories": {
+      "story-writing": { "provider": "claude", "agent": "pm-agent" },
+      "ac-validation": { "provider": "claude", "agent": "test-engineer" }
+    },
+    "4-tech-spec": {
+      "architecture": { "provider": "claude", "agent": "be-architect" },
+      "database": { "provider": "claude", "agent": "db-expert" },
+      "ux-wireframes": {
+        "provider": "gemini",
+        "model": "default",
+        "prompt_template": "Sei un UX Designer esperto. Crea wireframe dettagliati in formato ASCII/markdown per: {feature}. Includi: layout, componenti, interazioni, stati di errore. Output in italiano."
+      },
+      "ux-flows": {
+        "provider": "gemini",
+        "model": "default",
+        "prompt_template": "Sei un UX Designer esperto. Disegna il flusso utente completo per: {feature}. Includi: punti di decisione, errori, percorsi alternativi. Output in italiano con diagrammi ASCII."
+      }
+    },
+    "5-sprint": {
+      "planning": { "provider": "claude", "agent": "scrum-master" }
+    },
+    "7-implement": {
+      "coding": { "provider": "claude", "agent": "be-architect" },
+      "testing": { "provider": "claude", "agent": "test-engineer" }
+    },
+    "8-validate": {
+      "qa": { "provider": "claude", "agent": "test-engineer" }
+    }
+  }
+}
