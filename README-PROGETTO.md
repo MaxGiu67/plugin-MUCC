@@ -93,20 +93,18 @@ Gestisce sprint planning, velocity tracking, task breakdown (story → task con 
 ```bash
 git clone https://github.com/MaxGiu67/plugin-MUCC.git
 cd plugin-MUCC
-bash install.sh              # symlink (default, aggiornamenti automatici)
+bash install.sh              # symlink in ~/.claude/skills/ (default)
 bash install.sh --copy       # copia indipendente
 bash install.sh --uninstall  # disinstalla
 ```
 
-**Claude Code Marketplace**:
-```
-/plugin marketplace add MaxGiu67/plugin-MUCC
-/plugin install dev-methodology@MaxGiu67-plugin-MUCC
-```
-
-**Sviluppo locale** (senza installazione):
+**Manuale**:
 ```bash
-claude --plugin-dir ./dev-methodology
+git clone https://github.com/MaxGiu67/plugin-MUCC.git
+cd plugin-MUCC
+for skill in dev-methodology/skills/dev-*/; do
+  ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename $skill)
+done
 ```
 
 Riavvia Claude Code dopo l'installazione.

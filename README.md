@@ -9,27 +9,24 @@ Plugin per lo sviluppo strutturato a 8 fasi con team di agenti specializzati, tr
 ```bash
 git clone https://github.com/MaxGiu67/plugin-MUCC.git
 cd plugin-MUCC
-bash install.sh              # symlink (default, aggiornamenti automatici)
+bash install.sh              # symlink in ~/.claude/skills/ (default)
 bash install.sh --copy       # copia indipendente
 bash install.sh --uninstall  # disinstalla
 ```
 
-Lo script verifica i prerequisiti (Node.js >= 18, Claude Code installato), crea il symlink/copia in `~/.claude/plugins/` e registra il plugin automaticamente.
+Lo script verifica i prerequisiti (Node.js >= 18, Claude Code installato) e crea symlink delle 11 skill in `~/.claude/skills/`.
 
-### Metodo 2: Claude Code Marketplace
-
-```
-/plugin marketplace add MaxGiu67/plugin-MUCC
-/plugin install dev-methodology@MaxGiu67-plugin-MUCC
-```
-
-### Metodo 3: Sviluppo locale (senza installazione)
+### Metodo 2: Manuale
 
 ```bash
-claude --plugin-dir ./dev-methodology
+git clone https://github.com/MaxGiu67/plugin-MUCC.git
+cd plugin-MUCC
+for skill in dev-methodology/skills/dev-*/; do
+  ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename $skill)
+done
 ```
 
-Dopo l'installazione, riavvia Claude Code per caricare il plugin.
+Dopo l'installazione, riavvia Claude Code per caricare le skill.
 
 ## Quick Start
 

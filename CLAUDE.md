@@ -29,22 +29,22 @@ npx tsx scripts/update-changelog.ts --project-dir ./specs --entry "..."
 ```bash
 git clone https://github.com/MaxGiu67/plugin-MUCC.git
 cd plugin-MUCC
-bash install.sh              # symlink (default, aggiornamenti automatici)
+bash install.sh              # symlink in ~/.claude/skills/ (default)
 bash install.sh --copy       # copia indipendente
 bash install.sh --uninstall  # disinstalla
 ```
 
-### Metodo 2: Claude Code Marketplace
+Lo script crea symlink delle 11 skill in `~/.claude/skills/`. Riavvia Claude Code dopo l'installazione.
 
-```
-/plugin marketplace add MaxGiu67/plugin-MUCC
-/plugin install dev-methodology@MaxGiu67-plugin-MUCC
-```
-
-### Metodo 3: Sviluppo locale (senza installazione)
+### Metodo 2: Manuale
 
 ```bash
-claude --plugin-dir ./dev-methodology
+# Clona il repo e crea symlink per ogni skill
+git clone https://github.com/MaxGiu67/plugin-MUCC.git
+cd plugin-MUCC
+for skill in dev-methodology/skills/dev-*/; do
+  ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename $skill)
+done
 ```
 
 ## Architecture
