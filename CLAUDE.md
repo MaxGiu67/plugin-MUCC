@@ -24,10 +24,27 @@ npx tsx scripts/update-changelog.ts --project-dir ./specs --entry "..."
 
 ## Installation
 
+### Metodo 1: Quick Install (consigliato)
+
 ```bash
-cp -r dev-methodology/ ~/.claude/plugins/dev-methodology/
-# or symlink:
-ln -s "$(pwd)/dev-methodology" ~/.claude/plugins/dev-methodology
+git clone https://github.com/MaxGiu67/plugin-MUCC.git
+cd plugin-MUCC
+bash install.sh              # symlink (default, aggiornamenti automatici)
+bash install.sh --copy       # copia indipendente
+bash install.sh --uninstall  # disinstalla
+```
+
+### Metodo 2: Claude Code Marketplace
+
+```
+/plugin marketplace add MaxGiu67/plugin-MUCC
+/plugin install dev-methodology@MaxGiu67-plugin-MUCC
+```
+
+### Metodo 3: Sviluppo locale (senza installazione)
+
+```bash
+claude --plugin-dir ./dev-methodology
 ```
 
 ## Architecture

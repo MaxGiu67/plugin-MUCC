@@ -4,17 +4,32 @@ Plugin per lo sviluppo strutturato a 8 fasi con team di agenti specializzati, tr
 
 ## Installazione
 
-Copia la cartella `dev-methodology/` nella directory dei plugin di Claude Code:
+### Metodo 1: Quick Install (consigliato)
 
 ```bash
-# macOS / Linux
-cp -r dev-methodology/ ~/.claude/plugins/dev-methodology/
-
-# Oppure crea un symlink
-ln -s "$(pwd)/dev-methodology" ~/.claude/plugins/dev-methodology
+git clone https://github.com/MaxGiu67/plugin-MUCC.git
+cd plugin-MUCC
+bash install.sh              # symlink (default, aggiornamenti automatici)
+bash install.sh --copy       # copia indipendente
+bash install.sh --uninstall  # disinstalla
 ```
 
-Riavvia Claude Code per caricare il plugin.
+Lo script verifica i prerequisiti (Node.js >= 18, Claude Code installato), crea il symlink/copia in `~/.claude/plugins/` e registra il plugin automaticamente.
+
+### Metodo 2: Claude Code Marketplace
+
+```
+/plugin marketplace add MaxGiu67/plugin-MUCC
+/plugin install dev-methodology@MaxGiu67-plugin-MUCC
+```
+
+### Metodo 3: Sviluppo locale (senza installazione)
+
+```bash
+claude --plugin-dir ./dev-methodology
+```
+
+Dopo l'installazione, riavvia Claude Code per caricare il plugin.
 
 ## Quick Start
 

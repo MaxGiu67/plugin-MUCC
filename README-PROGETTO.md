@@ -88,10 +88,28 @@ Gestisce sprint planning, velocity tracking, task breakdown (story → task con 
 ## Come Funziona in Pratica
 
 ### Installazione
+
+**Quick Install** (consigliato):
 ```bash
-cp -r dev-methodology/ ~/.claude/plugins/dev-methodology/
-# Riavvia Claude Code
+git clone https://github.com/MaxGiu67/plugin-MUCC.git
+cd plugin-MUCC
+bash install.sh              # symlink (default, aggiornamenti automatici)
+bash install.sh --copy       # copia indipendente
+bash install.sh --uninstall  # disinstalla
 ```
+
+**Claude Code Marketplace**:
+```
+/plugin marketplace add MaxGiu67/plugin-MUCC
+/plugin install dev-methodology@MaxGiu67-plugin-MUCC
+```
+
+**Sviluppo locale** (senza installazione):
+```bash
+claude --plugin-dir ./dev-methodology
+```
+
+Riavvia Claude Code dopo l'installazione.
 
 ### Flusso tipico
 ```
@@ -301,7 +319,7 @@ Per riprendere il lavoro su questo plugin in una nuova sessione Claude Code:
 - I comandi sono file `.md` con frontmatter YAML (`description`, `allowed-tools`) + istruzioni in Markdown
 - Le skill sono file `SKILL.md` con frontmatter YAML + corpo + cartella `references/` opzionale
 - Gli script TypeScript usano solo Node.js built-in (fs, path, https, url) — zero dipendenze npm
-- Il plugin si installa copiando la cartella in `~/.claude/plugins/`
+- Il plugin si installa con `bash install.sh` (symlink + registrazione automatica) o via marketplace
 
 ### Il principio guida
 **"Structure in, Excellence out"** — Più struttura dai al processo, migliore è l'output. Ogni file in `specs/` è un pezzo di contesto che rende Claude più preciso, coerente e capace di riprendere il lavoro da dove si era interrotto.
