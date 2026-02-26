@@ -65,9 +65,9 @@ function main() {
     [2, '02-prd.md'],
     [3, '03-user-stories.md'],
     [4, '04-tech-spec.md'],
-    [5, '05-implementation.md'],
-    [6, '06-testing.md'],
-    [7, '07-deployment.md'],
+    [5, '05-sprint-plan.md'],
+    [6, '06-prep.md'],
+    [7, '07-implementation.md'],
     [8, '08-validation.md'],
   ];
 

@@ -44,9 +44,9 @@ function buildMarkdownDocument(specsDir: string): string {
     '02-prd.md',
     '03-user-stories.md',
     '04-tech-spec.md',
-    '05-implementation.md',
-    '06-testing.md',
-    '07-deployment.md',
+    '05-sprint-plan.md',
+    '06-prep.md',
+    '07-implementation.md',
     '08-validation.md',
   ];
 

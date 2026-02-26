@@ -126,7 +126,7 @@ Formato: Markdown con tabelle e snippet. Output in italiano.`,
 async function callLLM(
   configPath: string,
   prompt: string,
-  feature: string
+  type: string
 ): Promise<string> {
   // For now, return a structured template
   // In production, this would call the external LLM via call-external-llm.ts
@@ -219,7 +219,7 @@ START
 `,
   };
 
-  return typeMap[feature] || typeMap.wireframe;
+  return typeMap[type] || typeMap.wireframe;
 }
 
 async function main() {
@@ -234,7 +234,7 @@ async function main() {
   const prompt = buildUXPrompt(cfg.feature, cfg.type, context);
 
   // Call LLM (stub for now)
-  const result = await callLLM(cfg.config, prompt, cfg.feature);
+  const result = await callLLM(cfg.config, prompt, cfg.type);
 
   // Generate filename
   const slug = slugify(cfg.feature);

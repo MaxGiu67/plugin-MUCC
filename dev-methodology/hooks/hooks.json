@@ -8,7 +8,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'specs/0[0-8]'; then npx tsx \"${CLAUDE_PLUGIN_ROOT}/scripts/update-status.ts\" --project-dir \"$(pwd)\" 2>/dev/null; fi",
+          "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'specs/0[0-8]'; then npx tsx \"${CLAUDE_PLUGIN_ROOT}/scripts/update-status.ts\" --specs-dir \"$(pwd)/specs\" 2>/dev/null; fi",
           "timeout": 10000
         }
       ]
@@ -21,7 +21,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'specs/0[0-8]'; then npx tsx \"${CLAUDE_PLUGIN_ROOT}/scripts/update-status.ts\" --project-dir \"$(pwd)\" 2>/dev/null; fi",
+          "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'specs/0[0-8]'; then npx tsx \"${CLAUDE_PLUGIN_ROOT}/scripts/update-status.ts\" --specs-dir \"$(pwd)/specs\" 2>/dev/null; fi",
           "timeout": 10000
         }
       ]

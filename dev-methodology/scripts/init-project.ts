@@ -72,14 +72,14 @@ function main() {
 
   // Create template files
   const templates: [string, string][] = [
-    ('01-vision.md', 'Visione e Obiettivi'),
-    ('02-prd.md', 'Product Requirements Document'),
-    ('03-user-stories.md', 'User Stories'),
-    ('04-tech-spec.md', 'Specifica Tecnica'),
-    ('05-implementation.md', 'Pianificazione Implementazione'),
-    ('06-testing.md', 'Strategia Testing'),
-    ('07-deployment.md', 'Deployment e Rilascio'),
-    ('08-validation.md', 'Validazione e Chiusura'),
+    ['01-vision.md', 'Visione e Obiettivi'],
+    ['02-prd.md', 'Product Requirements Document'],
+    ['03-user-stories.md', 'User Stories'],
+    ['04-tech-spec.md', 'Specifica Tecnica'],
+    ['05-sprint-plan.md', 'Sprint Plan'],
+    ['06-prep.md', 'Preparazione Implementazione'],
+    ['07-implementation.md', 'Implementazione'],
+    ['08-validation.md', 'Validazione e Chiusura'],
   ];
 
   templates.forEach(([filename, title]) => {
@@ -100,9 +100,9 @@ function main() {
 | 2 | 02-prd.md | ⏳ In attesa | 0% |
 | 3 | 03-user-stories.md | ⏳ In attesa | 0% |
 | 4 | 04-tech-spec.md | ⏳ In attesa | 0% |
-| 5 | 05-implementation.md | ⏳ In attesa | 0% |
-| 6 | 06-testing.md | ⏳ In attesa | 0% |
-| 7 | 07-deployment.md | ⏳ In attesa | 0% |
+| 5 | 05-sprint-plan.md | ⏳ In attesa | 0% |
+| 6 | 06-prep.md | ⏳ In attesa | 0% |
+| 7 | 07-implementation.md | ⏳ In attesa | 0% |
 | 8 | 08-validation.md | ⏳ In attesa | 0% |
 
 ## Fase Attuale

@@ -131,12 +131,12 @@ function main() {
   }
 
   // Check content depth
-  const avgFileSize = Object.values(filesStatus)
-    .filter(exists => exists)
-    .reduce((sum, file) => {
-      const size = fs.statSync(path.join(specsDir, file)).size;
-      return sum + size;
-    }, 0) / Object.values(filesStatus).filter(exists => exists).length;
+  const existingFiles = requiredFiles.filter(f => filesStatus[f]);
+  const avgFileSize = existingFiles.length > 0
+    ? existingFiles.reduce((sum, file) => {
+        return sum + fs.statSync(path.join(specsDir, file)).size;
+      }, 0) / existingFiles.length
+    : 0;
 
   if (avgFileSize < 500) {
     report.warnings.push(`⚠️ Contenuto molto sparso - avg ${Math.round(avgFileSize)} bytes/file`);

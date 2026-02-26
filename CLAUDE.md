@@ -14,8 +14,8 @@ All scripts use only Node.js built-in modules (no npm install needed). Run via `
 
 ```bash
 npx tsx scripts/init-project.ts --name "ProjectName" --output-dir ./
-npx tsx scripts/update-status.ts --project-dir ./specs
-npx tsx scripts/validate-specs.ts --project-dir ./specs --verbose
+npx tsx scripts/update-status.ts --specs-dir ./specs
+npx tsx scripts/validate-specs.ts --specs-dir ./specs --verbose
 npx tsx scripts/call-external-llm.ts --provider gemini --task "..."
 npx tsx scripts/generate-ux.ts --feature "Dashboard" --type wireframe
 npx tsx scripts/export-project.ts --format markdown
