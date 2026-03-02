@@ -432,6 +432,125 @@ install_plugin() {
 }
 
 # ============================================================================
+# Aggiornamento
+# ============================================================================
+
+update_plugin() {
+  local skip_tools="${1:-false}"
+
+  print_banner
+  info "Aggiornamento $PLUGIN_NAME..."
+  echo ""
+
+  # ── Git pull (se siamo in un repo git) ──
+  if [ -d "$SCRIPT_DIR/.git" ]; then
+    info "Aggiornamento repo da remote..."
+    if git -C "$SCRIPT_DIR" pull --ff-only 2>/dev/null; then
+      success "Repository aggiornato"
+    else
+      warn "git pull fallito — continuo con la versione locale"
+      warn "Esegui manualmente: cd $SCRIPT_DIR && git pull"
+    fi
+    echo ""
+  fi
+
+  check_prerequisites
+
+  # ── Aggiorna tool esterni ──
+  if [ "$skip_tools" = "false" ]; then
+    install_tools
+  else
+    info "Aggiornamento tool esterni saltato (--skip-tools)"
+    echo ""
+  fi
+
+  # ── Aggiorna skill ──
+  echo -e "${BOLD}── Aggiornamento skill Claude Code ──${NC}"
+  echo ""
+
+  mkdir -p "$SKILLS_DIR"
+
+  local added=0
+  local updated=0
+  local unchanged=0
+
+  for skill in "${SKILLS[@]}"; do
+    if [ -L "$SKILLS_DIR/$skill" ]; then
+      # Symlink esistente — verifica se punta alla sorgente corretta
+      local current_target
+      current_target=$(readlink "$SKILLS_DIR/$skill" 2>/dev/null || echo "")
+      local expected_target="$SKILLS_SOURCE/$skill"
+
+      if [ "$current_target" = "$expected_target" ]; then
+        unchanged=$((unchanged + 1))
+      else
+        # Symlink punta altrove — aggiorna
+        rm -f "$SKILLS_DIR/$skill"
+        ln -s "$expected_target" "$SKILLS_DIR/$skill"
+        updated=$((updated + 1))
+        success "$skill — symlink aggiornato"
+      fi
+    elif [ -d "$SKILLS_DIR/$skill" ]; then
+      # Directory (modalità copy) — aggiorna con copia
+      rm -rf "$SKILLS_DIR/$skill"
+      cp -r "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+      updated=$((updated + 1))
+      success "$skill — aggiornato (copy)"
+    else
+      # Non esiste — nuova skill da aggiungere
+      ln -s "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+      added=$((added + 1))
+      success "$skill — NUOVA skill aggiunta"
+    fi
+  done
+
+  # ── Rimuovi skill obsolete non più nell'array SKILLS ──
+  local removed=0
+  for existing in "$SKILLS_DIR"/dev-*; do
+    [ -e "$existing" ] || [ -L "$existing" ] || continue
+    local skill_name
+    skill_name=$(basename "$existing")
+    local found=false
+    for skill in "${SKILLS[@]}"; do
+      if [ "$skill" = "$skill_name" ]; then
+        found=true
+        break
+      fi
+    done
+    if [ "$found" = "false" ]; then
+      # Verifica che sia un nostro symlink (punta a SKILLS_SOURCE)
+      if [ -L "$existing" ]; then
+        local target
+        target=$(readlink "$existing" 2>/dev/null || echo "")
+        if [[ "$target" == *"$PLUGIN_NAME"* ]]; then
+          rm -f "$existing"
+          removed=$((removed + 1))
+          warn "$skill_name — skill rimossa (non più nel plugin)"
+        fi
+      fi
+    fi
+  done
+
+  # ── Riepilogo ──
+  echo ""
+  [ "$added" -gt 0 ] && success "$added nuove skill aggiunte"
+  [ "$updated" -gt 0 ] && success "$updated skill aggiornate"
+  [ "$unchanged" -gt 0 ] && info "$unchanged skill già aggiornate (symlink OK)"
+  [ "$removed" -gt 0 ] && warn "$removed skill obsolete rimosse"
+
+  echo ""
+  echo -e "${GREEN}${BOLD}Aggiornamento completato!${NC}"
+  echo ""
+  echo -e "${BOLD}Skill attive (${#SKILLS[@]}):${NC}"
+  for skill in "${SKILLS[@]}"; do
+    echo "  /$skill"
+  done
+  echo ""
+  info "Riavvia Claude Code per applicare le modifiche."
+  echo ""
+}
+
+# ============================================================================
 # Disinstallazione
 # ============================================================================
 
@@ -487,6 +606,7 @@ show_help() {
   print_banner
   echo "Uso:"
   echo "  bash install.sh              Installa skill + tool (default, consigliato)"
+  echo "  bash install.sh --update     Aggiorna: git pull + nuove skill + nuovi tool"
   echo "  bash install.sh --copy       Installa con copia dei file + tool"
   echo "  bash install.sh --skip-tools Installa solo skill, senza tool esterni"
   echo "  bash install.sh --check      Verifica quali tool sono installati"
@@ -502,6 +622,11 @@ show_help() {
   echo "                     Installazione indipendente dal repo."
   echo "                     Serve rieseguire lo script per aggiornare."
   echo ""
+  echo "Aggiornamento:"
+  echo "  --update           Esegue git pull, aggiunge nuove skill, aggiorna"
+  echo "                     symlink se necessario, installa nuovi tool."
+  echo "                     Non chiede conferma — sicuro da eseguire sempre."
+  echo ""
   echo "Tool esterni installati:"
   echo "  Quality:  knip, eslint, typescript, ruff, mypy, vulture"
   echo "  Security: semgrep, bearer, bandit, retire, osv-scanner, pip-audit"
@@ -514,6 +639,12 @@ show_help() {
 # ============================================================================
 
 case "${1:-}" in
+  --update)
+    update_plugin "false"
+    ;;
+  --update-skip-tools)
+    update_plugin "true"
+    ;;
   --copy)
     install_plugin "copy" "false"
     ;;

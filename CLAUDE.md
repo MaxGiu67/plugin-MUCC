@@ -45,13 +45,19 @@ Lo script installa 13 skill in `~/.claude/skills/` e i tool esterni necessari pe
 
 ```bash
 cd plugin-MUCC
-git pull                     # scarica l'ultima versione
-bash install.sh              # reinstalla skill + eventuali nuovi tool
+bash install.sh --update     # git pull + aggiunge nuove skill + installa nuovi tool
 ```
 
-Con la modalità symlink (default), le skill puntano direttamente al repo. `git pull` aggiorna automaticamente i contenuti delle skill. `bash install.sh` serve solo se ci sono nuove skill da registrare o nuovi tool da installare.
+Il comando `--update` in un solo passo:
+1. Esegue `git pull` per scaricare l'ultima versione
+2. Aggiunge nuove skill (senza toccare quelle esistenti con symlink OK)
+3. Aggiorna symlink che puntano a path obsoleti
+4. Rimuove skill non piu nel plugin
+5. Installa eventuali nuovi tool esterni
 
-Con la modalità `--copy`, serve rieseguire `bash install.sh --copy` dopo ogni `git pull`.
+Non chiede conferma — sicuro da eseguire in qualsiasi momento.
+
+Con la modalita `--copy`, serve rieseguire `bash install.sh --copy` dopo ogni aggiornamento.
 
 ### Metodo 2: Manuale
 
