@@ -78,7 +78,7 @@ error()   { echo -e "${RED}✖${NC}  $1"; }
 print_banner() {
   echo ""
   echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-  echo -e "${BOLD}║   dev-methodology — Installer v2.0.0     ║${NC}"
+  echo -e "${BOLD}║   dev-methodology — Installer v0.4.1     ║${NC}"
   echo -e "${BOLD}║   Spec-Driven Development per Claude Code ║${NC}"
   echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""

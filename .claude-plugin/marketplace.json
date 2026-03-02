@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Plugin di sviluppo strutturato a 8 fasi con agenti specializzati e supporto multi-LLM",
-    "version": "1.0.0"
+    "version": "0.4.1"
   },
   "plugins": [
     {
@@ -24,7 +24,9 @@
         "./dev-methodology/skills/dev-validate",
         "./dev-methodology/skills/dev-status",
         "./dev-methodology/skills/dev-sync",
-        "./dev-methodology/skills/dev-structure"
+        "./dev-methodology/skills/dev-structure",
+        "./dev-methodology/skills/dev-refactor",
+        "./dev-methodology/skills/dev-security"
       ]
     }
   ]

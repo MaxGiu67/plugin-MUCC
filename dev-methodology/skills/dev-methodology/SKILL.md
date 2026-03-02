@@ -7,7 +7,7 @@ description: >
   or needs help understanding the development workflow. Also triggers when user mentions
   "PRD", "user stories", "acceptance criteria", "tech spec", "sprint planning",
   "spec-driven development", or "BMAD".
-version: 1.0.0
+version: 0.4.1
 ---
 
 # Metodologia di Sviluppo Strutturato — Guida per 8 Fasi

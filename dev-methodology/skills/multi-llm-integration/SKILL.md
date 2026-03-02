@@ -5,7 +5,7 @@ description: >
   into the development workflow. Triggers when user asks about "using Gemini",
   "calling external LLM", "multi-LLM", "external AI", or wants to use a non-Claude
   model for specific tasks like UX design or analysis.
-version: 1.0.0
+version: 0.4.1
 ---
 
 # Integrazione Multi-LLM
