@@ -35,6 +35,7 @@ SKILLS=(
   dev-status
   dev-sync
   dev-structure
+  dev-update
 )
 
 # ============================================================================

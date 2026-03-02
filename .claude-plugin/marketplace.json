@@ -26,7 +26,8 @@
         "./dev-methodology/skills/dev-sync",
         "./dev-methodology/skills/dev-structure",
         "./dev-methodology/skills/dev-refactor",
-        "./dev-methodology/skills/dev-security"
+        "./dev-methodology/skills/dev-security",
+        "./dev-methodology/skills/dev-update"
       ]
     }
   ]

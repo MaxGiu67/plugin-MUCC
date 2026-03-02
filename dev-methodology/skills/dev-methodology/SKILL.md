@@ -56,6 +56,7 @@ Ogni fase dipende dalla precedente. Non saltare fasi.
 - `/dev-status` — Mostra stato corrente del progetto
 - `/dev-sync` — Integra risultati da LLM esterni
 - `/dev-structure` — Mostra struttura file specs/
+- `/dev-update` — Aggiorna il plugin (git pull + nuove skill + check tool)
 
 ## Agenti Disponibili
 
