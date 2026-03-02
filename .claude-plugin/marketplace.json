@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Plugin di sviluppo strutturato a 8 fasi con agenti specializzati e supporto multi-LLM",
-    "version": "0.4.1"
+    "version": "0.4.2"
   },
   "plugins": [
     {

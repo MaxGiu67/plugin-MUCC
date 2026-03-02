@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 8 specialized AI agents (7 + security-expert) coordinated by an App Expert, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
+**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 8 specialized AI agents coordinated by an App Expert, provides 14 skills, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
 
 Language: Italian for methodology terms and agent communication. Technical terms (PRD, Sprint, MoSCoW, etc.) remain in English.
 
@@ -39,7 +39,7 @@ bash install.sh --check      # verifica quali tool sono installati
 bash install.sh --uninstall  # disinstalla skill (non tool)
 ```
 
-Lo script installa 13 skill in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
+Lo script installa 14 skill in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
 
 ### Aggiornamento
 
@@ -86,7 +86,7 @@ dev-methodology/
 ├── commands/                    # Legacy slash commands (migrati a skills/)
 ├── hooks/hooks.json             # Auto-triggers update-status.ts on spec file changes
 ├── scripts/                     # 9 TypeScript utilities (zero dependencies)
-└── skills/                      # 13 skill + reference docs
+└── skills/                      # 14 skill + reference docs
 ```
 
 ### Agent System
@@ -116,7 +116,7 @@ Each phase produces a Markdown file in `specs/` that becomes input for the next.
 | 7 | `/dev-implement` | `specs/07-implementation.md` + `tests/` + `specs/testing/test-map.md` |
 | 8 | `/dev-validate` | `specs/08-validation.md` + `sprint-reviews/` (Auto + E2E Browser) |
 
-Utility commands: `/dev-init`, `/dev-status`, `/dev-sync`, `/dev-structure`
+Utility commands: `/dev-init`, `/dev-status`, `/dev-sync`, `/dev-structure`, `/dev-update`
 
 ### Hooks
 

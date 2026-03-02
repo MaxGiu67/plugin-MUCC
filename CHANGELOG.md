@@ -3,6 +3,22 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.4.2] - 2026-03-02
+
+### Added
+- **Skill `/dev-update`**: aggiornamento plugin direttamente da Claude Code
+  - Git pull automatico dal repo
+  - Aggiunta symlink per nuove skill
+  - Correzione symlink rotti
+  - Verifica stato tool esterni con opzione installazione
+  - Report con changelog delle novità
+
+### Changed
+- `install.sh`: aggiunta skill dev-update alla lista (14 skill totali)
+- `marketplace.json`: aggiunta skill dev-update
+- `dev-methodology/SKILL.md`: aggiunto `/dev-update` alla lista comandi
+- `CLAUDE.md`: aggiornato per 14 skill, documentato `/dev-update`
+
 ## [0.4.1] - 2026-03-02
 
 ### Added
