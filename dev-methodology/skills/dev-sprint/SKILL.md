@@ -17,6 +17,16 @@ Organizza user stories in sprint con task breakdown e obiettivi.
    - Capacità: 15-25 Story Points per sprint (regolabile)
    - Obiettivo: ogni sprint produce un incremento funzionante
 
+2b. **Tech Debt & Security Budget**:
+   - Se `specs/technical/tech-debt.md` esiste e ha items con severità Alta/Media aperti:
+     - Genera tech debt stories (TD-XXX) con SP stimati dal file
+     - Includi come stories nel primo sprint disponibile
+   - Se `specs/technical/security-report.md` esiste e ha vulnerabilità Critiche/Alte aperte:
+     - Genera security stories (SEC-XXX) con priorità massima
+     - **Security Critiche hanno priorità assoluta** (prima di qualsiasi feature story)
+   - Riserva **10-20% capacity** di ogni sprint per TD + SEC stories
+   - Se nessun file tech debt/security esiste, salta questo step
+
 3. Per ogni Sprint, crea sezione con:
    - **Sprint N Objective**: 1 frase dell'obiettivo strategico
    - **Stories Table**: ID, Title, SP, Priority, Dependencies

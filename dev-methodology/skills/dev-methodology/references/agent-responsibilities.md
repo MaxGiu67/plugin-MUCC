@@ -9,20 +9,22 @@
 | **UX Designer** | UX/UI + **Figma Expert** | Wireframe, design system, Figma handoff, component mapping |
 | **BE Architect** | **Python + Node.js** | FastAPI/Django, Express/NestJS, API design, deployment |
 | **DB Expert** | **PostgreSQL 10+ anni** | Schema, query tuning, JSONB, FTS, partitioning, RLS |
+| **Security Expert** | **AppSec (SAST+SCA+AI)** | OWASP Top 10, CVE, vulnerability analysis, secure coding |
 | **Test Engineer** | QA & Validation | Test strategy, AC validation, regression, coverage |
 | **Scrum Master** | Agile & Sprint | Sprint planning, velocity, task breakdown, retrospective |
 
 ## Matrice Agente × Fase
 
-| Agente | F1 Vision | F2 PRD | F3 Stories | F4 Spec | F5 Sprint | F7 Impl | F8 Valid |
-|--------|-----------|--------|------------|---------|-----------|---------|---------|
-| **App Expert** | Coordina | Coordina | Coordina | Coordina | Coordina | Coordina | Coordina |
-| **PM** | ★ Produce | ★ Produce | ★ Produce | Consulta | Consulta | — | — |
-| **UX Designer** | — | Consulta | Consulta | ★ Produce UX | — | Consulta | Valida |
-| **BE Architect** | — | — | Consulta | ★ Produce Arch | Consulta | ★ Guida | — |
-| **DB Expert** | — | — | — | ★ Produce DB | — | Consulta | Valida DB |
-| **Test Engineer** | — | — | ★ Valida AC | Consulta | Consulta | — | ★ Produce |
-| **Scrum Master** | — | — | — | — | ★ Produce | ★ Traccia | Facilita |
+| Agente | F1 Vision | F2 PRD | F3 Stories | F4 Spec | F5 Sprint | F7 Impl | F8 Valid | Quality | Security |
+|--------|-----------|--------|------------|---------|-----------|---------|---------|---------|----------|
+| **App Expert** | Coordina | Coordina | Coordina | Coordina | Coordina | Coordina | Coordina | Coordina | Coordina |
+| **PM** | ★ Produce | ★ Produce | ★ Produce | Consulta | Consulta | — | — | — | — |
+| **UX Designer** | — | Consulta | Consulta | ★ Produce UX | — | Consulta | Valida | — | — |
+| **BE Architect** | — | — | Consulta | ★ Produce Arch | Consulta | ★ Guida | — | ★ Analizza | — |
+| **DB Expert** | — | — | — | ★ Produce DB | — | Consulta | Valida DB | — | — |
+| **Security Expert** | — | — | — | Consulta | — | Consulta | ★ Gate | — | ★ Produce |
+| **Test Engineer** | — | — | ★ Valida AC | Consulta | Consulta | — | ★ Produce | — | — |
+| **Scrum Master** | — | — | — | — | ★ Produce | ★ Traccia | Facilita | — | — |
 
 ★ = Responsabile principale della fase
 
@@ -62,8 +64,17 @@ UTENTE parla con APP EXPERT
          │   └── Poi → DB EXPERT (migrazione se serve)
          │   └── Poi → TEST ENGINEER (test per AC)
          │
+         ├── "Il codice ha vulnerabilità?"
+         │   └── Delega a → SECURITY EXPERT (scan SAST + SCA + AI review)
+         │   └── Output → specs/technical/security-report.md
+         │
+         ├── "Il codice ha tech debt?"
+         │   └── Delega a → BE ARCHITECT (quality analysis)
+         │   └── Output → specs/technical/tech-debt.md, quality-report.md
+         │
          └── "Siamo pronti per il rilascio?"
              └── Delega a → TEST ENGINEER (validazione completa)
+             └── Poi → SECURITY EXPERT (security gate — Critiche/Alte bloccanti)
              └── Poi → DB EXPERT (validazione performance DB)
 ```
 
@@ -117,6 +128,7 @@ Il Scrum Master organizza il lavoro di tutti:
 | UX Designer | Claude Sonnet | **Gemini 2.5 Pro** | Per analisi screenshot Figma (multimodal), wireframe visivi |
 | BE Architect | Claude Sonnet | — | Sempre Claude (codice Python/Node + architettura) |
 | DB Expert | Claude Sonnet | — | Sempre Claude (SQL PostgreSQL + ottimizzazione) |
+| Security Expert | Claude Sonnet | — | Sempre Claude (analisi sicurezza + ragionamento logico) |
 | Test Engineer | Claude Haiku | — | Sempre Claude (task strutturati) |
 | Scrum Master | Claude Haiku | — | Sempre Claude (planning, non serve modello grande) |
 

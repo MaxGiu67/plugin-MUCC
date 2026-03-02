@@ -28,6 +28,8 @@ Questo comando crea la struttura completa per un nuovo progetto con la metodolog
    ├── 07-implementation.md
    ├── 08-validation.md
    ├── technical/
+   │   ├── tech-debt.md
+   │   └── security-report.md
    ├── database/
    ├── ux/
    ├── sprint-reviews/
@@ -40,6 +42,8 @@ Questo comando crea la struttura completa per un nuovo progetto con la metodolog
    - **specs/_status.md**: tracker dello stato con tutte le 8 fasi impostate a "In attesa"
    - **specs/_changelog.md**: header CHANGELOG - Progetto: {ProjectName}
    - **specs/01-vision.md** ... **specs/08-validation.md**: template con sezioni vuote
+   - **specs/technical/tech-debt.md**: inventario tech debt (dal template `references/tech-debt-template.md`)
+   - **specs/technical/security-report.md**: report sicurezza (dal template `references/security-report-template.md`)
    - **llm-config.json**: copia di CONFIG-EXAMPLE.json (se esiste)
    - **CLAUDE.md**: aggiungi metodologia dev-methodology con link a fasi
 

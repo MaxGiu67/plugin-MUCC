@@ -51,6 +51,8 @@ Ogni fase dipende dalla precedente. Non saltare fasi.
 - `/dev-sprint` — Fase 5: Pianifica sprint e task breakdown
 - `/dev-implement` — Fase 7: Implementa story per story
 - `/dev-validate` — Fase 8: Valida contro tutti gli AC
+- `/dev-refactor` — Analisi qualità codice, tech debt e refactoring con tool deterministici
+- `/dev-security` — Analisi sicurezza SAST + SCA + AI reasoning
 - `/dev-status` — Mostra stato corrente del progetto
 - `/dev-sync` — Integra risultati da LLM esterni
 - `/dev-structure` — Mostra struttura file specs/
@@ -65,6 +67,7 @@ Ogni fase dipende dalla precedente. Non saltare fasi.
 | **be-architect** | Backend Architect | Architettura, API, deployment, code structure |
 | **db-expert** | Database Expert | Schema DB, query, migrazioni, performance dati |
 | **test-engineer** | Test Engineer | Test strategy, test cases, QA, validazione |
+| **security-expert** | Security Expert | SAST, SCA, vulnerability analysis, OWASP, security review |
 | **scrum-master** | Scrum Master | Sprint planning, velocity, retrospective |
 
 ## Formato Chiave: DATO-QUANDO-ALLORA
@@ -105,3 +108,7 @@ Leggi i file in `references/` per template dettagliati:
 - `references/ac-template.md` — Template Acceptance Criteria
 - `references/tech-spec-template.md` — Template Tech Spec
 - `references/agent-responsibilities.md` — Responsabilità dettagliate per agente
+- `references/quality-thresholds.md` — Soglie quality score e metriche
+- `references/tech-debt-template.md` — Template inventario tech debt
+- `references/security-thresholds.md` — Soglie security score e OWASP mapping
+- `references/security-report-template.md` — Template report sicurezza

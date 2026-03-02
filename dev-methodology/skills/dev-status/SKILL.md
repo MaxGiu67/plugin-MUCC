@@ -29,6 +29,15 @@ Visualizza lo stato di progresso attuale con fasi, file e next steps.
    - Stories nel corrente sprint
    - Total SP pianificati vs completati
 
+5b. Estrai metriche Quality & Security (se i report esistono):
+   - Se `specs/technical/quality-report.md` esiste:
+     - Quality Score (da ultima riga sommario)
+     - Conteggio TD aperti per severità (Alta/Media/Bassa)
+   - Se `specs/technical/security-report.md` esiste:
+     - Security Score (da ultima riga sommario)
+     - Conteggio SEC aperti per severità (Critica/Alta/Media/Bassa)
+     - **Highlight rosso** se ci sono vulnerabilità Critiche aperte
+
 6. Genera dashboard visuale:
    ```
    ╔═ PROJECT STATUS ══════════════════════════╗
@@ -39,6 +48,11 @@ Visualizza lo stato di progresso attuale con fasi, file e next steps.
    ║ Completed Phases: 1, 2, 3                 ║
    ║ In Progress: Phase 5 (Sprint 1)           ║
    ║ Next: Complete Sprint 1 stories           ║
+   ║                                           ║
+   ║ Quality Score: XX/100 [Giudizio]           ║
+   ║ Security Score: XX/100 [Giudizio]         ║
+   ║ Tech Debt: X Alta, Y Media, Z Bassa       ║
+   ║ Vulnerabilità: X Crit, Y Alta, Z Media    ║
    ║                                           ║
    ║ Recent Changes (last 3):                  ║
    ║ - [date] Change 1                         ║

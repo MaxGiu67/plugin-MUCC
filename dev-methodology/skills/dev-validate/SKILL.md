@@ -7,6 +7,30 @@ description: "Fase 8: Valida implementazione con test automatici e E2E browser. 
 
 Valida implementazione con test automatici, validazione E2E via browser, e report finale.
 
+## Parte 0: Quality & Security Check
+
+Prima di eseguire i test, verifica la qualità del codice e la sicurezza.
+
+1. **Quality Check**: Esegui `npx tsx scripts/analyze-quality.ts --src-dir ./src --specs-dir ./specs`
+   - Se lo script non è disponibile, esegui manualmente i tool disponibili (Knip, ESLint, tsc, Ruff, mypy)
+   - Leggi il Quality Score dal report generato in `specs/technical/quality-report.md`
+   - Se **Quality Score < 40**: warning non bloccante — refactoring raccomandato
+
+2. **Security Check**: Esegui `npx tsx scripts/analyze-security.ts --src-dir ./src --specs-dir ./specs`
+   - Se lo script non è disponibile, esegui almeno `npm audit --json` (sempre disponibile per Node.js)
+   - Leggi il Security Score dal report generato in `specs/technical/security-report.md`
+   - Se **Security Score < 50**: **WARNING BLOCCANTE** — vulnerabilità Critiche/Alte non possono andare in produzione
+   - Se Security Score < 50, annota nel report e raccomanda `/dev-security` per remediation
+
+3. Includi entrambi gli score nel report `08-validation.md`:
+   ```markdown
+   ## 0. Quality & Security Pre-check
+   - Quality Score: [X]/100 — [Giudizio]
+   - Security Score: [X]/100 — [Giudizio]
+   - Security Gate: [PASS/FAIL]
+   - Quality Gate: [PASS/WARNING]
+   ```
+
 ## Parte 1: Validazione Automatica (Unit + Integration)
 
 1. Leggi **specs/03-user-stories.md** per tutti gli AC di ogni story Must Have.

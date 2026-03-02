@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 7 specialized AI agents coordinated by an App Expert, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
+**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 8 specialized AI agents (7 + security-expert) coordinated by an App Expert, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
 
 Language: Italian for methodology terms and agent communication. Technical terms (PRD, Sprint, MoSCoW, etc.) remain in English.
 
@@ -20,6 +20,8 @@ npx tsx scripts/call-external-llm.ts --provider gemini --task "..."
 npx tsx scripts/generate-ux.ts --feature "Dashboard" --type wireframe
 npx tsx scripts/export-project.ts --format markdown
 npx tsx scripts/update-changelog.ts --project-dir ./specs --entry "..."
+npx tsx scripts/analyze-quality.ts --src-dir ./src --specs-dir ./specs --verbose
+npx tsx scripts/analyze-security.ts --src-dir ./src --specs-dir ./specs --verbose
 ```
 
 ## Installation
@@ -29,12 +31,27 @@ npx tsx scripts/update-changelog.ts --project-dir ./specs --entry "..."
 ```bash
 git clone https://github.com/MaxGiu67/plugin-MUCC.git
 cd plugin-MUCC
-bash install.sh              # symlink in ~/.claude/skills/ (default)
-bash install.sh --copy       # copia indipendente
-bash install.sh --uninstall  # disinstalla
+bash install.sh              # installa skill + tool esterni (default)
+bash install.sh --copy       # copia indipendente + tool
+bash install.sh --skip-tools # solo skill, senza tool esterni
+bash install.sh --tools-only # solo tool esterni
+bash install.sh --check      # verifica quali tool sono installati
+bash install.sh --uninstall  # disinstalla skill (non tool)
 ```
 
-Lo script crea symlink delle 11 skill in `~/.claude/skills/`. Riavvia Claude Code dopo l'installazione.
+Lo script installa 13 skill in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
+
+### Aggiornamento
+
+```bash
+cd plugin-MUCC
+git pull                     # scarica l'ultima versione
+bash install.sh              # reinstalla skill + eventuali nuovi tool
+```
+
+Con la modalità symlink (default), le skill puntano direttamente al repo. `git pull` aggiorna automaticamente i contenuti delle skill. `bash install.sh` serve solo se ci sono nuove skill da registrare o nuovi tool da installare.
+
+Con la modalità `--copy`, serve rieseguire `bash install.sh --copy` dopo ogni `git pull`.
 
 ### Metodo 2: Manuale
 
@@ -45,6 +62,11 @@ cd plugin-MUCC
 for skill in dev-methodology/skills/dev-*/; do
   ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename $skill)
 done
+
+# Installa tool esterni manualmente
+npm install -g knip eslint typescript retire
+pip install semgrep ruff mypy vulture bandit pip-audit
+brew install bearer/tap/bearer osv-scanner  # macOS
 ```
 
 ## Architecture
@@ -52,12 +74,13 @@ done
 ```
 dev-methodology/
 ├── .claude-plugin/plugin.json   # Plugin manifest (name, version, keywords)
+├── .eslintrc.quality.json       # ESLint config fallback per analisi quality
 ├── CONFIG-EXAMPLE.json          # Multi-LLM provider config template
-├── agents/                      # 7 agent definitions (Markdown + YAML frontmatter)
-├── commands/                    # 11 slash commands implementing the 8-phase workflow
+├── agents/                      # 8 agent definitions (Markdown + YAML frontmatter)
+├── commands/                    # Legacy slash commands (migrati a skills/)
 ├── hooks/hooks.json             # Auto-triggers update-status.ts on spec file changes
-├── scripts/                     # 7 TypeScript utilities (zero dependencies)
-└── skills/                      # Reference docs: methodology, multi-llm, spec-validation
+├── scripts/                     # 9 TypeScript utilities (zero dependencies)
+└── skills/                      # 13 skill + reference docs
 ```
 
 ### Agent System
@@ -66,8 +89,9 @@ Agents are Markdown files with YAML frontmatter (`name`, `model`, `color`, `tool
 
 - **pm-agent** (sonnet) — Vision, PRD, Personas, User Stories, MoSCoW
 - **ux-designer** (sonnet) — Wireframes, design system, component specs
-- **be-architect** (sonnet) — Backend architecture, API design, deployment
+- **be-architect** (sonnet) — Backend architecture, API design, deployment, quality review
 - **db-expert** (sonnet) — PostgreSQL schema, migrations, performance
+- **security-expert** (sonnet) — AppSec, SAST, SCA, OWASP Top 10, vulnerability analysis
 - **test-engineer** (haiku) — Test strategy, AC validation, QA reports
 - **scrum-master** (haiku) — Sprint planning, velocity tracking, retrospectives
 

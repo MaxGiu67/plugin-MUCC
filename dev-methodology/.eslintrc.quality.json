@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/eslintrc",
+  "_comment": "Config ESLint minimale per analisi quality di dev-methodology. Usata come fallback se il progetto non ha ESLint configurato.",
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "rules": {
+    "complexity": ["warn", 10],
+    "max-lines-per-function": ["warn", { "max": 50, "skipBlankLines": true, "skipComments": true }],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "max-lines": ["warn", { "max": 300, "skipBlankLines": true, "skipComments": true }]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ]
+}

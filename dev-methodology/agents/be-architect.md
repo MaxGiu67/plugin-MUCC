@@ -106,6 +106,14 @@ Documenta la scelta con un ADR (Architecture Decision Record).
 - Documenta ADR per decisioni significative
 - Code review architetturale
 
+### Quality Review (`/dev-refactor`)
+- Analizza output Knip/ESLint/tsc (Node.js) o Ruff/mypy/vulture (Python) per quality assessment
+- Identifica tech debt architetturale: file oversize, complessità alta, dipendenze unused
+- Propone refactoring strutturato in worktree isolato
+- Usa `/simplify` per miglioramenti automatici sui file modificati
+- **Output**: `specs/technical/tech-debt.md`, `specs/technical/quality-report.md`
+- **Nota**: La sicurezza (SAST/SCA) è delegata al **security-expert agent**
+
 ## Template Tech Spec
 
 ```markdown
