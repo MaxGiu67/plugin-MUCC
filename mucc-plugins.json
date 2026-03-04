@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    {
+      "name": "dev-methodology",
+      "skills_dir": "dev-methodology/skills",
+      "prefix": "dev-*"
+    },
+    {
+      "name": "brainstorming",
+      "skills_dir": "brainstorming/skills",
+      "prefix": "bs-*"
+    }
+  ],
+  "shared_skills": ["mucc-update"]
+}

@@ -3,6 +3,26 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.4.3] - 2026-03-04
+
+### Added
+- **`mucc-plugins.json`**: file di configurazione alla root che elenca tutti i plugin con le rispettive directory skill
+- **Skill `/mucc-update`**: rinominata da `/dev-update`, ora config-driven
+  - Legge `mucc-plugins.json` per sapere quali plugin gestire
+  - Supporta qualsiasi numero di plugin senza modificare la skill
+  - Aggiungere un nuovo plugin = aggiungere un blocco al JSON
+
+### Changed
+- Rinominata `/dev-update` → `/mucc-update` (nome neutro, funziona per tutti i plugin)
+- `install.sh`: SKILLS array aggiornato (dev-update → mucc-update), versione v0.4.3
+- `marketplace.json`: versione 0.4.3, path skill aggiornato
+- `plugin.json`: versione 0.4.3
+- `CLAUDE.md`: tutti i riferimenti aggiornati a `/mucc-update`
+- Tutte le SKILL.md con versione: aggiornate a 0.4.3
+
+### Removed
+- Skill `/dev-update` (sostituita da `/mucc-update`)
+
 ## [0.4.2] - 2026-03-02
 
 ### Added

@@ -7,7 +7,7 @@ description: >
   or needs help understanding the development workflow. Also triggers when user mentions
   "PRD", "user stories", "acceptance criteria", "tech spec", "sprint planning",
   "spec-driven development", or "BMAD".
-version: 0.4.2
+version: 0.4.3
 ---
 
 # Metodologia di Sviluppo Strutturato — Guida per 8 Fasi
@@ -56,7 +56,7 @@ Ogni fase dipende dalla precedente. Non saltare fasi.
 - `/dev-status` — Mostra stato corrente del progetto
 - `/dev-sync` — Integra risultati da LLM esterni
 - `/dev-structure` — Mostra struttura file specs/
-- `/dev-update` — Aggiorna il plugin (git pull + nuove skill + check tool)
+- `/mucc-update` — Aggiorna i plugin MUCC (git pull + nuove skill + check tool)
 
 ## Agenti Disponibili
 

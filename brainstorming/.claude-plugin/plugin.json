@@ -1,0 +1,21 @@
+{
+  "name": "brainstorming",
+  "version": "0.4.3",
+  "description": "Plugin di brainstorming strutturato e generazione documenti MVP con team di agenti specializzati, assessment operativo, onboarding repo e integrazione con dev-methodology (UMCC)",
+  "author": {
+    "name": "Claude Code Academy"
+  },
+  "keywords": [
+    "brainstorming",
+    "mvp",
+    "ideation",
+    "problem-framing",
+    "market-research",
+    "scoping",
+    "ux-flows",
+    "architecture",
+    "onboarding",
+    "multi-agent",
+    "cowork"
+  ]
+}

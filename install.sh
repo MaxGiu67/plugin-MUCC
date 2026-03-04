@@ -35,7 +35,7 @@ SKILLS=(
   dev-status
   dev-sync
   dev-structure
-  dev-update
+  mucc-update
 )
 
 # ============================================================================
@@ -79,7 +79,7 @@ error()   { echo -e "${RED}✖${NC}  $1"; }
 print_banner() {
   echo ""
   echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-  echo -e "${BOLD}║   dev-methodology — Installer v0.4.2     ║${NC}"
+  echo -e "${BOLD}║   dev-methodology — Installer v0.4.3     ║${NC}"
   echo -e "${BOLD}║   Spec-Driven Development per Claude Code ║${NC}"
   echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""

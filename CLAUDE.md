@@ -2,11 +2,40 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Repository Overview
 
-**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 8 specialized AI agents coordinated by an App Expert, provides 14 skills, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
+Questo repo contiene **due plugin Claude Code** complementari distribuiti nello stesso marketplace:
+
+| Plugin | Directory | Fase | Skill | Agenti |
+|--------|-----------|------|-------|--------|
+| **dev-methodology** | `dev-methodology/` | Sviluppo (downstream) | 14 | 8 |
+| **brainstorming** | `brainstorming/` | Pre-sviluppo (upstream) | 18 | 19 |
+
+### Pipeline completo
+
+```
+brainstorming (upstream)                   dev-methodology (downstream)
+─────────────────────────                  ────────────────────────────
+/bs-init    → struttura brainstorm/
+/bs-assess  → scorecard + piano
+/bs-brainstorm → 3 concept (trio)
+/bs-problem → JTBD, ipotesi          ───►  /dev-vision  (01-vision.md)
+/bs-research → competitor            ───►  /dev-prd     (02-prd.md)
+/bs-scope   → MoSCoW, anti-scope     ───►  /dev-stories (03-user-stories.md)
+/bs-ux      → wireframe testuali     ───►  /dev-spec    (04-tech-spec.md)
+/bs-architect → architettura, schema  ───►  /dev-sprint  (05-sprint-plan.md)
+/bs-handoff → popola specs/                 /dev-implement → /dev-validate
+```
+
+Il collegamento è **file-based**: `/bs-handoff` mappa i contenuti `brainstorm/*.md` verso `specs/*.md`.
 
 Language: Italian for methodology terms and agent communication. Technical terms (PRD, Sprint, MoSCoW, etc.) remain in English.
+
+---
+
+## Plugin 1: dev-methodology (SDD)
+
+**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 8 specialized AI agents coordinated by an App Expert, provides 14 skills, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
 
 ## Running Scripts
 
@@ -116,7 +145,7 @@ Each phase produces a Markdown file in `specs/` that becomes input for the next.
 | 7 | `/dev-implement` | `specs/07-implementation.md` + `tests/` + `specs/testing/test-map.md` |
 | 8 | `/dev-validate` | `specs/08-validation.md` + `sprint-reviews/` (Auto + E2E Browser) |
 
-Utility commands: `/dev-init`, `/dev-status`, `/dev-sync`, `/dev-structure`, `/dev-update`
+Utility commands: `/dev-init`, `/dev-status`, `/dev-sync`, `/dev-structure`, `/mucc-update`
 
 ### Hooks
 
@@ -168,3 +197,153 @@ During `/dev-validate` (Phase 8):
 ## Multi-LLM Configuration
 
 Copy `CONFIG-EXAMPLE.json` to `llm-config.json`, set API keys as env vars (`GEMINI_API_KEY`, `OPENAI_API_KEY`, `MISTRAL_API_KEY`). The config maps agents to providers with fallback chains.
+
+---
+
+## Plugin 2: brainstorming (Pre-sviluppo)
+
+**brainstorming** è un plugin Claude Code per brainstorming strutturato e generazione documenti MVP. Copre le fasi **pre-sviluppo** (ideazione → analisi → scoping → architettura) e produce artefatti che alimentano il pipeline dev-methodology.
+
+### Stato attuale
+
+Il plugin è stato sviluppato in `/Users/massimilianogiurtelli/Sviluppo/Plugin BrainStorming/brainstorming/` e **deve essere copiato** in questo repo nella directory `brainstorming/`.
+
+**Task pendente**: copiare da sorgente a repo, aggiornare `install.sh` per includere le skill BS, aggiornare CHANGELOG.
+
+### Architettura brainstorming/
+
+```
+brainstorming/
+├── .claude-plugin/plugin.json     # Plugin manifest
+├── CONFIG-EXAMPLE.json            # Config multi-LLM per agenti BS
+├── agents/                        # 19 agenti (4 opus + 10 sonnet + 5 haiku)
+│   ├── bs-orchestrator.md         # opus — coordinatore centrale
+│   ├── divergent-explorer.md      # opus — genera 30-50 idee (trio)
+│   ├── devils-advocate.md         # opus — analisi critica (trio)
+│   ├── synthesizer.md             # opus — sintetizza 3 concept (trio)
+│   ├── problem-framer.md          # sonnet — JTBD, ipotesi, metriche
+│   ├── market-researcher.md       # sonnet — competitor, pattern, rischi
+│   ├── mvp-scoper.md              # sonnet — MoSCoW, anti-scope
+│   ├── ux-flow-agent.md           # sonnet — journey, wireframe
+│   ├── tech-architect.md          # sonnet — stack, schema, API, ADR
+│   ├── codebase-cartographer.md   # sonnet — mappa repo
+│   ├── dependency-auditor.md      # sonnet — dipendenze, rischi
+│   ├── bug-triage-agent.md        # sonnet — repro, root cause
+│   ├── refactoring-coach.md       # sonnet — refactor plan
+│   ├── doc-writer.md              # sonnet — README, runbook
+│   ├── security-agent.md          # haiku — threat model
+│   ├── performance-agent.md       # haiku — profiling, caching
+│   ├── accessibility-agent.md     # haiku — WCAG/ARIA
+│   ├── analytics-agent.md         # haiku — tracking, KPI
+│   └── copy-agent.md              # haiku — microcopy
+├── skills/                        # 18 skill con SKILL.md
+│   ├── bs-methodology/            # Overview + references/
+│   ├── bs-init/                   # Inizializza brainstorm/
+│   ├── bs-assess/                 # Scorecard interattiva
+│   ├── bs-run/                    # Orchestratore automatico
+│   ├── bs-brainstorm/             # Trio creativo (Cowork)
+│   ├── bs-problem/                # JTBD, ipotesi, metriche
+│   ├── bs-research/               # Competitor, pattern
+│   ├── bs-scope/                  # MoSCoW, anti-scope
+│   ├── bs-ux/                     # Journey, wireframe
+│   ├── bs-architect/              # Stack, schema, API
+│   ├── bs-onboarding/             # 5 agenti onboarding repo
+│   ├── bs-security/               # Sicurezza e privacy
+│   ├── bs-performance/            # Performance e costi
+│   ├── bs-accessibility/          # WCAG/ARIA
+│   ├── bs-analytics/              # Tracking, KPI
+│   ├── bs-copy/                   # Microcopy, onboarding
+│   ├── bs-handoff/                # Bridge → specs/ (UMCC)
+│   └── bs-status/                 # Dashboard stato
+├── commands/                      # 17 command (mirror skill)
+├── hooks/hooks.json               # PostToolUse → update _status.md
+└── scripts/                       # 4 script TypeScript
+    ├── init-brainstorm.ts         # Crea directory brainstorm/
+    ├── update-bs-status.ts        # Auto-aggiorna _status.md
+    ├── update-bs-changelog.ts     # Append entry al changelog
+    └── validate-brainstorm.ts     # Verifica coerenza tra file
+```
+
+### Script brainstorming
+
+```bash
+npx tsx brainstorming/scripts/init-brainstorm.ts --name "Progetto" --description "Desc" --idea "Idea" --output-dir ./
+npx tsx brainstorming/scripts/update-bs-status.ts --brainstorm-dir ./brainstorm
+npx tsx brainstorming/scripts/update-bs-changelog.ts --brainstorm-dir ./brainstorm --phase 1 --agent "nome" --decision "desc" --context "motivo"
+npx tsx brainstorming/scripts/validate-brainstorm.ts --brainstorm-dir ./brainstorm
+```
+
+### Agenti brainstorming
+
+Stesse convenzioni di dev-methodology: Markdown con YAML frontmatter (`name`, `description`, `model`, `color`, `tools`).
+
+| Gruppo | Agenti | Modello |
+|--------|--------|---------|
+| Trio brainstorming | bs-orchestrator, divergent-explorer, devils-advocate, synthesizer | opus |
+| Core analisi | problem-framer, market-researcher, mvp-scoper, ux-flow-agent, tech-architect | sonnet |
+| Onboarding repo | codebase-cartographer, dependency-auditor, bug-triage-agent, refactoring-coach, doc-writer | sonnet |
+| Specialisti on-demand | security-agent, performance-agent, accessibility-agent, analytics-agent, copy-agent | haiku |
+
+### Workflow brainstorming
+
+| ID | Nome | Tipo progetto | Flusso |
+|----|------|---------------|--------|
+| A | Idea → MVP | T1/T2 Greenfield | bs-init → bs-assess → bs-brainstorm → bs-problem ∥ bs-research → bs-scope → bs-ux ∥ bs-architect → bs-handoff |
+| B | Repo ereditato | T3/T4 | bs-init → bs-assess → bs-onboarding → bs-problem → bs-scope → bs-handoff |
+| C | Bug produzione | T5 | bs-init → bs-assess → bs-onboarding (parziale) → fix |
+| D | Performance | T5 | bs-init → bs-assess → bs-performance → bs-architect → bs-handoff |
+
+### Output brainstorming (generato nel progetto utente)
+
+```
+brainstorm/
+├── _status.md                 # Tracking fasi (auto-aggiornato)
+├── _changelog.md              # Audit log decisioni
+├── 00-assessment.md           # Scorecard + piano attivazione
+├── 01-brainstorm.md           # Divergenza → Sfida → 3 concept
+├── 02-problem-framing.md      # JTBD, ipotesi H1/H2/H3, metriche
+├── 03-market-research.md      # Competitor, pattern, rischi
+├── 04-mvp-scope.md            # MoSCoW, anti-scope, milestone
+├── 05-ux-flows.md             # Journey, schermate, stati
+├── 06-architecture.md         # Stack, schema, API, ADR
+├── onboarding/                # Solo T3/T4/T5
+├── specialists/               # Output specialisti on-demand
+└── ux/                        # Wireframe e component spec
+```
+
+### Handoff BS → UMCC
+
+`/bs-handoff` mappa contenuti brainstorming verso specs/:
+
+| Sorgente BS | → | Target UMCC |
+|-------------|---|-------------|
+| `02-problem-framing.md` (JTBD, ipotesi, metriche) | → | `specs/01-vision.md` |
+| `03-market-research.md` + `04-mvp-scope.md` | → | `specs/02-prd.md` |
+| `05-ux-flows.md` | → | `specs/ux/wireframes.md` |
+| `06-architecture.md` | → | `specs/04-tech-spec.md` |
+
+### Documento di design
+
+Il file `studio_agenti_mvp.md` (in `/Users/massimilianogiurtelli/Sviluppo/Plugin BrainStorming/`) è la specifica di riferimento originale. Contiene: catalogo 8 agenti core + 5 onboarding + specialisti, architettura orchestratore, assessment operativo (scorecard), 4 workflow, template YAML agente, guardrail qualità.
+
+---
+
+## Convenzioni condivise (entrambi i plugin)
+
+- **Lingua**: italiano per contenuti, termini tecnici in inglese
+- **Agent files**: Markdown + YAML frontmatter (`name`, `description`, `model`, `color`, `tools`)
+- **Skill files**: `SKILL.md` con frontmatter (`name`, `description`)
+- **Command files**: `.md` con frontmatter (`description`, `allowed-tools`)
+- **Scripts**: TypeScript, zero dependencies, CLI args `--flag value`, eseguibili con `npx tsx`
+- **Hooks**: `hooks.json` con `PostToolUse` su Write/Edit per auto-update status
+- **Status files**: `_status.md` (auto-aggiornato), `_changelog.md` (audit log)
+- **Phase files**: `0N-nome.md` (numerazione sequenziale)
+
+## Task pendenti per integrazione brainstorming
+
+1. **Copiare** `brainstorming/` da sorgente a questo repo
+2. **Aggiornare `install.sh`** per includere skill `bs-*` (18 skill aggiuntive)
+3. **Aggiornare `CHANGELOG.md`** con entry per v0.5.0 (brainstorming plugin)
+4. **Testare** workflow A completo su progetto di prova
+5. **Verificare** che `/bs-handoff` produca `specs/` compatibili con dev-methodology
+6. **Opzionale**: aggiornare README.md con documentazione brainstorming
