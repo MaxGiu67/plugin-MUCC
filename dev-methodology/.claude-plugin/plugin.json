@@ -1,6 +1,6 @@
 {
   "name": "dev-methodology",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Plugin di sviluppo strutturato a 8 fasi con team di agenti specializzati, tracking persistente in specs/*.md e supporto multi-LLM (Claude, Gemini, GPT, Mistral)",
   "author": {
     "name": "Claude Code Academy"

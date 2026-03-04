@@ -14,14 +14,13 @@ BLUE='\033[0;34m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
-PLUGIN_NAME="dev-methodology"
+PLUGIN_NAME="MUCC"
 SKILLS_DIR="$HOME/.claude/skills"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SOURCE_DIR="$SCRIPT_DIR/dev-methodology"
-SKILLS_SOURCE="$SOURCE_DIR/skills"
 
-# Lista delle skill da installare
-SKILLS=(
+# ── Plugin: dev-methodology ──
+DEV_SOURCE="$SCRIPT_DIR/dev-methodology/skills"
+DEV_SKILLS=(
   dev-init
   dev-vision
   dev-prd
@@ -37,6 +36,32 @@ SKILLS=(
   dev-structure
   mucc-update
 )
+
+# ── Plugin: brainstorming ──
+BS_SOURCE="$SCRIPT_DIR/brainstorming/skills"
+BS_SKILLS=(
+  bs-methodology
+  bs-init
+  bs-assess
+  bs-run
+  bs-brainstorm
+  bs-problem
+  bs-research
+  bs-scope
+  bs-ux
+  bs-architect
+  bs-onboarding
+  bs-security
+  bs-performance
+  bs-accessibility
+  bs-analytics
+  bs-copy
+  bs-handoff
+  bs-status
+)
+
+# Tutti i prefissi skill per cleanup obsolete
+ALL_PREFIXES=("dev-" "bs-" "mucc-")
 
 # ============================================================================
 # Tool esterni per /dev-refactor e /dev-security
@@ -79,8 +104,8 @@ error()   { echo -e "${RED}✖${NC}  $1"; }
 print_banner() {
   echo ""
   echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-  echo -e "${BOLD}║   dev-methodology — Installer v0.4.3     ║${NC}"
-  echo -e "${BOLD}║   Spec-Driven Development per Claude Code ║${NC}"
+  echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.4.3   ║${NC}"
+  echo -e "${BOLD}║   dev-methodology + brainstorming         ║${NC}"
   echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""
 }
@@ -122,11 +147,20 @@ check_prerequisites() {
     has_errors=1
   fi
 
-  # Sorgente plugin esiste
-  if [ -d "$SOURCE_DIR" ]; then
-    success "Sorgente plugin trovata: $SOURCE_DIR"
+  # Sorgente plugin dev-methodology
+  if [ -d "$DEV_SOURCE" ]; then
+    success "Sorgente dev-methodology trovata"
   else
-    error "Directory sorgente non trovata: $SOURCE_DIR"
+    error "Directory non trovata: $DEV_SOURCE"
+    error "Esegui lo script dalla root del repository"
+    has_errors=1
+  fi
+
+  # Sorgente plugin brainstorming
+  if [ -d "$BS_SOURCE" ]; then
+    success "Sorgente brainstorming trovata"
+  else
+    error "Directory non trovata: $BS_SOURCE"
     error "Esegui lo script dalla root del repository"
     has_errors=1
   fi
@@ -368,7 +402,7 @@ install_plugin() {
 
   # Verifica se ci sono skill già installate
   local existing=0
-  for skill in "${SKILLS[@]}"; do
+  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
     if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
       existing=$((existing + 1))
     fi
@@ -384,44 +418,66 @@ install_plugin() {
     fi
   fi
 
-  # Installa le skill
+  # Installa le skill dev-methodology
   echo ""
   local installed=0
-  for skill in "${SKILLS[@]}"; do
-    # Rimuovi eventuale installazione esistente
+  info "Plugin: dev-methodology (${#DEV_SKILLS[@]} skill)"
+  for skill in "${DEV_SKILLS[@]}"; do
     if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
       rm -rf "$SKILLS_DIR/$skill"
     fi
-
     if [ "$mode" = "copy" ]; then
-      cp -r "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+      cp -r "$DEV_SOURCE/$skill" "$SKILLS_DIR/$skill"
     else
-      ln -s "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+      ln -s "$DEV_SOURCE/$skill" "$SKILLS_DIR/$skill"
     fi
     installed=$((installed + 1))
   done
+  success "${#DEV_SKILLS[@]} skill dev-methodology installate"
+
+  # Installa le skill brainstorming
+  echo ""
+  info "Plugin: brainstorming (${#BS_SKILLS[@]} skill)"
+  for skill in "${BS_SKILLS[@]}"; do
+    if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
+      rm -rf "$SKILLS_DIR/$skill"
+    fi
+    if [ "$mode" = "copy" ]; then
+      cp -r "$BS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+    else
+      ln -s "$BS_SOURCE/$skill" "$SKILLS_DIR/$skill"
+    fi
+    installed=$((installed + 1))
+  done
+  success "${#BS_SKILLS[@]} skill brainstorming installate"
+
+  local total_skills=$((${#DEV_SKILLS[@]} + ${#BS_SKILLS[@]}))
 
   if [ "$mode" = "copy" ]; then
-    success "$installed skill copiate in $SKILLS_DIR/"
+    success "$total_skills skill totali copiate in $SKILLS_DIR/"
   else
-    success "$installed skill linkate in $SKILLS_DIR/"
+    success "$total_skills skill totali linkate in $SKILLS_DIR/"
   fi
 
   # ── Post-installazione ──
   echo ""
   echo -e "${GREEN}${BOLD}Installazione completata!${NC}"
   echo ""
-  echo -e "${BOLD}Skill installate (${#SKILLS[@]}):${NC}"
-  for skill in "${SKILLS[@]}"; do
+  echo -e "${BOLD}dev-methodology (${#DEV_SKILLS[@]} skill):${NC}"
+  for skill in "${DEV_SKILLS[@]}"; do
+    echo "  /$skill"
+  done
+  echo ""
+  echo -e "${BOLD}brainstorming (${#BS_SKILLS[@]} skill):${NC}"
+  for skill in "${BS_SKILLS[@]}"; do
     echo "  /$skill"
   done
   echo ""
   echo -e "${BOLD}Prossimi passi:${NC}"
   echo "  1. Riavvia Claude Code (chiudi e riapri la sessione)"
-  echo "  2. Usa /dev-init per inizializzare un nuovo progetto"
-  echo "  3. Segui il workflow: /dev-vision → /dev-prd → /dev-stories → ..."
-  echo "  4. Usa /dev-refactor per analisi qualità e tech debt"
-  echo "  5. Usa /dev-security per analisi sicurezza SAST + SCA"
+  echo "  2. Brainstorming: /bs-init → /bs-assess → /bs-brainstorm → ..."
+  echo "  3. Sviluppo: /dev-init → /dev-vision → /dev-prd → /dev-stories → ..."
+  echo "  4. Qualità: /dev-refactor  |  Sicurezza: /dev-security"
   echo ""
 
   if [ "$mode" = "symlink" ]; then
@@ -475,61 +531,71 @@ update_plugin() {
   local updated=0
   local unchanged=0
 
-  for skill in "${SKILLS[@]}"; do
-    if [ -L "$SKILLS_DIR/$skill" ]; then
-      # Symlink esistente — verifica se punta alla sorgente corretta
-      local current_target
-      current_target=$(readlink "$SKILLS_DIR/$skill" 2>/dev/null || echo "")
-      local expected_target="$SKILLS_SOURCE/$skill"
+  # Funzione helper per aggiornare skill da una sorgente
+  _update_skills() {
+    local source_dir="$1"
+    shift
+    local skills=("$@")
 
-      if [ "$current_target" = "$expected_target" ]; then
-        unchanged=$((unchanged + 1))
-      else
-        # Symlink punta altrove — aggiorna
-        rm -f "$SKILLS_DIR/$skill"
-        ln -s "$expected_target" "$SKILLS_DIR/$skill"
+    for skill in "${skills[@]}"; do
+      if [ -L "$SKILLS_DIR/$skill" ]; then
+        local current_target
+        current_target=$(readlink "$SKILLS_DIR/$skill" 2>/dev/null || echo "")
+        local expected_target="$source_dir/$skill"
+
+        if [ "$current_target" = "$expected_target" ]; then
+          unchanged=$((unchanged + 1))
+        else
+          rm -f "$SKILLS_DIR/$skill"
+          ln -s "$expected_target" "$SKILLS_DIR/$skill"
+          updated=$((updated + 1))
+          success "$skill — symlink aggiornato"
+        fi
+      elif [ -d "$SKILLS_DIR/$skill" ]; then
+        rm -rf "$SKILLS_DIR/$skill"
+        cp -r "$source_dir/$skill" "$SKILLS_DIR/$skill"
         updated=$((updated + 1))
-        success "$skill — symlink aggiornato"
-      fi
-    elif [ -d "$SKILLS_DIR/$skill" ]; then
-      # Directory (modalità copy) — aggiorna con copia
-      rm -rf "$SKILLS_DIR/$skill"
-      cp -r "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
-      updated=$((updated + 1))
-      success "$skill — aggiornato (copy)"
-    else
-      # Non esiste — nuova skill da aggiungere
-      ln -s "$SKILLS_SOURCE/$skill" "$SKILLS_DIR/$skill"
-      added=$((added + 1))
-      success "$skill — NUOVA skill aggiunta"
-    fi
-  done
-
-  # ── Rimuovi skill obsolete non più nell'array SKILLS ──
-  local removed=0
-  for existing in "$SKILLS_DIR"/dev-*; do
-    [ -e "$existing" ] || [ -L "$existing" ] || continue
-    local skill_name
-    skill_name=$(basename "$existing")
-    local found=false
-    for skill in "${SKILLS[@]}"; do
-      if [ "$skill" = "$skill_name" ]; then
-        found=true
-        break
+        success "$skill — aggiornato (copy)"
+      else
+        ln -s "$source_dir/$skill" "$SKILLS_DIR/$skill"
+        added=$((added + 1))
+        success "$skill — NUOVA skill aggiunta"
       fi
     done
-    if [ "$found" = "false" ]; then
-      # Verifica che sia un nostro symlink (punta a SKILLS_SOURCE)
-      if [ -L "$existing" ]; then
-        local target
-        target=$(readlink "$existing" 2>/dev/null || echo "")
-        if [[ "$target" == *"$PLUGIN_NAME"* ]]; then
-          rm -f "$existing"
-          removed=$((removed + 1))
-          warn "$skill_name — skill rimossa (non più nel plugin)"
+  }
+
+  info "Plugin: dev-methodology"
+  _update_skills "$DEV_SOURCE" "${DEV_SKILLS[@]}"
+  echo ""
+  info "Plugin: brainstorming"
+  _update_skills "$BS_SOURCE" "${BS_SKILLS[@]}"
+
+  # ── Rimuovi skill obsolete non più negli array ──
+  local removed=0
+  for prefix in "${ALL_PREFIXES[@]}"; do
+    for existing in "$SKILLS_DIR"/${prefix}*; do
+      [ -e "$existing" ] || [ -L "$existing" ] || continue
+      local skill_name
+      skill_name=$(basename "$existing")
+      local found=false
+      for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
+        if [ "$skill" = "$skill_name" ]; then
+          found=true
+          break
+        fi
+      done
+      if [ "$found" = "false" ]; then
+        if [ -L "$existing" ]; then
+          local target
+          target=$(readlink "$existing" 2>/dev/null || echo "")
+          if [[ "$target" == *"plugin"* ]] || [[ "$target" == *"MUCC"* ]]; then
+            rm -f "$existing"
+            removed=$((removed + 1))
+            warn "$skill_name — skill rimossa (non più nel plugin)"
+          fi
         fi
       fi
-    fi
+    done
   done
 
   # ── Riepilogo ──
@@ -539,13 +605,13 @@ update_plugin() {
   [ "$unchanged" -gt 0 ] && info "$unchanged skill già aggiornate (symlink OK)"
   [ "$removed" -gt 0 ] && warn "$removed skill obsolete rimosse"
 
+  local total_skills=$((${#DEV_SKILLS[@]} + ${#BS_SKILLS[@]}))
   echo ""
   echo -e "${GREEN}${BOLD}Aggiornamento completato!${NC}"
   echo ""
-  echo -e "${BOLD}Skill attive (${#SKILLS[@]}):${NC}"
-  for skill in "${SKILLS[@]}"; do
-    echo "  /$skill"
-  done
+  echo -e "${BOLD}Skill attive ($total_skills):${NC}"
+  echo "  dev-methodology: ${#DEV_SKILLS[@]} skill"
+  echo "  brainstorming:   ${#BS_SKILLS[@]} skill"
   echo ""
   info "Riavvia Claude Code per applicare le modifiche."
   echo ""
@@ -561,14 +627,14 @@ uninstall_plugin() {
   echo ""
 
   local found=0
-  for skill in "${SKILLS[@]}"; do
+  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
     if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
       found=$((found + 1))
     fi
   done
 
   if [ "$found" -eq 0 ]; then
-    warn "Nessuna skill dev-methodology trovata — nulla da rimuovere."
+    warn "Nessuna skill MUCC trovata — nulla da rimuovere."
     echo ""
     return
   fi
@@ -582,7 +648,7 @@ uninstall_plugin() {
   fi
 
   local removed=0
-  for skill in "${SKILLS[@]}"; do
+  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
     if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
       rm -rf "$SKILLS_DIR/$skill"
       removed=$((removed + 1))

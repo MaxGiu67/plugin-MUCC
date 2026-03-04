@@ -3,6 +3,15 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.4.4] - 2026-03-04
+
+### Changed
+- **`install.sh`**: supporto completo per entrambi i plugin (32 skill totali)
+  - Array separati `DEV_SKILLS` (14) e `BS_SKILLS` (18)
+  - Install, update, uninstall gestiscono entrambi i plugin
+  - Cleanup obsolete skill con prefissi `dev-`, `bs-`, `mucc-`
+  - Banner aggiornato a "MUCC Plugin Suite"
+
 ## [0.4.3] - 2026-03-04
 
 ### Added
@@ -13,6 +22,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento
   - Aggiungere un nuovo plugin = aggiungere un blocco al JSON
 - **Pubblicazione Cowork**: marketplace.json con auto-discovery skill (no `strict: false`)
 - **Plugin brainstorming** aggiunto al marketplace (versioning indipendente v0.1.1)
+- **Workflow guidance**: sezione "Prossimo passo" aggiunta a 16 skill BS per pilotare il flusso
 
 ### Changed
 - Rinominata `/dev-update` → `/mucc-update` (nome neutro, funziona per tutti i plugin)
