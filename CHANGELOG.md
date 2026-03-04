@@ -11,11 +11,13 @@ Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento
   - Legge `mucc-plugins.json` per sapere quali plugin gestire
   - Supporta qualsiasi numero di plugin senza modificare la skill
   - Aggiungere un nuovo plugin = aggiungere un blocco al JSON
+- **Pubblicazione Cowork**: marketplace.json con auto-discovery skill (no `strict: false`)
+- **Plugin brainstorming** aggiunto al marketplace (versioning indipendente v0.1.1)
 
 ### Changed
 - Rinominata `/dev-update` → `/mucc-update` (nome neutro, funziona per tutti i plugin)
 - `install.sh`: SKILLS array aggiornato (dev-update → mucc-update), versione v0.4.3
-- `marketplace.json`: versione 0.4.3, path skill aggiornato
+- `marketplace.json`: due plugin con auto-discovery, rimosso `strict: false`
 - `plugin.json`: versione 0.4.3
 - `CLAUDE.md`: tutti i riferimenti aggiornati a `/mucc-update`
 - Tutte le SKILL.md con versione: aggiornate a 0.4.3

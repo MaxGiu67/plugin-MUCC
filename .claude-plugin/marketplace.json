@@ -11,50 +11,12 @@
     {
       "name": "dev-methodology",
       "description": "Spec-Driven Development: 8-phase workflow con team di 8 agenti AI specializzati, tracking in specs/*.md, supporto multi-LLM (Claude, Gemini, GPT, Mistral)",
-      "source": "./dev-methodology",
-      "strict": false,
-      "skills": [
-        "./skills/dev-init",
-        "./skills/dev-vision",
-        "./skills/dev-prd",
-        "./skills/dev-stories",
-        "./skills/dev-spec",
-        "./skills/dev-sprint",
-        "./skills/dev-implement",
-        "./skills/dev-validate",
-        "./skills/dev-status",
-        "./skills/dev-sync",
-        "./skills/dev-structure",
-        "./skills/dev-refactor",
-        "./skills/dev-security",
-        "./skills/mucc-update"
-      ]
+      "source": "./dev-methodology"
     },
     {
       "name": "brainstorming",
       "description": "Brainstorming strutturato e generazione documenti MVP con 19 agenti specializzati, assessment operativo, trio creativo, onboarding repo e handoff verso dev-methodology",
-      "source": "./brainstorming",
-      "strict": false,
-      "skills": [
-        "./skills/bs-methodology",
-        "./skills/bs-init",
-        "./skills/bs-assess",
-        "./skills/bs-run",
-        "./skills/bs-brainstorm",
-        "./skills/bs-problem",
-        "./skills/bs-research",
-        "./skills/bs-scope",
-        "./skills/bs-ux",
-        "./skills/bs-architect",
-        "./skills/bs-onboarding",
-        "./skills/bs-security",
-        "./skills/bs-performance",
-        "./skills/bs-accessibility",
-        "./skills/bs-analytics",
-        "./skills/bs-copy",
-        "./skills/bs-handoff",
-        "./skills/bs-status"
-      ]
+      "source": "./brainstorming"
     }
   ]
 }

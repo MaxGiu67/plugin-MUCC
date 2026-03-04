@@ -1,0 +1,32 @@
+{
+  "project_name": "Il Tuo Progetto",
+  "default_models": {
+    "orchestrator": "opus",
+    "core_agents": "sonnet",
+    "specialists": "haiku"
+  },
+  "agent_overrides": {
+    "divergent-explorer": { "model": "opus" },
+    "devils-advocate": { "model": "opus" },
+    "synthesizer": { "model": "opus" },
+    "problem-framer": { "model": "sonnet" },
+    "market-researcher": { "model": "sonnet" },
+    "mvp-scoper": { "model": "sonnet" },
+    "ux-flow-agent": { "model": "sonnet" },
+    "tech-architect": { "model": "sonnet" },
+    "codebase-cartographer": { "model": "sonnet" },
+    "dependency-auditor": { "model": "sonnet" },
+    "bug-triage-agent": { "model": "sonnet" },
+    "refactoring-coach": { "model": "sonnet" },
+    "doc-writer": { "model": "sonnet" },
+    "security-agent": { "model": "haiku" },
+    "performance-agent": { "model": "haiku" },
+    "accessibility-agent": { "model": "haiku" },
+    "analytics-agent": { "model": "haiku" },
+    "copy-agent": { "model": "haiku" }
+  },
+  "brainstorm_output_dir": "./brainstorm",
+  "umcc_specs_dir": "./specs",
+  "handoff_auto_create_specs": true,
+  "hooks_enabled": true
+}

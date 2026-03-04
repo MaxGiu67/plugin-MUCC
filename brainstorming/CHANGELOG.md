@@ -3,11 +3,14 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
-## [0.4.3] - 2026-03-04
+## [0.1.1] - 2026-03-04
+
+### Added
+- Pubblicazione su Cowork marketplace (MaxGiu67/plugin-MUCC)
 
 ### Changed
-- Allineata versione a 0.4.3 con dev-methodology
-- Aggiornamento gestito da `/mucc-update` (config-driven via `mucc-plugins.json`)
+- Versioning indipendente da dev-methodology (ogni plugin ha la propria versione)
+- `marketplace.json`: rimosso `strict: false`, auto-discovery skill via `plugin.json`
 
 ## [0.1.0] - 2026-03-03
 
