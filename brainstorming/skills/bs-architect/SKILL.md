@@ -67,5 +67,5 @@ File: `brainstorm/06-architecture.md` (800-1500 parole)
 - Evita overengineering: stack MVP-friendly
 - Coerenza con i flussi UX definiti
 
-## Prossimo Step
-`/bs-handoff` per passare a dev-methodology (UMCC)
+## Prossimo passo
+→ `/bs-handoff` per passare a dev-methodology e popolare specs/

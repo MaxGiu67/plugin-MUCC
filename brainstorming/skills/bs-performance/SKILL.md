@@ -27,3 +27,7 @@ Realtime, scraping, AI calls, liste grandi, costi cloud (scorecard D9 >= 1)
 
 ## Output
 File: `brainstorm/specialists/performance.md`
+
+## Prossimo passo
+→ `/bs-architect` per definire architettura ottimizzata
+→ oppure torna al workflow principale con `/bs-status`

@@ -27,3 +27,6 @@ Validazione ipotesi con numeri, funnel, A/B test (scorecard D10 >= 1)
 
 ## Output
 File: `brainstorm/specialists/analytics.md`
+
+## Prossimo passo
+→ Torna al workflow principale. Usa `/bs-status` per vedere lo stato.

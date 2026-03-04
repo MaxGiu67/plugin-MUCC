@@ -72,3 +72,7 @@ L'orchestratore **chiede input** nei momenti chiave:
 
 ## Output
 Tutti i file `brainstorm/0X.md` previsti dal workflow scelto.
+
+## Prossimo passo
+→ `/bs-handoff` per passare a dev-methodology e popolare specs/
+→ oppure `/bs-status` per verificare lo stato delle fasi completate

@@ -62,5 +62,6 @@ Traduce requisiti in flussi utente, schermate e wireframe testuali.
 - Ogni flusso deve avere entry point e uscita chiara
 - Empty states devono avere CTA
 
-## Prossimo Step
-`/bs-architect` per architettura tecnica, `/bs-handoff` se architettura non necessaria
+## Prossimo passo
+→ `/bs-architect` per architettura tecnica (stack, schema, API)
+→ oppure `/bs-handoff` se architettura già definita o non necessaria

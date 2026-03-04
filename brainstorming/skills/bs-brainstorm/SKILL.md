@@ -47,5 +47,5 @@ File: `brainstorm/01-brainstorm.md` (1000-1500 parole) con 3 sezioni:
 - Sfida (analisi critica)
 - Sintesi (3 concept con proposta MVP)
 
-## Prossimo Step
-`/bs-problem` per il problem framing del concept scelto
+## Prossimo passo
+→ `/bs-problem` per il problem framing del concept scelto (JTBD, ipotesi, metriche)

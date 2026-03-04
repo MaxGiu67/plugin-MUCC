@@ -63,5 +63,6 @@ File in `brainstorm/onboarding/`:
 - `bug-triage.md` (opzionale)
 - `refactor-plan.md` (opzionale)
 
-## Prossimo Step
-`/bs-problem` per problem framing, `/bs-scope` per scoping
+## Prossimo passo
+→ `/bs-problem` per definire il problema e JTBD
+→ oppure `/bs-scope` per definire lo scope MVP del refactoring/estensione

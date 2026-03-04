@@ -3,7 +3,7 @@ name: bs-init
 description: "Inizializza struttura brainstorm/ nel progetto. Usa questa skill quando l'utente vuole iniziare un brainstorming, creare la struttura BS, o dice bs init, inizia brainstorming, nuovo brainstorming, setup brainstorming."
 ---
 
-# bs-init — Inizializza Brainstorming
+# init — Inizializza Brainstorming
 
 Crea la struttura completa `brainstorm/` per un nuovo progetto.
 
@@ -44,3 +44,6 @@ Crea la struttura completa `brainstorm/` per un nuovo progetto.
 Brainstorming inizializzato: "<nome progetto>"
 → Prossimo step: /bs-assess per l'assessment operativo
 ```
+
+## Prossimo passo
+→ `/bs-assess` per l'assessment operativo (scorecard + attivazione agenti)

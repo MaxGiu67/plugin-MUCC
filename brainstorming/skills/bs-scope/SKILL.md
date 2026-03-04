@@ -56,5 +56,7 @@ File: `brainstorm/04-mvp-scope.md` (600-1000 parole)
 - Anti-scope non è opzionale: deve esserci sempre
 - Se ci sono più di 5 Must Have, suggerire di ridurre
 
-## Prossimo Step
-`/bs-ux` per UX flows e wireframe, `/bs-architect` per architettura
+## Prossimo passo
+→ `/bs-ux` per UX flows e wireframe testuali
+→ `/bs-architect` per architettura tecnica (può essere parallelo a UX)
+→ oppure `/bs-handoff` se UX e architettura non necessarie

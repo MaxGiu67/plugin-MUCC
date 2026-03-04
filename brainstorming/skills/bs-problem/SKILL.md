@@ -59,5 +59,6 @@ File: `brainstorm/02-problem-framing.md` (800-1200 parole)
 - Se non emerge un problema misurabile, chiedi di ridefinire scope o persona
 - Non procedere se JTBD è troppo generico
 
-## Prossimo Step
-`/bs-research` per ricerca mercato, oppure `/bs-scope` se la ricerca non è necessaria
+## Prossimo passo
+→ `/bs-research` per ricerca mercato e competitor
+→ oppure `/bs-scope` se la ricerca di mercato non è necessaria

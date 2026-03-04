@@ -58,5 +58,5 @@ File: `brainstorm/03-market-research.md` (800-1200 parole)
 - Separa fatti osservati da inferenze
 - Almeno 5 competitor o dichiarare che non ce ne sono
 
-## Prossimo Step
-`/bs-scope` per definire il MVP scope
+## Prossimo passo
+→ `/bs-scope` per definire MVP scope (MoSCoW, anti-scope, milestone)

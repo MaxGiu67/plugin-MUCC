@@ -26,3 +26,6 @@ Conversione/activation è rischio principale (scorecard D4 >= 1)
 
 ## Output
 File: `brainstorm/specialists/copy-onboarding.md`
+
+## Prossimo passo
+→ Torna al workflow principale. Usa `/bs-status` per vedere lo stato.

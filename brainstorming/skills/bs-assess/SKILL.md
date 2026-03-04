@@ -3,12 +3,12 @@ name: bs-assess
 description: "Assessment interattivo con scorecard per scegliere agenti e workflow. Usa questa skill quando l'utente vuole fare l'assessment, scegliere gli agenti, o dice bs assess, assessment, scorecard, quali agenti usare, valutazione progetto."
 ---
 
-# bs-assess — Assessment Operativo
+# assess — Assessment Operativo
 
 Guida l'utente attraverso la scorecard operativa per determinare quali agenti/skill attivare.
 
 ## Prerequisiti
-- `brainstorm/` deve esistere (esegui `/bs-init` prima)
+- `brainstorm/` deve esistere (esegui `/init` prima)
 
 ## Workflow
 
@@ -64,8 +64,13 @@ Guida l'utente attraverso la scorecard operativa per determinare quali agenti/sk
 6. **Aggiorna** `brainstorm/_changelog.md` con la decisione.
 
 7. **Suggerisci prossimo step**:
-   - `/bs-run` per esecuzione automatica del workflow
+   - `/run` per esecuzione automatica del workflow
    - Oppure la prima skill manuale del workflow scelto
 
 ## Output
 File: `brainstorm/00-assessment.md` (500-800 parole)
+
+## Prossimo passo
+→ `/bs-run` per esecuzione automatica del workflow consigliato
+→ oppure `/bs-brainstorm` per la sessione creativa manuale (Workflow A)
+→ oppure `/bs-onboarding` per mappare un repo esistente (Workflow B)

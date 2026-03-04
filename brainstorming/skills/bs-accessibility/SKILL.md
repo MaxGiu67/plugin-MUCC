@@ -27,3 +27,6 @@ B2C, PA, requisiti di accessibilità (scorecard D4 >= 2 o requisiti specifici)
 
 ## Output
 File: `brainstorm/specialists/accessibility.md`
+
+## Prossimo passo
+→ Torna al workflow principale. Usa `/bs-status` per vedere lo stato.

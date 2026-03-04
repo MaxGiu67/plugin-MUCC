@@ -26,3 +26,6 @@ Dati sensibili, pagamenti, PII, ruoli, GDPR (scorecard D7 >= 1)
 
 ## Output
 File: `brainstorm/specialists/security.md`
+
+## Prossimo passo
+→ Torna al workflow principale. Usa `/bs-status` per vedere lo stato.

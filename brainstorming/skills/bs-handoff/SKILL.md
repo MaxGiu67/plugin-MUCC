@@ -73,3 +73,7 @@ File in `specs/`:
 - NON sovrascrivere file `specs/` già esistenti con contenuto significativo
 - Chiedere conferma all'utente prima di sovrascrivere
 - Preservare sezioni già compilate in specs/
+
+## Prossimo passo
+→ `/dev-stories` (dev-methodology) per generare User Stories dagli specs/
+→ Il brainstorming è completato. Da qui inizia il workflow di sviluppo SDD.
