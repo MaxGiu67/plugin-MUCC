@@ -3,6 +3,12 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-03-04
+
+### Changed
+- `install.sh`: supporto completo per entrambi i plugin (32 skill totali: 14 dev + 18 bs)
+- Sezione "Prossimo passo" aggiunta a 16 skill per guidare il workflow
+
 ## [0.1.1] - 2026-03-04
 
 ### Added

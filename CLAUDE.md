@@ -338,12 +338,14 @@ Il file `studio_agenti_mvp.md` (in `/Users/massimilianogiurtelli/Sviluppo/Plugin
 - **Hooks**: `hooks.json` con `PostToolUse` su Write/Edit per auto-update status
 - **Status files**: `_status.md` (auto-aggiornato), `_changelog.md` (audit log)
 - **Phase files**: `0N-nome.md` (numerazione sequenziale)
+- **Changelog**: ci sono **2 CHANGELOG separati**, uno per plugin. Aggiornarli **entrambi** ad ogni release:
+  - `CHANGELOG.md` (root) → dev-methodology (versione indipendente, es. 0.4.x)
+  - `brainstorming/CHANGELOG.md` → brainstorming (versione indipendente, es. 0.1.x)
+  - Ogni plugin ha anche il proprio `plugin.json` con la versione da aggiornare
+- **Versioning**: i due plugin hanno versioni **indipendenti**. Non devono essere allineati.
 
-## Task pendenti per integrazione brainstorming
+## Task pendenti
 
-1. **Copiare** `brainstorming/` da sorgente a questo repo
-2. **Aggiornare `install.sh`** per includere skill `bs-*` (18 skill aggiuntive)
-3. **Aggiornare `CHANGELOG.md`** con entry per v0.5.0 (brainstorming plugin)
-4. **Testare** workflow A completo su progetto di prova
-5. **Verificare** che `/bs-handoff` produca `specs/` compatibili con dev-methodology
-6. **Opzionale**: aggiornare README.md con documentazione brainstorming
+1. **Testare** workflow A completo su progetto di prova
+2. **Verificare** che `/bs-handoff` produca `specs/` compatibili con dev-methodology
+3. **Opzionale**: aggiornare README.md con documentazione brainstorming
