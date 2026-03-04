@@ -11,50 +11,12 @@
     {
       "name": "dev-methodology",
       "description": "Spec-Driven Development: 8-phase workflow con team di 8 agenti AI specializzati, tracking in specs/*.md, supporto multi-LLM (Claude, Gemini, GPT, Mistral)",
-      "source": "./dev-methodology",
-      "strict": false,
-      "skills": [
-        "./dev-methodology/skills/dev-init",
-        "./dev-methodology/skills/dev-vision",
-        "./dev-methodology/skills/dev-prd",
-        "./dev-methodology/skills/dev-stories",
-        "./dev-methodology/skills/dev-spec",
-        "./dev-methodology/skills/dev-sprint",
-        "./dev-methodology/skills/dev-implement",
-        "./dev-methodology/skills/dev-validate",
-        "./dev-methodology/skills/dev-status",
-        "./dev-methodology/skills/dev-sync",
-        "./dev-methodology/skills/dev-structure",
-        "./dev-methodology/skills/dev-refactor",
-        "./dev-methodology/skills/dev-security",
-        "./dev-methodology/skills/mucc-update"
-      ]
+      "source": "./dev-methodology"
     },
     {
       "name": "brainstorming",
       "description": "Brainstorming strutturato e generazione documenti MVP con 19 agenti specializzati, assessment operativo, trio creativo, onboarding repo e handoff verso dev-methodology",
-      "source": "./brainstorming",
-      "strict": false,
-      "skills": [
-        "./brainstorming/skills/bs-methodology",
-        "./brainstorming/skills/bs-init",
-        "./brainstorming/skills/bs-assess",
-        "./brainstorming/skills/bs-run",
-        "./brainstorming/skills/bs-brainstorm",
-        "./brainstorming/skills/bs-problem",
-        "./brainstorming/skills/bs-research",
-        "./brainstorming/skills/bs-scope",
-        "./brainstorming/skills/bs-ux",
-        "./brainstorming/skills/bs-architect",
-        "./brainstorming/skills/bs-onboarding",
-        "./brainstorming/skills/bs-security",
-        "./brainstorming/skills/bs-performance",
-        "./brainstorming/skills/bs-accessibility",
-        "./brainstorming/skills/bs-analytics",
-        "./brainstorming/skills/bs-copy",
-        "./brainstorming/skills/bs-handoff",
-        "./brainstorming/skills/bs-status"
-      ]
+      "source": "./brainstorming"
     }
   ]
 }
