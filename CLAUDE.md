@@ -112,7 +112,6 @@ dev-methodology/
 ├── .eslintrc.quality.json       # ESLint config fallback per analisi quality
 ├── CONFIG-EXAMPLE.json          # Multi-LLM provider config template
 ├── agents/                      # 8 agent definitions (Markdown + YAML frontmatter)
-├── commands/                    # Legacy slash commands (migrati a skills/)
 ├── hooks/hooks.json             # Auto-triggers update-status.ts on spec file changes
 ├── scripts/                     # 9 TypeScript utilities (zero dependencies)
 └── skills/                      # 17 skill + reference docs
@@ -283,7 +282,6 @@ brainstorming/
 │   ├── bs-copy/                   # Microcopy, onboarding
 │   ├── bs-handoff/                # Bridge → specs/ (UMCC)
 │   └── bs-status/                 # Dashboard stato
-├── commands/                      # 17 command (mirror skill)
 ├── hooks/hooks.json               # PostToolUse → update _status.md
 └── scripts/                       # 4 script TypeScript
     ├── init-brainstorm.ts         # Crea directory brainstorm/
