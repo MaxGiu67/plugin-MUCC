@@ -7,6 +7,12 @@ description: "Fase 7: Implementa story per story con test generation e tracking.
 
 Implementa user stories una per volta con generazione automatica di test per ogni Acceptance Criteria.
 
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Seleziona automaticamente la prima story non implementata dello sprint corrente
+- Salta domande interattive
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Prerequisiti
 
 Verifica che **specs/04-tech-spec.md** contenga la sezione "Test Strategy" con:

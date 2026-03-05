@@ -8,7 +8,7 @@ Questo repo contiene **due plugin Claude Code** complementari distribuiti nello 
 
 | Plugin | Directory | Fase | Skill | Agenti |
 |--------|-----------|------|-------|--------|
-| **dev-methodology** | `dev-methodology/` | Sviluppo (downstream) | 14 | 8 |
+| **dev-methodology** | `dev-methodology/` | Sviluppo (downstream) | 17 | 8 |
 | **brainstorming** | `brainstorming/` | Pre-sviluppo (upstream) | 18 | 19 |
 
 ### Pipeline completo
@@ -35,7 +35,7 @@ Language: Italian for methodology terms and agent communication. Technical terms
 
 ## Plugin 1: dev-methodology (SDD)
 
-**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 8 specialized AI agents coordinated by an App Expert, provides 14 skills, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
+**dev-methodology** is a Claude Code plugin that implements Spec-Driven Development (SDD) — a structured 8-phase workflow for building apps/webapps. It uses 8 specialized AI agents coordinated by an App Expert, provides 17 skills, saves all context as Markdown files in `specs/`, and supports multi-LLM (Claude, Gemini, GPT, Mistral).
 
 ## Running Scripts
 
@@ -68,7 +68,7 @@ bash install.sh --check      # verifica quali tool sono installati
 bash install.sh --uninstall  # disinstalla skill (non tool)
 ```
 
-Lo script installa 14 skill in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
+Lo script installa 17 skill dev-methodology + 18 skill brainstorming in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
 
 ### Aggiornamento
 
@@ -115,20 +115,21 @@ dev-methodology/
 ├── commands/                    # Legacy slash commands (migrati a skills/)
 ├── hooks/hooks.json             # Auto-triggers update-status.ts on spec file changes
 ├── scripts/                     # 9 TypeScript utilities (zero dependencies)
-└── skills/                      # 14 skill + reference docs
+└── skills/                      # 17 skill + reference docs
 ```
 
 ### Agent System
 
-Agents are Markdown files with YAML frontmatter (`name`, `model`, `color`, `tools`). The user talks to **app-expert** (opus, coordinator), which delegates to specialists:
+Agents are Markdown files with YAML frontmatter (`name`, `model`, `color`, `communication_style`, `tools`). The user talks to **app-expert** (opus, coordinator), which delegates to specialists:
 
-- **pm-agent** (sonnet) — Vision, PRD, Personas, User Stories, MoSCoW
-- **ux-designer** (sonnet) — Wireframes, design system, component specs
-- **be-architect** (sonnet) — Backend architecture, API design, deployment, quality review
-- **db-expert** (sonnet) — PostgreSQL schema, migrations, performance
-- **security-expert** (sonnet) — AppSec, SAST, SCA, OWASP Top 10, vulnerability analysis
-- **test-engineer** (haiku) — Test strategy, AC validation, QA reports
-- **scrum-master** (haiku) — Sprint planning, velocity tracking, retrospectives
+- **app-expert** — Marco (opus) — Coordinatore, diretto e strategico
+- **pm-agent** — Giulia (sonnet) — Vision, PRD, Personas, User Stories, MoSCoW
+- **ux-designer** — Elena (sonnet) — Wireframes, design system, component specs
+- **be-architect** — Roberto (sonnet) — Backend architecture, API design, deployment, quality review
+- **db-expert** — Franco (sonnet) — PostgreSQL schema, migrations, performance
+- **security-expert** — Silvia (sonnet) — AppSec, SAST, SCA, OWASP Top 10, vulnerability analysis
+- **test-engineer** — Luca (haiku) — Test strategy, AC validation, QA reports
+- **scrum-master** — Sara (haiku) — Sprint planning, velocity tracking, retrospectives
 
 ### 8-Phase Sequential Workflow
 
@@ -145,7 +146,7 @@ Each phase produces a Markdown file in `specs/` that becomes input for the next.
 | 7 | `/dev-implement` | `specs/07-implementation.md` + `tests/` + `specs/testing/test-map.md` |
 | 8 | `/dev-validate` | `specs/08-validation.md` + `sprint-reviews/` (Auto + E2E Browser) |
 
-Utility commands: `/dev-init`, `/dev-status`, `/dev-sync`, `/dev-structure`, `/mucc-update`
+Utility commands: `/dev-init`, `/dev-status`, `/dev-sync`, `/dev-structure`, `/mucc-update`, `/dev-quick`, `/dev-review`, `/dev-pivot`
 
 ### Hooks
 
@@ -164,6 +165,33 @@ specs/
 ├── testing/             # Test strategy, AC→test mapping
 └── sprint-reviews/      # Per-sprint retrospectives
 ```
+
+## Modalita Auto (--auto)
+
+Le skill principali supportano il flag `--auto` per esecuzione senza conferme interattive:
+
+| Skill | Default in --auto |
+|-------|-------------------|
+| `/dev-vision` | Genera vision da descrizione, usa Statement #1 |
+| `/dev-prd` | Genera PRD senza domande aggiuntive |
+| `/dev-stories` | Genera tutte le stories senza conferma |
+| `/dev-spec` | Inferisci stack dal contesto |
+| `/dev-sprint` | Velocity default 20 SP/sprint |
+| `/dev-implement` | Prima story non implementata |
+| `/bs-assess` | Score 1 a tutte le domande (attivazione massima) |
+| `/bs-run` | Concept #1, conferma JTBD/MoSCoW senza modifica |
+| `/bs-brainstorm` | Seleziona Concept #1 senza chiedere |
+
+Ogni skill annotata con "(modalita auto)" nel `_changelog.md`.
+
+## Templates Directory
+
+Template strutturati con marker `<!-- REQUIRED -->` e `<!-- OPTIONAL -->` per sezioni:
+
+- `dev-methodology/skills/dev-methodology/references/templates/` — 6 template (01-vision, 02-prd, 03-stories, 04-tech-spec, 05-sprint-plan, quick-spec)
+- `brainstorming/skills/bs-methodology/references/templates/` — 7 template (00-assessment, 01-brainstorm, 02-problem-framing, 03-market-research, 04-mvp-scope, 05-ux-flows, 06-architecture)
+
+Validazione: `validate-specs.ts --check-sections` e `validate-brainstorm.ts --check-sections`.
 
 ## Key Conventions
 
@@ -217,25 +245,25 @@ brainstorming/
 ├── .claude-plugin/plugin.json     # Plugin manifest
 ├── CONFIG-EXAMPLE.json            # Config multi-LLM per agenti BS
 ├── agents/                        # 19 agenti (4 opus + 10 sonnet + 5 haiku)
-│   ├── bs-orchestrator.md         # opus — coordinatore centrale
-│   ├── divergent-explorer.md      # opus — genera 30-50 idee (trio)
-│   ├── devils-advocate.md         # opus — analisi critica (trio)
-│   ├── synthesizer.md             # opus — sintetizza 3 concept (trio)
-│   ├── problem-framer.md          # sonnet — JTBD, ipotesi, metriche
-│   ├── market-researcher.md       # sonnet — competitor, pattern, rischi
-│   ├── mvp-scoper.md              # sonnet — MoSCoW, anti-scope
-│   ├── ux-flow-agent.md           # sonnet — journey, wireframe
-│   ├── tech-architect.md          # sonnet — stack, schema, API, ADR
-│   ├── codebase-cartographer.md   # sonnet — mappa repo
-│   ├── dependency-auditor.md      # sonnet — dipendenze, rischi
-│   ├── bug-triage-agent.md        # sonnet — repro, root cause
-│   ├── refactoring-coach.md       # sonnet — refactor plan
-│   ├── doc-writer.md              # sonnet — README, runbook
-│   ├── security-agent.md          # haiku — threat model
-│   ├── performance-agent.md       # haiku — profiling, caching
-│   ├── accessibility-agent.md     # haiku — WCAG/ARIA
-│   ├── analytics-agent.md         # haiku — tracking, KPI
-│   └── copy-agent.md              # haiku — microcopy
+│   ├── bs-orchestrator.md         # Alessandro — opus — coordinatore centrale
+│   ├── divergent-explorer.md      # Chiara — opus — genera 30-50 idee (trio)
+│   ├── devils-advocate.md         # Nicola — opus — analisi critica (trio)
+│   ├── synthesizer.md             # Valentina — opus — sintetizza 3 concept (trio)
+│   ├── problem-framer.md          # Matteo — sonnet — JTBD, ipotesi, metriche
+│   ├── market-researcher.md       # Federica — sonnet — competitor, pattern, rischi
+│   ├── mvp-scoper.md              # Andrea — sonnet — MoSCoW, anti-scope
+│   ├── ux-flow-agent.md           # Marta — sonnet — journey, wireframe
+│   ├── tech-architect.md          # Davide — sonnet — stack, schema, API, ADR
+│   ├── codebase-cartographer.md   # Lorenzo — sonnet — mappa repo
+│   ├── dependency-auditor.md      # Paola — sonnet — dipendenze, rischi
+│   ├── bug-triage-agent.md        # Simone — sonnet — repro, root cause
+│   ├── refactoring-coach.md       # Francesca — sonnet — refactor plan
+│   ├── doc-writer.md              # Giorgio — sonnet — README, runbook
+│   ├── security-agent.md          # Claudia — haiku — threat model
+│   ├── performance-agent.md       # Pietro — haiku — profiling, caching
+│   ├── accessibility-agent.md     # Teresa — haiku — WCAG/ARIA
+│   ├── analytics-agent.md         # Stefano — haiku — tracking, KPI
+│   └── copy-agent.md              # Anna — haiku — microcopy
 ├── skills/                        # 18 skill con SKILL.md
 │   ├── bs-methodology/            # Overview + references/
 │   ├── bs-init/                   # Inizializza brainstorm/

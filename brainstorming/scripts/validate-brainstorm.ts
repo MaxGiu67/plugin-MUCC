@@ -9,18 +9,21 @@ interface ValidationResult {
   message: string;
 }
 
-function parseArgs(): string {
+function parseArgs(): { brainstormDir: string; checkSections: boolean } {
   const args = process.argv.slice(2);
   let brainstormDir = './brainstorm';
+  let checkSections = false;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--brainstorm-dir' && i + 1 < args.length) {
       brainstormDir = args[i + 1];
       i++;
+    } else if (args[i] === '--check-sections') {
+      checkSections = true;
     }
   }
 
-  return brainstormDir;
+  return { brainstormDir, checkSections };
 }
 
 function countWords(text: string): number {
@@ -134,8 +137,173 @@ function validateHandoffReadiness(brainstormDir: string): ValidationResult[] {
   return results;
 }
 
+interface BsSectionRule {
+  heading: string;
+  alternatives?: string[];
+  minItems?: number;
+  itemPattern?: 'bullet' | 'tableRow' | 'subsection' | 'custom';
+  customPattern?: RegExp;
+}
+
+interface BsSectionFileRules {
+  file: string;
+  sections: BsSectionRule[];
+}
+
+function findBsSectionStart(content: string, heading: string, alternatives?: string[]): number {
+  const candidates = [heading, ...(alternatives || [])];
+
+  for (const candidate of candidates) {
+    const candidateLower = candidate.toLowerCase();
+    const lines = content.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const lineLower = lines[i].toLowerCase();
+      if (/^#{2,3}\s+/.test(lines[i]) && lineLower.includes(candidateLower)) {
+        return content.indexOf(lines[i]);
+      }
+    }
+  }
+  return -1;
+}
+
+function findBsNextHeading(content: string, afterIdx: number): number {
+  const rest = content.substring(afterIdx);
+  const firstNewline = rest.indexOf('\n');
+  if (firstNewline === -1) return content.length;
+  const afterHeading = rest.substring(firstNewline + 1);
+  const match = afterHeading.match(/^#{2,3}\s+/m);
+  if (match && match.index !== undefined) {
+    return afterIdx + firstNewline + 1 + match.index;
+  }
+  return content.length;
+}
+
+function countBsPatternLines(content: string, startIdx: number, nextHeadingIdx: number, pattern: 'bullet' | 'tableRow' | 'subsection' | 'custom', customPattern?: RegExp): number {
+  const sectionContent = content.substring(startIdx, nextHeadingIdx);
+  const lines = sectionContent.split('\n');
+
+  switch (pattern) {
+    case 'bullet':
+      return lines.filter(l => /^\s*[-*]\s+/.test(l)).length;
+    case 'tableRow':
+      return lines.filter(l => /^\s*\|/.test(l) && !/^\s*\|[-:]+/.test(l)).length - 1; // exclude header
+    case 'subsection':
+      return lines.filter(l => /^###\s+/.test(l)).length;
+    case 'custom':
+      if (customPattern) {
+        return lines.filter(l => customPattern.test(l)).length;
+      }
+      return 0;
+    default:
+      return 0;
+  }
+}
+
+function validateSections(brainstormDir: string): ValidationResult[] {
+  const results: ValidationResult[] = [];
+
+  const fileRules: BsSectionFileRules[] = [
+    {
+      file: '00-assessment.md',
+      sections: [
+        { heading: 'Tipo Progetto' },
+        { heading: 'Scorecard', minItems: 7, itemPattern: 'tableRow' },
+        { heading: 'Piano Attivazione' },
+      ],
+    },
+    {
+      file: '01-brainstorm.md',
+      sections: [
+        { heading: 'Divergenza', alternatives: ['Idee Generate'] },
+        { heading: 'Sfida', alternatives: ['Analisi Critica'] },
+        { heading: 'Sintesi', minItems: 3, itemPattern: 'subsection' },
+      ],
+    },
+    {
+      file: '02-problem-framing.md',
+      sections: [
+        { heading: 'Job-to-be-Done', alternatives: ['JTBD'] },
+        { heading: 'Ipotesi', minItems: 3, itemPattern: 'custom', customPattern: /H[123]/ },
+        { heading: 'Metriche', minItems: 3, itemPattern: 'bullet' },
+      ],
+    },
+    {
+      file: '03-market-research.md',
+      sections: [
+        { heading: 'Competitor', minItems: 2, itemPattern: 'subsection' },
+        { heading: 'Pattern', alternatives: ['Trend'] },
+        { heading: 'Posizionamento', alternatives: ['Differenziazione'] },
+      ],
+    },
+    {
+      file: '04-mvp-scope.md',
+      sections: [
+        { heading: 'Must Have' },
+        { heading: "Won't Have", alternatives: ['Anti-Scope'] },
+        { heading: 'Milestone' },
+      ],
+    },
+    {
+      file: '05-ux-flows.md',
+      sections: [
+        { heading: 'Journey' },
+        { heading: 'Schermate' },
+        { heading: 'Wireframe' },
+      ],
+    },
+    {
+      file: '06-architecture.md',
+      sections: [
+        { heading: 'Stack' },
+        { heading: 'Architettura' },
+        { heading: 'Schema', alternatives: ['Entita'] },
+        { heading: 'API' },
+        { heading: 'ADR' },
+      ],
+    },
+  ];
+
+  for (const fileRule of fileRules) {
+    const filePath = path.join(brainstormDir, fileRule.file);
+    if (!fs.existsSync(filePath)) {
+      continue; // file existence is already checked elsewhere
+    }
+
+    const content = fs.readFileSync(filePath, 'utf-8');
+
+    for (const section of fileRule.sections) {
+      const startIdx = findBsSectionStart(content, section.heading, section.alternatives);
+
+      if (startIdx === -1) {
+        const altText = section.alternatives ? ` (o ${section.alternatives.join(', ')})` : '';
+        results.push({
+          file: fileRule.file,
+          status: 'warning',
+          message: `Sezione "${section.heading}"${altText} mancante`,
+        });
+        continue;
+      }
+
+      if (section.minItems && section.itemPattern) {
+        const nextIdx = findBsNextHeading(content, startIdx);
+        const count = countBsPatternLines(content, startIdx, nextIdx, section.itemPattern, section.customPattern);
+
+        if (count < section.minItems) {
+          results.push({
+            file: fileRule.file,
+            status: 'warning',
+            message: `Sezione "${section.heading}" ha ${count} elementi (minimo ${section.minItems})`,
+          });
+        }
+      }
+    }
+  }
+
+  return results;
+}
+
 function main() {
-  const brainstormDir = parseArgs();
+  const { brainstormDir, checkSections } = parseArgs();
 
   if (!fs.existsSync(brainstormDir)) {
     console.error(`❌ Directory ${brainstormDir} non trovata!`);
@@ -184,6 +352,23 @@ function main() {
     if (r.status === 'error') totalErrors++;
     if (r.status === 'warning') totalWarnings++;
   });
+
+  // Section validation (only when --check-sections is passed)
+  if (checkSections) {
+    const sectionResults = validateSections(brainstormDir);
+
+    console.log('\n## Sezioni Mancanti');
+    if (sectionResults.length === 0) {
+      console.log('  ✅ Tutte le sezioni richieste sono presenti');
+    } else {
+      sectionResults.forEach(r => {
+        const icon = r.status === 'warning' ? '⚠️' : '❌';
+        console.log(`  ${icon} ${r.file}: ${r.message}`);
+        if (r.status === 'warning') totalWarnings++;
+        if (r.status === 'error') totalErrors++;
+      });
+    }
+  }
 
   // Riepilogo
   console.log(`\n## Riepilogo`);

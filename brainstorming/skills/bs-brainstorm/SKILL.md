@@ -7,6 +7,12 @@ description: "Sessione di brainstorming strutturato con trio creativo. Usa quest
 
 Sessione di brainstorming strutturato con 3 agenti specializzati: Divergent Explorer, Devil's Advocate, Synthesizer.
 
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta scelta utente del concept
+- Seleziona automaticamente Concept #1
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Prerequisiti
 - `brainstorm/` deve esistere
 - Idealmente `brainstorm/00-assessment.md` completato

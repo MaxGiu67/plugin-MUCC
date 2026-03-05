@@ -7,6 +7,14 @@ description: "Fase 3: Genera User Stories con Acceptance Criteria. Usa questa sk
 
 Trasforma requisiti PRD in user stories con acceptance criteria strutturate.
 
+Struttura output: segui `references/templates/03-stories-template.md`.
+
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta tutte le domande interattive
+- Genera tutte le stories senza conferma utente
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Workflow
 
 1. Leggi **specs/01-vision.md** e **specs/02-prd.md**.
@@ -32,6 +40,10 @@ Trasforma requisiti PRD in user stories con acceptance criteria strutturate.
 
 6. Aggiorna **specs/_status.md**: Phase 3 = "Completato"
 7. Aggiorna **specs/_changelog.md**: entry "Generated N user stories with AC"
+
+## Prossimo Passo
+
+Consiglio: esegui `/dev-review phase 3` prima di procedere alla fase successiva.
 
 ## Output
 

@@ -7,6 +7,14 @@ description: "Fase 5: Pianifica sprint con task breakdown. Usa questa skill quan
 
 Organizza user stories in sprint con task breakdown e obiettivi.
 
+Struttura output: segui `references/templates/05-sprint-plan-template.md`.
+
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta tutte le domande interattive
+- Velocity default: 20 SP/sprint
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Workflow
 
 1. Leggi **specs/03-user-stories.md** e **specs/04-tech-spec.md**.
@@ -34,19 +42,19 @@ Organizza user stories in sprint con task breakdown e obiettivi.
    - **Completion Criteria**: cosa significa "done" per lo sprint
    - **Risks**: 1-2 rischi e mitigation
 
-4. Genera/aggiorna **CLAUDE.md** con sezione "## Sprint Corrente":
-   - Sprint name
-   - Objetivo
-   - Stories nel corrente sprint
-   - Come attivare lo sprint con `/dev-implement`
+4. Genera/aggiorna **CLAUDE.md** usando il template `references/project-context-template.md`. Popola le sezioni leggendo dai file specs/. Se CLAUDE.md esiste, preserva sezioni custom dell'utente.
 
 5. Scrivi **specs/05-sprint-plan.md** con tutti gli sprint (1000-1500 parole).
 
 6. Aggiorna **specs/_status.md**: Phase 5 = "Completato"
 7. Aggiorna **specs/_changelog.md**: entry "Sprint plan with N sprints, Y total SP"
 
+## Prossimo Passo
+
+Consiglio: esegui `/dev-review phase 5` prima di procedere all'implementazione.
+
 ## Output
 
 File: `specs/05-sprint-plan.md` (1000-1500 parole)
-Updated: `CLAUDE.md` con info sprint corrente
+Updated: `CLAUDE.md` strutturato (da project-context-template.md)
 Status: Phase 5 completato

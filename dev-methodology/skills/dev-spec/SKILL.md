@@ -7,6 +7,15 @@ description: "Fase 4: Progetta architettura e specifiche tecniche. Usa questa sk
 
 Crea la specifica tecnica completa con architettura, DB schema, API endpoints.
 
+Struttura output: segui `references/templates/04-tech-spec-template.md`.
+
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta tutte le domande interattive
+- Inferisci stack dal contesto (vision, PRD, stories)
+- Genera spec completa senza conferme
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Workflow
 
 1. Leggi **specs/01-vision.md**, **specs/02-prd.md**, **specs/03-user-stories.md**.
@@ -46,6 +55,10 @@ Crea la specifica tecnica completa con architettura, DB schema, API endpoints.
 
 7. Aggiorna **specs/_status.md**: Phase 4 = "Completato"
 8. Aggiorna **specs/_changelog.md**: entry "Tech spec with N endpoints, M tables"
+
+## Prossimo Passo
+
+Consiglio: esegui `/dev-review phase 4` prima di procedere alla fase successiva.
 
 ## Output
 

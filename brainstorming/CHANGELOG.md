@@ -3,6 +3,21 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-03-05
+
+### Added
+- **Template strutturati**: directory `references/templates/` con 7 template artefatti BS
+  - Marker `<!-- REQUIRED -->` e `<!-- OPTIONAL -->` per sezioni
+  - Validazione in `validate-brainstorm.ts`
+- **Personalita agenti**: nomi italiani e stili comunicativi per tutti i 19 agenti
+  - Alessandro (Orchestratore), Chiara (Explorer), Nicola (Advocate), Valentina (Synthesizer), etc.
+  - Nuovo campo frontmatter: `communication_style`
+- **Modalita --auto**: flag per esecuzione senza conferme
+  - Supportato in bs-assess, bs-run, bs-brainstorm
+
+### Changed
+- `validate-brainstorm.ts`: aggiunta validazione sezioni template
+
 ## [0.1.2] - 2026-03-04
 
 ### Changed

@@ -7,6 +7,13 @@ description: "Assessment interattivo con scorecard per scegliere agenti e workfl
 
 Guida l'utente attraverso la scorecard operativa per determinare quali agenti/skill attivare.
 
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta tutte le domande interattive (AskUserQuestion)
+- Score 1 a tutte le domande (attivazione massima)
+- Tipo progetto: T1 (default) o inferisci dal contesto
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Prerequisiti
 - `brainstorm/` deve esistere (esegui `/init` prima)
 

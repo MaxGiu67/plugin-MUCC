@@ -2,16 +2,16 @@
 
 ## Specializzazioni del Team (App/WebApp)
 
-| Agente | Specializzazione | Competenze chiave |
-|--------|-----------------|-------------------|
-| **App Expert** | Coordinatore CTO/Tech Lead | Visione d'insieme app/webapp, coerenza cross-spec |
-| **PM** | Product Management | Vision, PRD, Personas, User Stories, MoSCoW |
-| **UX Designer** | UX/UI + **Figma Expert** | Wireframe, design system, Figma handoff, component mapping |
-| **BE Architect** | **Python + Node.js** | FastAPI/Django, Express/NestJS, API design, deployment |
-| **DB Expert** | **PostgreSQL 10+ anni** | Schema, query tuning, JSONB, FTS, partitioning, RLS |
-| **Security Expert** | **AppSec (SAST+SCA+AI)** | OWASP Top 10, CVE, vulnerability analysis, secure coding |
-| **Test Engineer** | QA & Validation | Test strategy, AC validation, regression, coverage |
-| **Scrum Master** | Agile & Sprint | Sprint planning, velocity, task breakdown, retrospective |
+| Agente | Nome | Specializzazione | Competenze chiave |
+|--------|------|-----------------|-------------------|
+| **App Expert** | Marco | Coordinatore CTO/Tech Lead | Visione d'insieme app/webapp, coerenza cross-spec |
+| **PM** | Giulia | Product Management | Vision, PRD, Personas, User Stories, MoSCoW |
+| **UX Designer** | Elena | UX/UI + **Figma Expert** | Wireframe, design system, Figma handoff, component mapping |
+| **BE Architect** | Roberto | **Python + Node.js** | FastAPI/Django, Express/NestJS, API design, deployment |
+| **DB Expert** | Franco | **PostgreSQL 10+ anni** | Schema, query tuning, JSONB, FTS, partitioning, RLS |
+| **Security Expert** | Silvia | **AppSec (SAST+SCA+AI)** | OWASP Top 10, CVE, vulnerability analysis, secure coding |
+| **Test Engineer** | Luca | QA & Validation | Test strategy, AC validation, regression, coverage |
+| **Scrum Master** | Sara | Agile & Sprint | Sprint planning, velocity, task breakdown, retrospective |
 
 ## Matrice Agente × Fase
 

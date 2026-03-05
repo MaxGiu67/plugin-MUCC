@@ -7,6 +7,14 @@ description: "Fase 2: Crea il Product Requirements Document. Usa questa skill qu
 
 Trasforma la vision in un PRD completo con requisiti funzionali e non-funzionali.
 
+Struttura output: segui `references/templates/02-prd-template.md`.
+
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta tutte le domande interattive
+- Genera PRD direttamente dalla vision senza domande aggiuntive
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Workflow
 
 1. Leggi **specs/01-vision.md**.
@@ -29,6 +37,10 @@ Trasforma la vision in un PRD completo con requisiti funzionali e non-funzionali
 
 5. Aggiorna **specs/_status.md**: Phase 2 = "Completato"
 6. Aggiorna **specs/_changelog.md**: entry "PRD created with X epics and Y features"
+
+## Prossimo Passo
+
+Consiglio: esegui `/dev-review phase 2` prima di procedere alla fase successiva.
 
 ## Output
 

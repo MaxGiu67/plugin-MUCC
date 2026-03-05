@@ -7,6 +7,15 @@ description: "Fase 1: Definisci vision e strategia del progetto. Usa questa skil
 
 Guida l'utente a definire la visione strategica del progetto.
 
+Struttura output: segui `references/templates/01-vision-template.md`.
+
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta tutte le domande interattive (AskUserQuestion)
+- Genera vision direttamente dalla descrizione fornita in `$ARGUMENTS`
+- Proponi Vision Statement #1 senza chiedere scelta
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Workflow
 
 1. Leggi **specs/_status.md** per verificare lo stato.
@@ -34,6 +43,10 @@ Guida l'utente a definire la visione strategica del progetto.
 
 5. Aggiorna **specs/_status.md**: Phase 1 = "Completato"
 6. Aggiorna **specs/_changelog.md**: entry con data e "Vision defined"
+
+## Prossimo Passo
+
+Consiglio: esegui `/dev-review phase 1` prima di procedere alla fase successiva.
 
 ## Output
 

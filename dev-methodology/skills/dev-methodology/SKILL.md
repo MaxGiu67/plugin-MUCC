@@ -51,6 +51,9 @@ Ogni fase dipende dalla precedente. Non saltare fasi.
 - `/dev-sprint` — Fase 5: Pianifica sprint e task breakdown
 - `/dev-implement` — Fase 7: Implementa story per story
 - `/dev-validate` — Fase 8: Valida contro tutti gli AC
+- `/dev-quick` — Quick Flow per task semplici (bug fix, feature piccole 1-15 stories)
+- `/dev-review` — Revisione avversaria e quality gate per qualsiasi fase
+- `/dev-pivot` — Gestione cambi requisiti (impact analysis, correct course)
 - `/dev-refactor` — Analisi qualità codice, tech debt e refactoring con tool deterministici
 - `/dev-security` — Analisi sicurezza SAST + SCA + AI reasoning
 - `/dev-status` — Mostra stato corrente del progetto
@@ -60,16 +63,16 @@ Ogni fase dipende dalla precedente. Non saltare fasi.
 
 ## Agenti Disponibili
 
-| Agente | Ruolo | Quando usarlo |
-|--------|-------|---------------|
-| **app-expert** | Coordinatore | Visione d'insieme, decisioni cross-fase, "cosa fare dopo?" |
-| **pm-agent** | Product Manager | Vision, PRD, personas, stories, prioritizzazione |
-| **ux-designer** | UX Designer | Wireframe, flussi, design system, componenti |
-| **be-architect** | Backend Architect | Architettura, API, deployment, code structure |
-| **db-expert** | Database Expert | Schema DB, query, migrazioni, performance dati |
-| **test-engineer** | Test Engineer | Test strategy, test cases, QA, validazione |
-| **security-expert** | Security Expert | SAST, SCA, vulnerability analysis, OWASP, security review |
-| **scrum-master** | Scrum Master | Sprint planning, velocity, retrospective |
+| Agente | Nome | Ruolo | Quando usarlo |
+|--------|------|-------|---------------|
+| **app-expert** | Marco | Coordinatore | Visione d'insieme, decisioni cross-fase, "cosa fare dopo?" |
+| **pm-agent** | Giulia | Product Manager | Vision, PRD, personas, stories, prioritizzazione |
+| **ux-designer** | Elena | UX Designer | Wireframe, flussi, design system, componenti |
+| **be-architect** | Roberto | Backend Architect | Architettura, API, deployment, code structure |
+| **db-expert** | Franco | Database Expert | Schema DB, query, migrazioni, performance dati |
+| **test-engineer** | Luca | Test Engineer | Test strategy, test cases, QA, validazione |
+| **security-expert** | Silvia | Security Expert | SAST, SCA, vulnerability analysis, OWASP, security review |
+| **scrum-master** | Sara | Scrum Master | Sprint planning, velocity, retrospective |
 
 ## Formato Chiave: DATO-QUANDO-ALLORA
 
@@ -102,6 +105,23 @@ Il plugin integra generazione e validazione test nel flusso di sviluppo:
 - **Evidenza**: Screenshots, console errors, network request validation
 - **Fallback**: Se browser tools non disponibili, validazione manuale raccomandata
 
+## Modalita Auto (--auto)
+
+Tutte le skill di fase supportano il flag `--auto` per esecuzione senza conferme interattive:
+
+```
+/dev-vision --auto "descrizione progetto"
+/dev-prd --auto
+/dev-stories --auto
+/dev-spec --auto
+/dev-sprint --auto
+```
+
+In modalita auto:
+- Le domande interattive vengono saltate
+- Vengono usati default intelligenti (es. velocity 20 SP/sprint)
+- Ogni decisione automatica viene annotata nel _changelog.md
+
 ## Per Approfondire
 
 Leggi i file in `references/` per template dettagliati:
@@ -113,3 +133,6 @@ Leggi i file in `references/` per template dettagliati:
 - `references/tech-debt-template.md` — Template inventario tech debt
 - `references/security-thresholds.md` — Soglie security score e OWASP mapping
 - `references/security-report-template.md` — Template report sicurezza
+- `references/phase-checklists.md` — Quality gate checklist per fasi 1-5
+- `references/project-context-template.md` — Template per CLAUDE.md strutturato
+- `references/templates/` — Template strutturati per ogni fase (con marker REQUIRED/OPTIONAL)

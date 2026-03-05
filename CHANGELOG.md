@@ -3,6 +3,38 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-03-05
+
+### Added
+- **Skill `/dev-quick`**: Quick Flow per task semplici (bug fix, feature 1-15 stories)
+  - Genera `quick-spec.md` compatto (vision+prd+stories+tech in un file)
+  - Rilevamento scope creep con escalation automatica a workflow completo
+- **Skill `/dev-review`**: Revisione avversaria e quality gate per qualsiasi fase
+  - 3 pass: Completeness Check, Adversarial Review, Edge Case Hunter
+  - Invocabile in qualsiasi momento con `/dev-review phase N`
+  - Genera report in `specs/technical/review-report.md`
+- **Skill `/dev-pivot`**: Gestione cambi di requisiti (Correct Course)
+  - Impact analysis su tutti i file specs/
+  - Categorizza specs in RIFARE/AGGIORNARE/INVARIATO
+  - Aggiorna _status.md con fasi "Da aggiornare"
+- **Template strutturati**: directory `references/templates/` con 6 template fase
+  - Marker `<!-- REQUIRED -->` e `<!-- OPTIONAL -->` per sezioni
+  - Validazione sezioni in `validate-specs.ts` con flag `--check-sections`
+- **Phase checklists**: `references/phase-checklists.md` con gate verificabili per fasi 1-5
+- **Project Context template**: `references/project-context-template.md` per CLAUDE.md potenziato
+  - Coding conventions, forbidden patterns, test patterns, sprint context
+- **Personalita agenti**: nomi italiani e stili comunicativi per tutti gli 8 agenti
+  - Marco (App Expert), Giulia (PM), Elena (UX), Roberto (BE), Franco (DB), Silvia (Security), Luca (Test), Sara (Scrum)
+  - Nuovo campo frontmatter: `communication_style`
+- **Modalita --auto**: flag per esecuzione senza conferme con default intelligenti
+  - Supportato in tutte le skill di fase e in bs-run/bs-assess
+
+### Changed
+- `validate-specs.ts`: aggiunta validazione sezioni template con `--check-sections`
+- `dev-sprint/SKILL.md`: Phase 6 usa project-context-template per CLAUDE.md strutturato
+- Tutte le skill di fase: suggerimento `/dev-review` prima di procedere (non bloccante)
+- `install.sh`: DEV_SKILLS 14 → 17 (+ dev-quick, dev-review, dev-pivot)
+
 ## [0.4.4] - 2026-03-04
 
 ### Changed

@@ -7,6 +7,13 @@ description: "Orchestratore automatico: esegue le skill raccomandate dall'assess
 
 Esegue automaticamente le skill raccomandate dall'assessment nel giusto ordine.
 
+## Modalita Auto
+Se `$ARGUMENTS` contiene `--auto`:
+- Salta tutte le domande interattive
+- Concept #1 selezionato automaticamente (brainstorming)
+- Conferma JTBD e MoSCoW senza modifica
+- Annota nel _changelog.md: "(modalita auto)"
+
 ## Prerequisiti
 - `brainstorm/00-assessment.md` deve esistere e contenere il piano di attivazione
 

@@ -99,6 +99,16 @@ Il comando `/bs-handoff` mappa i contenuti BS verso la struttura `specs/` di UMC
 | `05-ux-flows.md` | → | `specs/ux/wireframes.md` |
 | `06-architecture.md` | → | `specs/04-tech-spec.md` |
 
+## Modalita Auto (--auto)
+
+Le skill principali supportano il flag `--auto` per esecuzione senza conferme:
+
+```
+/bs-assess --auto     # Score 1 a tutto, attivazione massima
+/bs-run --auto        # Concept #1, conferma automatica JTBD/MoSCoW
+/bs-brainstorm --auto # Seleziona Concept #1 senza chiedere
+```
+
 ## Per Iniziare
 
 ```

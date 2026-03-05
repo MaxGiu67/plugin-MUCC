@@ -31,6 +31,9 @@ DEV_SKILLS=(
   dev-validate
   dev-refactor
   dev-security
+  dev-quick
+  dev-review
+  dev-pivot
   dev-status
   dev-sync
   dev-structure
@@ -104,7 +107,7 @@ error()   { echo -e "${RED}✖${NC}  $1"; }
 print_banner() {
   echo ""
   echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-  echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.4.3   ║${NC}"
+  echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.5.0   ║${NC}"
   echo -e "${BOLD}║   dev-methodology + brainstorming         ║${NC}"
   echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""
