@@ -18,6 +18,9 @@ Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento
 ### Changed
 - `validate-brainstorm.ts`: aggiunta validazione sezioni template
 
+### Removed
+- Directory `commands/` legacy (causava duplicati in Cowork)
+
 ## [0.1.2] - 2026-03-04
 
 ### Changed

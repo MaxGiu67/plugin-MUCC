@@ -35,6 +35,9 @@ Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento
 - Tutte le skill di fase: suggerimento `/dev-review` prima di procedere (non bloccante)
 - `install.sh`: DEV_SKILLS 14 → 17 (+ dev-quick, dev-review, dev-pivot)
 
+### Removed
+- Directory `commands/` legacy (causava duplicati in Cowork)
+
 ## [0.4.4] - 2026-03-04
 
 ### Changed
