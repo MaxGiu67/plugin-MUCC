@@ -1,201 +1,245 @@
-# dev-methodology — Plugin Claude Code
+# MUCC Plugin Suite — Claude Code
 
-Plugin per lo sviluppo strutturato a 8 fasi con team di agenti specializzati, tracking persistente in `specs/*.md` e supporto multi-LLM.
+Due plugin complementari per **brainstorming strutturato** e **sviluppo Spec-Driven** con 27 agenti AI specializzati.
+
+| Plugin | Skill | Agenti | Versione | Fase |
+|--------|-------|--------|----------|------|
+| **dev-methodology** | 17 | 8 | 0.5.1 | Sviluppo (downstream) |
+| **brainstorming** | 18 | 19 | 0.2.1 | Pre-sviluppo (upstream) |
 
 ## Installazione
 
-### Metodo 1: Quick Install (consigliato)
-
 ```bash
 git clone https://github.com/MaxGiu67/plugin-MUCC.git
 cd plugin-MUCC
-bash install.sh              # symlink in ~/.claude/skills/ (default)
-bash install.sh --copy       # copia indipendente
-bash install.sh --uninstall  # disinstalla
+bash install.sh              # installa 35 skill + tool esterni (default)
+bash install.sh --copy       # copia indipendente + tool
+bash install.sh --skip-tools # solo skill, senza tool esterni
+bash install.sh --update     # aggiorna: git pull + nuove skill + nuovi tool
+bash install.sh --check      # verifica quali tool sono installati
+bash install.sh --uninstall  # disinstalla skill (non tool)
 ```
 
-Lo script verifica i prerequisiti (Node.js >= 18, Claude Code installato) e crea symlink delle 11 skill in `~/.claude/skills/`.
+Riavvia Claude Code dopo l'installazione.
 
-### Metodo 2: Manuale
+## Pipeline completo
 
-```bash
-git clone https://github.com/MaxGiu67/plugin-MUCC.git
-cd plugin-MUCC
-for skill in dev-methodology/skills/dev-*/; do
-  ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename $skill)
-done
+```
+brainstorming (upstream)                   dev-methodology (downstream)
+─────────────────────────                  ────────────────────────────
+/bs-init    → struttura brainstorm/
+/bs-assess  → scorecard + piano
+/bs-brainstorm → 3 concept (trio)
+/bs-problem → JTBD, ipotesi          ───►  /dev-vision  (01-vision.md)
+/bs-research → competitor            ───►  /dev-prd     (02-prd.md)
+/bs-scope   → MoSCoW, anti-scope     ───►  /dev-stories (03-user-stories.md)
+/bs-ux      → wireframe testuali     ───►  /dev-spec    (04-tech-spec.md)
+/bs-architect → architettura, schema  ───►  /dev-sprint  (05-sprint-plan.md)
+/bs-handoff → popola specs/                 /dev-implement → /dev-validate
 ```
 
-Dopo l'installazione, riavvia Claude Code per caricare le skill.
+Il collegamento e **file-based**: `/bs-handoff` mappa i contenuti `brainstorm/*.md` verso `specs/*.md`.
+
+---
+
+## Plugin 1: dev-methodology (Spec-Driven Development)
+
+Workflow strutturato a **8 fasi** per costruire app/webapp. Ogni fase produce un file Markdown in `specs/` che diventa input per la successiva.
+
+### Agenti (8)
+
+| Agente | Nome | Modello | Ruolo |
+|--------|------|---------|-------|
+| **App Expert** | Marco | opus | Coordinatore CTO, visione d'insieme |
+| **PM** | Giulia | sonnet | Vision, PRD, Personas, User Stories, MoSCoW |
+| **UX Designer** | Elena | sonnet | Wireframe, design system, Figma handoff |
+| **BE Architect** | Roberto | sonnet | Backend Python/Node, API, deployment, quality |
+| **DB Expert** | Franco | sonnet | PostgreSQL, schema, migrazioni, performance |
+| **Security Expert** | Silvia | sonnet | AppSec, SAST, SCA, OWASP Top 10 |
+| **Test Engineer** | Luca | haiku | Test strategy, AC validation, QA |
+| **Scrum Master** | Sara | haiku | Sprint planning, velocity, retrospective |
+
+Parli con Marco (App Expert), lui delega ai specialisti.
+
+### Skill di fase (8)
+
+| Skill | Fase | Output |
+|-------|------|--------|
+| `/dev-vision` | 1 | `specs/01-vision.md` |
+| `/dev-prd` | 2 | `specs/02-prd.md` |
+| `/dev-stories` | 3 | `specs/03-user-stories.md` |
+| `/dev-spec` | 4 | `specs/04-tech-spec.md` + `database/` + `ux/` + `technical/` |
+| `/dev-sprint` | 5 | `specs/05-sprint-plan.md` + CLAUDE.md progetto |
+| `/dev-implement` | 7 | `specs/07-implementation.md` + `tests/` |
+| `/dev-validate` | 8 | `specs/08-validation.md` + `sprint-reviews/` |
+| `/dev-quick` | * | `quick-spec.md` (flow rapido per bug fix / feature piccole) |
+
+### Skill di utilita (9)
+
+| Skill | Descrizione |
+|-------|-------------|
+| `/dev-init` | Inizializza progetto con struttura `specs/` |
+| `/dev-review` | Revisione avversaria e quality gate (3 pass) |
+| `/dev-pivot` | Gestione cambi di requisiti (impact analysis) |
+| `/dev-refactor` | Analisi qualita codice e tech debt con tool deterministici |
+| `/dev-security` | Analisi sicurezza SAST + SCA + AI reasoning |
+| `/dev-status` | Dashboard stato progetto |
+| `/dev-sync` | Integra risultati da LLM esterni |
+| `/dev-structure` | Mostra albero file `specs/` |
+| `/mucc-update` | Aggiorna plugin da Claude Code |
+
+### Modalita --auto
+
+Tutte le skill di fase supportano `--auto` per esecuzione senza conferme interattive:
+
+```
+/dev-vision --auto     # genera vision, usa Statement #1
+/dev-prd --auto        # genera PRD senza domande aggiuntive
+/dev-stories --auto    # genera tutte le stories
+/dev-spec --auto       # inferisci stack dal contesto
+/dev-sprint --auto     # velocity default 20 SP/sprint
+/dev-implement --auto  # prima story non implementata
+```
+
+### Template e Quality Gate
+
+- **6 template strutturati** in `references/templates/` con marker `<!-- REQUIRED -->` e `<!-- OPTIONAL -->`
+- **Phase checklists** in `references/phase-checklists.md` con gate verificabili per fasi 1-5
+- **Validazione**: `npx tsx scripts/validate-specs.ts --specs-dir ./specs --check-sections`
+
+### Tool esterni (opzionali)
+
+Installati automaticamente con `bash install.sh`:
+
+| Categoria | Tool |
+|-----------|------|
+| Quality | knip, eslint, tsc, ruff, mypy, vulture |
+| Security SAST | semgrep, bearer, bandit |
+| Security SCA | npm audit, osv-scanner, retire, pip-audit |
+
+---
+
+## Plugin 2: brainstorming (Pre-sviluppo)
+
+Brainstorming strutturato e generazione documenti MVP. Copre le fasi **pre-sviluppo** (ideazione → analisi → scoping → architettura).
+
+### Agenti (19)
+
+| Gruppo | Agenti | Modello |
+|--------|--------|---------|
+| **Trio creativo** | Alessandro (Orchestratore), Chiara (Explorer), Nicola (Advocate), Valentina (Synthesizer) | opus |
+| **Core analisi** | Matteo (Problem), Federica (Market), Andrea (Scoper), Marta (UX), Davide (Architect) | sonnet |
+| **Onboarding repo** | Lorenzo (Cartographer), Paola (Auditor), Simone (Bug Triage), Francesca (Refactoring), Giorgio (Docs) | sonnet |
+| **Specialisti** | Claudia (Security), Pietro (Performance), Teresa (Accessibility), Stefano (Analytics), Anna (Copy) | haiku |
+
+### Skill (18)
+
+| Skill | Descrizione |
+|-------|-------------|
+| `/bs-init` | Inizializza struttura `brainstorm/` |
+| `/bs-assess` | Scorecard interattiva per scegliere agenti e workflow |
+| `/bs-run` | Orchestratore automatico (esegue skill raccomandate) |
+| `/bs-brainstorm` | Sessione con trio creativo (divergenza → sfida → 3 concept) |
+| `/bs-problem` | Problem framing: JTBD, ipotesi testabili, metriche |
+| `/bs-research` | Ricerca mercato: competitor, pattern, differenziazione |
+| `/bs-scope` | MVP scoping: MoSCoW, anti-scope, milestone |
+| `/bs-ux` | UX flows: journey, schermate, wireframe testuali |
+| `/bs-architect` | Architettura: stack, schema dati, API, ADR |
+| `/bs-onboarding` | Onboarding su repo esistente (5 agenti) |
+| `/bs-security` | Analisi sicurezza e privacy |
+| `/bs-performance` | Analisi performance e costi |
+| `/bs-accessibility` | Checklist WCAG/ARIA |
+| `/bs-analytics` | Piano analytics, KPI, funnel |
+| `/bs-copy` | Microcopy, onboarding, empty states |
+| `/bs-handoff` | Bridge verso dev-methodology (popola `specs/`) |
+| `/bs-status` | Dashboard stato brainstorming |
+| `/bs-methodology` | Overview plugin e workflow disponibili |
+
+### Workflow
+
+| ID | Nome | Tipo | Flusso |
+|----|------|------|--------|
+| A | Idea → MVP | Greenfield | bs-init → bs-assess → bs-brainstorm → bs-problem → bs-research → bs-scope → bs-ux → bs-architect → bs-handoff |
+| B | Repo ereditato | Legacy | bs-init → bs-assess → bs-onboarding → bs-problem → bs-scope → bs-handoff |
+| C | Bug produzione | Fix | bs-init → bs-assess → bs-onboarding (parziale) → fix |
+| D | Performance | Ottimizzazione | bs-init → bs-assess → bs-performance → bs-architect → bs-handoff |
+
+### Modalita --auto
+
+```
+/bs-assess --auto      # score 1 a tutte le domande
+/bs-run --auto         # concept #1, conferma senza modifica
+/bs-brainstorm --auto  # seleziona Concept #1
+```
+
+---
 
 ## Quick Start
 
-### 1. Inizializza un nuovo progetto
+### Progetto da zero (brainstorming + sviluppo)
 
 ```
-/dev-init "Nome del Progetto"
+/bs-init "Nome Progetto"     # crea struttura brainstorm/
+/bs-assess                   # scorecard → piano attivazione
+/bs-run                      # esegue workflow raccomandato
+/bs-handoff                  # popola specs/ per dev-methodology
+/dev-vision                  # fase 1: vision
+/dev-prd                     # fase 2: PRD
+/dev-stories                 # fase 3: user stories + AC
+/dev-spec                    # fase 4: architettura
+/dev-sprint                  # fase 5: sprint planning
+/dev-implement               # fase 7: implementazione
+/dev-validate                # fase 8: validazione QA
 ```
 
-Crea la struttura `specs/` con tutti i template, `_status.md`, `_changelog.md` e `CLAUDE.md`.
-
-### 2. Segui le 8 fasi in ordine
+### Progetto rapido (skip brainstorming)
 
 ```
-/dev-vision       → Fase 1: Vision & Strategy
-/dev-prd          → Fase 2: Product Requirements Document
-/dev-stories      → Fase 3: User Stories + Acceptance Criteria
-/dev-spec         → Fase 4: Technical Specification
-/dev-sprint       → Fase 5: Sprint Planning
-                  → Fase 6: CLAUDE.md Setup (automatica)
-/dev-implement    → Fase 7: Implementation
-/dev-validate     → Fase 8: Validation & QA
+/dev-init "Nome Progetto"    # crea struttura specs/
+/dev-quick                   # flow compatto per task semplici
 ```
 
-### 3. Monitora il progresso
+### Pipeline completamente automatico
 
 ```
-/dev-status       → Dashboard stato progetto
-/dev-structure    → Albero file specs/
+/bs-init --auto "Nome" && /bs-assess --auto && /bs-run --auto && /bs-handoff
+/dev-vision --auto && /dev-prd --auto && /dev-stories --auto
+/dev-spec --auto && /dev-sprint --auto && /dev-implement --auto
 ```
-
-## Comandi
-
-| Comando | Descrizione |
-|---------|-------------|
-| `/dev-init` | Inizializza progetto con struttura specs/ |
-| `/dev-vision` | Fase 1: Vision, obiettivi, metriche |
-| `/dev-prd` | Fase 2: PRD con personas e MoSCoW |
-| `/dev-stories` | Fase 3: User Stories + AC (DATO-QUANDO-ALLORA) |
-| `/dev-spec` | Fase 4: Architettura, API, DB, UX |
-| `/dev-sprint` | Fase 5: Sprint planning con task breakdown |
-| `/dev-implement` | Fase 7: Guida implementazione per sprint |
-| `/dev-validate` | Fase 8: Validazione e QA |
-| `/dev-status` | Dashboard stato corrente del progetto |
-| `/dev-sync` | Integra risultati da LLM esterni |
-| `/dev-structure` | Mostra albero specs/ |
-
-## Agenti
-
-Il plugin include 7 agenti specializzati coordinati dall'**App Expert**:
-
-| Agente | Modello | Ruolo |
-|--------|---------|-------|
-| **App Expert** | opus | Coordinatore centrale, legge tutti i file specs/ |
-| **PM Agent** | sonnet | Vision, PRD, Personas, User Stories |
-| **UX Designer** | sonnet | Wireframe, flussi, design system |
-| **BE Architect** | sonnet | Architettura, API, deployment |
-| **DB Expert** | sonnet | Schema DB, migrazioni, query |
-| **Test Engineer** | haiku | Test strategy, test cases, QA |
-| **Scrum Master** | haiku | Sprint planning, velocity, retrospective |
-
-Parli con l'App Expert, lui delega ai specialisti.
 
 ## Multi-LLM
 
-Il plugin supporta LLM esterni (Gemini, GPT, Mistral) per task specifici.
+Supporta LLM esterni (Gemini, GPT, Mistral) per task specifici. Copia `CONFIG-EXAMPLE.json` in `llm-config.json` e imposta le API key come variabili d'ambiente.
 
-### Configurazione
+| Provider | Uso principale |
+|----------|---------------|
+| **Claude** (nativo) | Tutti gli agenti, coordinamento, codice |
+| **Gemini** | UX design, analisi visuale screenshot Figma |
+| **GPT** | Market research, analisi competitor |
+| **Mistral** | Task europei, documentazione, traduzioni |
 
-1. Copia il template: `cp CONFIG-EXAMPLE.json llm-config.json`
-2. Imposta le API key come variabili d'ambiente:
-
-```bash
-export GEMINI_API_KEY="your-key"
-export OPENAI_API_KEY="your-key"
-export MISTRAL_API_KEY="your-key"
-```
-
-### Uso
-
-```bash
-# Chiamata generica a LLM esterno
-npx tsx scripts/call-external-llm.ts --provider gemini --task "Analizza questo wireframe"
-
-# Genera UX con Gemini
-npx tsx scripts/generate-ux.ts --feature "Dashboard" --type wireframe
-
-# Integra i risultati nel progetto
-/dev-sync
-```
-
-## Script
-
-| Script | Descrizione |
-|--------|-------------|
-| `init-project.ts` | Crea struttura specs/ con template |
-| `update-status.ts` | Aggiorna `_status.md` automaticamente |
-| `update-changelog.ts` | Appende entry al changelog |
-| `call-external-llm.ts` | Chiama API LLM esterni |
-| `generate-ux.ts` | Wrapper Gemini per wireframe/UX |
-| `validate-specs.ts` | Verifica coerenza cross-spec |
-| `export-project.ts` | Esporta specs in Markdown/HTML |
-
-## Struttura specs/ generata
+## Struttura repository
 
 ```
-specs/
-├── _status.md              ← Stato progetto (auto-aggiornato)
-├── _changelog.md           ← Log decisioni con timestamp
-├── 01-vision.md            ← Vision, obiettivi, metriche
-├── 02-prd.md               ← PRD completo con MoSCoW
-├── 03-user-stories.md      ← Stories + AC (DATO-QUANDO-ALLORA)
-├── 04-tech-spec.md         ← Architettura, API, DB, UX
-├── 05-sprint-plan.md       ← Sprint con task e stime
-├── 07-implementation.md    ← Tracking implementazione
-├── 08-validation.md        ← Report QA e validazione
-├── technical/              ← Tech spec per epic
-├── database/               ← Schema e migrazioni
-├── ux/                     ← Wireframe, flussi, design system
-└── sprint-reviews/         ← Review per sprint
+plugin-MUCC/
+├── install.sh                    # Installer (35 skill + tool)
+├── CHANGELOG.md                  # Changelog dev-methodology
+├── CLAUDE.md                     # Istruzioni per Claude Code
+├── dev-methodology/              # Plugin sviluppo (v0.5.1)
+│   ├── .claude-plugin/plugin.json
+│   ├── agents/                   # 8 agenti con personalita
+│   ├── hooks/hooks.json
+│   ├── scripts/                  # 9 script TypeScript
+│   └── skills/                   # 17 skill + references + templates
+├── brainstorming/                # Plugin brainstorming (v0.2.1)
+│   ├── .claude-plugin/plugin.json
+│   ├── CHANGELOG.md
+│   ├── agents/                   # 19 agenti con personalita
+│   ├── hooks/hooks.json
+│   ├── scripts/                  # 4 script TypeScript
+│   └── skills/                   # 18 skill + references + templates
+└── tutorial/                     # Tutorial guidato
 ```
-
-## Workflow Esempio
-
-```
-1. /dev-init "TaskFlow"
-   → Crea specs/, _status.md, _changelog.md, CLAUDE.md
-
-2. /dev-vision
-   → App Expert attiva PM Agent
-   → Discovery session (10-15 domande)
-   → Output: specs/01-vision.md
-
-3. /dev-prd
-   → PM crea Personas, Features, MoSCoW
-   → Output: specs/02-prd.md
-
-4. /dev-stories
-   → PM trasforma features in User Stories
-   → AC in formato DATO-QUANDO-ALLORA
-   → Output: specs/03-user-stories.md
-
-5. /dev-spec
-   → App Expert coordina BE Architect + DB Expert + UX Designer
-   → (Opzionale) Gemini genera wireframe UX
-   → Output: specs/04-tech-spec.md + specs/technical/ + specs/database/ + specs/ux/
-
-6. /dev-sprint
-   → Scrum Master organizza stories in sprint
-   → Output: specs/05-sprint-plan.md
-
-7. /dev-implement
-   → Implementazione guidata sprint per sprint
-   → Output: specs/07-implementation.md (tracking)
-
-8. /dev-validate
-   → Test Engineer valida AC vs implementazione
-   → Output: specs/08-validation.md
-```
-
-## Validazione Specs
-
-Verifica la coerenza tra tutti i file specs/:
-
-```bash
-npx tsx scripts/validate-specs.ts --project-dir ./specs --verbose
-```
-
-Oppure chiedi: "Verifica che le spec siano coerenti."
 
 ## Licenza
 

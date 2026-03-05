@@ -1,8 +1,8 @@
-# dev-methodology — La Visione Completa
+# MUCC Plugin Suite — Guida Completa al Progetto
 
 ## L'Idea in Una Frase
 
-Un **plugin per Claude Code** che trasforma lo sviluppo di qualsiasi App o WebApp in un processo strutturato a 8 fasi, guidato da un team di 7 agenti AI specializzati che collaborano tra loro, salvano tutto il contesto in file Markdown e supportano LLM multipli (non solo Claude).
+Due **plugin per Claude Code** che coprono l'intero ciclo di vita di un progetto software: dal brainstorming strutturato (19 agenti) allo sviluppo Spec-Driven a 8 fasi (8 agenti), con 35 skill, tracking persistente in Markdown e supporto multi-LLM.
 
 ---
 
@@ -13,311 +13,208 @@ Quando sviluppi con Claude Code succede spesso che:
 - Perdi contesto tra una sessione e l'altra
 - Non hai traccia delle decisioni prese
 - Il progetto cresce e diventa caotico
-- Claude non sa cosa hai fatto prima, ricomincia da zero ogni volta
+- Il brainstorming resta in testa, non strutturato
 
-La soluzione: **Spec-Driven Development (SDD)**. Prima di scrivere una riga di codice, crei un set completo di documenti (specs) che descrivono il progetto. Questi file diventano la "memoria esterna" di Claude — li legge e sa esattamente cosa fare, anche in sessioni diverse.
+La soluzione: **due plugin complementari**.
+1. **brainstorming** — struttura l'ideazione, l'analisi e lo scoping prima di toccare codice
+2. **dev-methodology** — implementa lo Spec-Driven Development (SDD) con file Markdown come "memoria esterna"
 
 ---
 
-## La Metodologia: 8 Fasi Sequenziali
+## Plugin 1: brainstorming (Pre-sviluppo, v0.2.1)
 
-Il cuore del plugin è una metodologia a 8 fasi, derivata dal Modulo 7A del corso Claude Code Academy. Ogni fase produce un file Markdown in `specs/` che diventa input per la fase successiva.
+### Cosa Fa
+
+Copre le fasi **pre-sviluppo**: ideazione → analisi → scoping → architettura. Produce artefatti strutturati che alimentano il pipeline di sviluppo.
+
+### I 19 Agenti
+
+#### Trio Creativo (opus)
+- **Alessandro** (bs-orchestrator) — Coordinatore centrale. Dirige il flusso, decide chi attivare, mantiene coerenza.
+- **Chiara** (divergent-explorer) — Genera 30-50 idee senza giudizio. Pensiero laterale e analogie.
+- **Nicola** (devils-advocate) — Smonta le idee con analisi critica da mercato e engineering.
+- **Valentina** (synthesizer) — Converte il caos in 3 concept solidi con MVP per ciascuno.
+
+#### Core Analisi (sonnet)
+- **Matteo** (problem-framer) — JTBD, ipotesi testabili H1/H2/H3, metriche. Se non c'e un problema misurabile, chiede di ridefinire.
+- **Federica** (market-researcher) — Competitor, pattern, opportunita, rischi. Separa fatti da inferenze, cita fonti.
+- **Andrea** (mvp-scoper) — MoSCoW, anti-scope, milestone. Ogni Must Have deve avere motivazione.
+- **Marta** (ux-flow-agent) — User journey, schermate, wireframe testuali. Include stati errore e fallback.
+- **Davide** (tech-architect) — Stack, schema dati, API contract, ADR. Spiega tradeoff e alternative.
+
+#### Onboarding Repo (sonnet)
+- **Lorenzo** (codebase-cartographer) — Mappa moduli, hotspot, glossary. Dichiara cosa non ha potuto inferire.
+- **Paola** (dependency-auditor) — Dipendenze, licenze, security, debito tecnico. No update massivi senza rollback.
+- **Simone** (bug-triage-agent) — Steps to reproduce, root cause, proposta fix. Se non riproducibile, propone logging.
+- **Francesca** (refactoring-coach) — Refactor incrementale (no rewrite). Piano safe/medium/risky.
+- **Giorgio** (doc-writer) — README developer-first, runbook deploy, ADR. Niente doc marketing.
+
+#### Specialisti On-demand (haiku)
+- **Claudia** (security-agent) — Threat model, checklist privacy, controlli auth.
+- **Pietro** (performance-agent) — Profiling, caching, query optimization, cost guardrails.
+- **Teresa** (accessibility-agent) — Checklist WCAG/ARIA, test keyboard/contrast.
+- **Stefano** (analytics-agent) — Tracking plan, eventi, KPI, dashboard.
+- **Anna** (copy-agent) — Microcopy, onboarding, empty states, CTA.
+
+### 4 Workflow
+
+| Workflow | Quando | Flusso |
+|----------|--------|--------|
+| **A: Idea → MVP** | Greenfield, nessun repo | assess → brainstorm → problem → research → scope → ux → architect → handoff |
+| **B: Repo ereditato** | Codice altrui/legacy | assess → onboarding → problem → scope → handoff |
+| **C: Bug produzione** | Fix urgente | assess → onboarding (parziale) → fix |
+| **D: Performance** | Ottimizzazione | assess → performance → architect → handoff |
+
+### Output (generato nel progetto utente)
+
+```
+brainstorm/
+├── _status.md                 # Dashboard (auto-aggiornato)
+├── _changelog.md              # Audit log decisioni
+├── 00-assessment.md           # Scorecard + piano attivazione
+├── 01-brainstorm.md           # Divergenza → Sfida → 3 concept
+├── 02-problem-framing.md      # JTBD, ipotesi, metriche
+├── 03-market-research.md      # Competitor, pattern, rischi
+├── 04-mvp-scope.md            # MoSCoW, anti-scope, milestone
+├── 05-ux-flows.md             # Journey, schermate, stati
+├── 06-architecture.md         # Stack, schema, API, ADR
+├── onboarding/                # Solo per repo esistenti
+├── specialists/               # Output specialisti on-demand
+└── ux/                        # Wireframe e component spec
+```
+
+---
+
+## Plugin 2: dev-methodology (Sviluppo, v0.5.1)
+
+### Cosa Fa
+
+Implementa lo **Spec-Driven Development (SDD)**: 8 fasi sequenziali con gate, 8 agenti specializzati, tracking persistente in `specs/`, supporto multi-LLM.
+
+### Gli 8 Agenti
+
+- **Marco** (app-expert, opus) — Coordinatore CTO. Diretto, strategico, visione d'insieme. Legge tutti i file specs/, decide chi attivare.
+- **Giulia** (pm-agent, sonnet) — Product Manager. Curiosa, incisiva, orientata ai dati. Gestisce fasi 1-3.
+- **Elena** (ux-designer, sonnet) — UX/UI + Figma Expert. Empatica, visuale, centrata sull'utente. Wireframe, design tokens, component mapping.
+- **Roberto** (be-architect, sonnet) — Backend Python + Node.js. Analitico, metodico, KISS-oriented. Architettura, API, deployment.
+- **Franco** (db-expert, sonnet) — PostgreSQL 10+ anni. Preciso, performance-driven. Schema, indici, JSONB, FTS, partitioning, RLS.
+- **Silvia** (security-expert, sonnet) — AppSec. Paranoica (by design), rigorosa. OWASP Top 10, CVE, SAST, SCA.
+- **Luca** (test-engineer, haiku) — QA. Meticoloso, scettico, coverage-oriented. Test strategy, AC validation.
+- **Sara** (scrum-master, haiku) — Agile. Facilitatrice, pragmatica, velocity-focused. Sprint planning, retrospective.
+
+### Le 8 Fasi
 
 ```
 Fase 1: VISION           → specs/01-vision.md
-   "Cosa stiamo costruendo? Per chi? Perché?"
+   Marco attiva Giulia. Discovery session, Vision Statement.
 
 Fase 2: PRD              → specs/02-prd.md
-   "Quali funzionalità servono? Con che priorità? (MoSCoW)"
+   Giulia crea Personas, Features, MoSCoW, Rischi.
 
 Fase 3: USER STORIES     → specs/03-user-stories.md
-   "Come descrive l'utente le azioni? Con quali criteri di accettazione?"
-   Formato: DATO [contesto] QUANDO [azione] ALLORA [risultato]
+   Giulia genera stories con AC in DATO-QUANDO-ALLORA.
+   Luca valida che siano testabili.
 
-Fase 4: TECH SPEC        → specs/04-tech-spec.md + specs/technical/ + specs/database/ + specs/ux/
-   "Quale stack? Quale architettura? Quale schema DB? Quale UX?"
+Fase 4: TECH SPEC        → specs/04-tech-spec.md + technical/ + database/ + ux/
+   Marco coordina Roberto, Franco, Elena in parallelo.
 
-Fase 5: SPRINT PLAN      → specs/05-sprint-plan.md
-   "In che ordine implementiamo? Quanti sprint servono?"
+Fase 5: SPRINT PLAN      → specs/05-sprint-plan.md + CLAUDE.md progetto
+   Sara organizza stories in sprint. Genera CLAUDE.md strutturato.
 
-Fase 6: CLAUDE.MD        → CLAUDE.md (radice progetto)
-   "Come deve comportarsi Claude durante l'implementazione?"
+Fase 6: CLAUDE.MD        → CLAUDE.md (automatica, integrata in fase 5)
 
-Fase 7: IMPLEMENTATION   → specs/07-implementation.md
-   "Implementazione guidata sprint per sprint, story per story"
+Fase 7: IMPLEMENTATION   → specs/07-implementation.md + tests/
+   Roberto guida il codice, Franco le migrazioni, Luca i test.
 
-Fase 8: VALIDATION       → specs/08-validation.md
-   "Ogni Acceptance Criteria è soddisfatto? L'app funziona?"
+Fase 8: VALIDATION       → specs/08-validation.md + sprint-reviews/
+   Luca esegue test automatici + E2E browser. Silvia verifica security gate.
 ```
 
-Ogni fase ha un **gate**: non puoi passare alla successiva finché quella corrente non è completa e validata.
+### Skill aggiuntive (v0.5.0+)
+
+- `/dev-quick` — Flow rapido per bug fix e feature piccole (1-15 stories). Genera `quick-spec.md` compatto. Rileva scope creep con escalation automatica.
+- `/dev-review` — Revisione avversaria in 3 pass: Completeness Check, Adversarial Review, Edge Case Hunter. Genera report PASS/FAIL.
+- `/dev-pivot` — Gestione cambi di requisiti. Impact analysis su tutti i file specs/, categorizza in RIFARE/AGGIORNARE/INVARIATO.
+- `/dev-refactor` — Analisi qualita codice con tool deterministici (Knip, ESLint, tsc, Ruff, mypy, vulture). Quality Score con soglie configurabili.
+- `/dev-security` — Analisi sicurezza SAST + SCA + AI reasoning. Security Score con gate bloccante.
+
+### Template e Validazione
+
+6 template strutturati in `references/templates/` con marker `<!-- REQUIRED -->` e `<!-- OPTIONAL -->`. La validazione con `--check-sections` verifica che ogni sezione obbligatoria sia presente e rispetti i minimi (es. min 3 obiettivi, min 2 personas, min 4 AC per story).
+
+### Output (generato nel progetto utente)
+
+```
+specs/
+├── _status.md           # Dashboard (auto-aggiornato via hooks)
+├── _changelog.md        # Audit log decisioni con timestamp
+├── 01-vision.md         # Vision, obiettivi, metriche
+├── 02-prd.md            # PRD con personas e MoSCoW
+├── 03-user-stories.md   # Stories + AC (DATO-QUANDO-ALLORA)
+├── 04-tech-spec.md      # Architettura, API, DB, UX
+├── 05-sprint-plan.md    # Sprint con task e stime
+├── 07-implementation.md # Tracking implementazione
+├── 08-validation.md     # Report QA e validazione
+├── technical/           # Tech spec per epic, review report
+├── database/            # Schema SQL DDL e migrazioni
+├── ux/                  # Wireframe, flussi, design tokens
+├── testing/             # Test strategy, AC→test mapping
+└── sprint-reviews/      # Review per sprint
+```
 
 ---
 
-## Il Team di Agenti
+## Handoff: Da Brainstorming a Sviluppo
 
-Il plugin crea un team virtuale di 7 agenti specializzati. L'utente parla con uno solo — l'**App Expert** — che coordina tutti gli altri.
+`/bs-handoff` mappa automaticamente i contenuti brainstorming verso specs/:
 
-### App Expert (Coordinatore) — Claude Opus
-Il CTO del progetto. Legge TUTTI i file specs/, capisce lo stato complessivo, decide quale specialista attivare. Mantiene aggiornati `_status.md` (dashboard progetto) e `_changelog.md` (log di tutte le decisioni con timestamp).
-
-### PM Agent — Claude Sonnet
-Il Product Manager. Gestisce le Fasi 1-3: discovery session con l'utente (10-15 domande), Vision Statement, PRD con Personas e prioritizzazione MoSCoW (Must/Should/Could/Won't), User Stories con Acceptance Criteria in formato DATO-QUANDO-ALLORA.
-
-### UX Designer — Claude Sonnet (o Gemini per task visivi)
-Specialista in design di App e WebApp. **Esperto Figma**: sa leggere design condivisi, estrarre design tokens (colori, tipografia, spaziatura), mappare componenti Figma a componenti React/Vue/Angular, tradurre auto-layout in CSS Flexbox/Grid. Produce wireframe (ASCII se non c'è Figma), flussi utente, component spec con tutti gli stati (loading, empty, error, success, offline), design system tokens. Output in `specs/ux/`.
-
-### BE Architect — Claude Sonnet
-Architetto backend **dual-stack Python + Node.js**. Sa valutare e giustificare con ADR (Architecture Decision Record) quale stack scegliere tra:
-- **Python**: FastAPI (async, high-performance), Django (full-stack, admin, ORM robusto), Flask (micro)
-- **Node.js**: Express (flessibile, middleware), NestJS (enterprise, TypeScript-first, DI), Fastify (performance)
-
-Produce architettura completa, API endpoints, struttura file, strategia deployment, pattern architetturali. Output in `specs/04-tech-spec.md` e `specs/technical/`.
-
-### DB Expert — Claude Sonnet
-Database specialist con **10+ anni di esperienza PostgreSQL**. Va oltre il semplice schema design: conosce gli internals del database (planner, vacuum, replication). Competenze avanzate: indici B-tree/GIN/GiST/BRIN/partial, JSONB per dati flessibili, Full-Text Search con dizionario italiano, partitioning, Row Level Security per multi-tenant, tuning parametri produzione, migrazioni zero-downtime (`CREATE INDEX CONCURRENTLY`). Sa integrare con tutti gli ORM (SQLAlchemy, Prisma, Django ORM). Output in `specs/database/`.
-
-### Test Engineer — Claude Haiku
-QA specialist. Trasforma gli Acceptance Criteria in test cases concreti. Produce test strategy (unit, integration, e2e), test plan per sprint, report QA con matrice AC-passed/failed. Valida che ogni story sia completamente testata.
-
-### Scrum Master — Claude Haiku
-Gestisce sprint planning, velocity tracking, task breakdown (story → task con ore stimate), retrospective. Ogni story viene scomposta in task implementabili, assegnati a sprint con dipendenze chiare.
+| Sorgente BS | Target dev-methodology |
+|-------------|----------------------|
+| `02-problem-framing.md` (JTBD, ipotesi, metriche) | `specs/01-vision.md` |
+| `03-market-research.md` + `04-mvp-scope.md` | `specs/02-prd.md` |
+| `05-ux-flows.md` | `specs/ux/wireframes.md` |
+| `06-architecture.md` | `specs/04-tech-spec.md` |
 
 ---
 
-## Come Funziona in Pratica
+## Tracking Persistente
 
-### Installazione
+Tutto viene salvato in file Markdown. Questo garantisce:
 
-**Quick Install** (consigliato):
-```bash
-git clone https://github.com/MaxGiu67/plugin-MUCC.git
-cd plugin-MUCC
-bash install.sh              # symlink in ~/.claude/skills/ (default)
-bash install.sh --copy       # copia indipendente
-bash install.sh --uninstall  # disinstalla
-```
+1. **Continuita tra sessioni** — Claude legge i file e sa cosa e stato fatto
+2. **Audit trail** — `_changelog.md` registra ogni decisione con data e agente
+3. **Dashboard real-time** — `_status.md` mostra fase corrente e progresso
+4. **Nessun contesto perso** — Anche cambiando sessione, i file contengono tutto
 
-**Manuale**:
-```bash
-git clone https://github.com/MaxGiu67/plugin-MUCC.git
-cd plugin-MUCC
-for skill in dev-methodology/skills/dev-*/; do
-  ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename $skill)
-done
-```
-
-Riavvia Claude Code dopo l'installazione.
-
-### Flusso tipico
-```
-Utente: /dev-init "MyApp"
-→ Crea specs/ con tutti i template vuoti
-
-Utente: /dev-vision
-→ App Expert attiva PM Agent
-→ PM fa 10-15 domande discovery
-→ Output: specs/01-vision.md
-
-Utente: /dev-prd
-→ PM crea Personas, Features, MoSCoW
-→ Output: specs/02-prd.md
-
-Utente: /dev-stories
-→ PM trasforma features in User Stories con AC
-→ Test Engineer valida che gli AC siano testabili
-→ Output: specs/03-user-stories.md
-
-Utente: /dev-spec
-→ App Expert coordina 3 specialisti in parallelo:
-  → BE Architect: architettura + API + struttura
-  → DB Expert: schema PostgreSQL + migrazioni
-  → UX Designer: wireframe + design system (+ Figma handoff se disponibile)
-→ Output: specs/04-tech-spec.md + specs/technical/ + specs/database/ + specs/ux/
-
-Utente: /dev-sprint
-→ Scrum Master organizza stories in sprint con stime
-→ Output: specs/05-sprint-plan.md
-
-Utente: /dev-implement
-→ Implementazione guidata story per story
-→ BE Architect guida il codice, DB Expert le migrazioni
-→ Output: specs/07-implementation.md (tracking)
-
-Utente: /dev-validate
-→ Test Engineer verifica ogni AC vs implementazione
-→ Output: specs/08-validation.md
-```
-
-### Comandi disponibili
-
-| Comando | Fase | Cosa fa |
-|---------|------|---------|
-| `/dev-init` | Setup | Inizializza progetto con struttura specs/ |
-| `/dev-vision` | 1 | Vision, obiettivi, metriche di successo |
-| `/dev-prd` | 2 | PRD con personas e priorità MoSCoW |
-| `/dev-stories` | 3 | User Stories + AC (DATO-QUANDO-ALLORA) |
-| `/dev-spec` | 4 | Architettura, API, DB schema, UX |
-| `/dev-sprint` | 5 | Sprint planning con task e stime |
-| `/dev-implement` | 7 | Implementazione guidata per sprint |
-| `/dev-validate` | 8 | Validazione QA di tutti gli AC |
-| `/dev-status` | — | Dashboard stato progetto |
-| `/dev-sync` | — | Integra risultati da LLM esterni |
-| `/dev-structure` | — | Mostra albero file specs/ |
+I file `_status.md` vengono aggiornati automaticamente tramite hooks (`PostToolUse` su Write/Edit).
 
 ---
 
-## Tracking Persistente: La Memoria del Progetto
+## Multi-LLM
 
-Tutto viene salvato in file Markdown dentro `specs/`. Questo significa che:
+Ogni agente puo usare il LLM migliore per il suo task. Claude resta il motore principale, ma per task specifici si chiamano LLM esterni:
 
-1. **Continuità tra sessioni**: Claude legge i file e sa cosa è stato fatto, deciso, e cosa manca.
-2. **Audit trail completo**: `_changelog.md` registra ogni decisione con data, motivo, e agente responsabile.
-3. **Dashboard real-time**: `_status.md` mostra fase corrente, progresso percentuale, prossimi passi.
-4. **Nessun contesto perso**: Anche se cambi sessione, computer, o collaboratore, i file specs/ contengono tutto.
-
-I file `_status.md` e `_changelog.md` vengono aggiornati automaticamente dall'App Expert dopo ogni azione significativa. Un hook monitora le modifiche ai file specs/ e triggera `update-status.ts`.
-
----
-
-## Multi-LLM: Non Solo Claude
-
-L'idea chiave: **ogni agente può usare il LLM migliore per il suo task**. Claude resta il motore principale (gli agenti vivono dentro Claude Code), ma per task specifici si possono chiamare LLM esterni via script TypeScript.
-
-### Configurazione
-Copia `CONFIG-EXAMPLE.json` in `llm-config.json` e imposta le API key come variabili d'ambiente.
-
-### Provider supportati
-
-| Provider | Modelli | Uso principale |
-|----------|---------|---------------|
-| **Claude** (nativo) | opus, sonnet, haiku | Tutti gli agenti, coordinamento, codice |
-| **Gemini** | 2.5 Pro, 2.0 Flash | UX design, analisi visuale screenshot Figma (multimodal) |
-| **GPT** | GPT-4o, GPT-4o-mini | Market research, analisi competitor, brainstorming |
-| **Mistral** | Large, Small | Task europei, documentazione, traduzioni |
-
-### Come funziona
-Gli agenti Claude delegano a LLM esterni tramite script:
 ```bash
 # Gemini analizza uno screenshot Figma
 npx tsx scripts/generate-ux.ts --feature "Dashboard" --type figma-analysis
 
 # GPT fa market research
-npx tsx scripts/call-external-llm.ts --provider gpt --task "Analizza competitor per [settore]"
+npx tsx scripts/call-external-llm.ts --provider gpt --task "Analizza competitor"
 
-# Integra risultati nei file specs/
+# Integra i risultati nel progetto
 /dev-sync
 ```
 
-Il mapping agente → LLM è configurabile in `llm-config.json`. Ogni agente ha un provider default con fallback a Claude.
-
 ---
 
-## Struttura del Plugin
+## Come Continuare lo Sviluppo
 
-```
-dev-methodology/
-├── .claude-plugin/
-│   └── plugin.json              ← Manifest del plugin (nome, versione, keyword)
-├── CONFIG-EXAMPLE.json          ← Template configurazione multi-LLM
-├── README.md                    ← Guida installazione e uso rapido
-├── agents/                      ← 7 agenti specializzati (.md con YAML frontmatter)
-│   ├── app-expert.md            ← Coordinatore (opus, magenta)
-│   ├── pm-agent.md              ← Product Manager (sonnet, blue)
-│   ├── ux-designer.md           ← UX/UI + Figma (sonnet, cyan)
-│   ├── be-architect.md          ← Backend Python/Node (sonnet, green)
-│   ├── db-expert.md             ← PostgreSQL 10+ anni (sonnet, purple)
-│   ├── test-engineer.md         ← QA (haiku, orange)
-│   └── scrum-master.md          ← Sprint (haiku, yellow)
-├── commands/                    ← 11 slash commands (.md)
-│   ├── dev-init.md
-│   ├── dev-vision.md
-│   ├── dev-prd.md
-│   ├── dev-stories.md
-│   ├── dev-spec.md
-│   ├── dev-sprint.md
-│   ├── dev-implement.md
-│   ├── dev-validate.md
-│   ├── dev-status.md
-│   ├── dev-sync.md
-│   └── dev-structure.md
-├── hooks/
-│   └── hooks.json               ← Auto-aggiorna _status.md quando modifichi specs/
-├── scripts/                     ← 7 script TypeScript (Node.js built-in, no dipendenze)
-│   ├── init-project.ts          ← Crea struttura specs/ con template
-│   ├── update-status.ts         ← Aggiorna _status.md (fase, progresso %)
-│   ├── update-changelog.ts      ← Appende entry con timestamp
-│   ├── call-external-llm.ts     ← Chiamata generica a Gemini/GPT/Mistral
-│   ├── generate-ux.ts           ← Wrapper Gemini per wireframe/Figma analysis
-│   ├── validate-specs.ts        ← Validazione cross-spec (PRD↔Stories↔Spec↔Sprint)
-│   └── export-project.ts        ← Esporta tutto in Markdown/HTML
-└── skills/                      ← 3 skill con reference files
-    ├── dev-methodology/
-    │   ├── SKILL.md              ← Skill principale: panoramica 8 fasi
-    │   └── references/
-    │       ├── 8-phase-overview.md       ← Dettaglio fasi con gate criteria
-    │       ├── ac-template.md            ← Template AC con esempi
-    │       ├── tech-spec-template.md     ← Template tech spec completo
-    │       └── agent-responsibilities.md ← Matrice agente × fase
-    ├── multi-llm-integration/
-    │   ├── SKILL.md              ← Come usare LLM esterni
-    │   └── references/
-    │       └── llm-providers.md  ← API details per provider
-    └── spec-validation/
-        └── SKILL.md              ← Regole validazione cross-spec
-```
-
-Totale: **37 file**, ~73KB compresso come `.plugin`.
-
----
-
-## Origine: Da Dove Viene
-
-Questa metodologia è stata estratta dal **Modulo 7A (Metodologia di Sviluppo)** e **Modulo 7B (Spec e BMAD)** del corso "Claude Code — Dalle Basi al Professionista" (Claude Code Academy). I moduli descrivono la piramide Vision → PRD → Stories → Specs → Sprint → Tasks e il framework BMAD (Breakthrough Method for Agile AI-Driven Development).
-
-Il file sorgente della metodologia è: `corso-claude-code/materiali/metodologia-universale-claude-code.md`
-
-I moduli sorgente sono:
-- `corso-claude-code/moduli/07a-metodologia-sviluppo.md` (~2100 righe)
-- `corso-claude-code/moduli/07b-spec-bmad-claude-code.md` (~700 righe)
-
----
-
-## Cosa Manca / Evoluzione Futura
-
-### Da completare
-1. **Test end-to-end**: Eseguire un ciclo completo `/dev-init` → `/dev-validate` su un progetto reale per validare che tutto funzioni
-2. **Hooks raffinati**: Il `hooks.json` attuale è basilare. Si potrebbe migliorare con trigger più granulari (es. aggiornare changelog automaticamente quando viene presa una decisione)
-3. **MCP server**: Si potrebbe aggiungere un server MCP che espone le specs come tool, permettendo ad altri agenti esterni di leggere lo stato del progetto
-4. **Template per framework specifici**: Aggiungere template pre-compilati per stack comuni (Next.js + Prisma + PostgreSQL, Django + React, FastAPI + Vue)
-
-### Idee di evoluzione
-- **Dashboard web**: Script che genera una pagina HTML navigabile dallo stato del progetto
-- **Integrazione Figma API**: Invece di screenshot, leggere direttamente dall'API Figma i design token
-- **Retrospective automatica**: Analisi delle sprint review passate per suggerire miglioramenti al processo
-- **Cost tracking**: Stima dei costi LLM per fase (token usati, costo per agente)
-- **Collaboration mode**: Più sviluppatori possono lavorare sullo stesso progetto, ognuno con il proprio App Expert che legge le stesse specs/
-- **Plugin marketplace**: Pubblicazione su marketplace Claude Code (attualmente è solo per uso privato/team)
-
----
-
-## Come Continuare lo Sviluppo in Un Nuovo Contesto
-
-Per riprendere il lavoro su questo plugin in una nuova sessione Claude Code:
-
-1. **Apri la cartella** `dev-methodology/` come workspace
-2. **Leggi questo file** (`README-PROGETTO.md`) per avere il contesto completo
-3. **Verifica i file** con `/dev-structure` o `find dev-methodology/ -type f | sort`
-4. **Testa** eseguendo `npx tsx scripts/init-project.ts --name "TestApp"` per verificare che gli script funzionino
-5. **Itera** sugli agenti: apri ciascun `.md` in `agents/`, verifica che le istruzioni siano chiare
-6. **Prova il flusso completo** su un progetto di test: `/dev-init` → `/dev-vision` → `/dev-prd` → ecc.
-
-### Contesto tecnico essenziale
-- Gli agenti sono file `.md` con frontmatter YAML (`name`, `description`, `model`, `color`, `tools`)
-- I comandi sono file `.md` con frontmatter YAML (`description`, `allowed-tools`) + istruzioni in Markdown
-- Le skill sono file `SKILL.md` con frontmatter YAML + corpo + cartella `references/` opzionale
-- Gli script TypeScript usano solo Node.js built-in (fs, path, https, url) — zero dipendenze npm
-- Il plugin si installa con `bash install.sh` (symlink + registrazione automatica) o via marketplace
+1. Apri la cartella `plugin-MUCC/` come workspace
+2. Leggi questo file per avere il contesto completo
+3. Verifica i file con `/dev-structure`
+4. Testa con `bash install.sh --check` per verificare tool
+5. Prova il flusso: `/bs-init` → `/bs-assess` → `/bs-run` → `/bs-handoff` → `/dev-vision` → ...
 
 ### Il principio guida
-**"Structure in, Excellence out"** — Più struttura dai al processo, migliore è l'output. Ogni file in `specs/` è un pezzo di contesto che rende Claude più preciso, coerente e capace di riprendere il lavoro da dove si era interrotto.
+
+**"Structure in, Excellence out"** — Piu struttura dai al processo, migliore e l'output.
