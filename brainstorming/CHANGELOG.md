@@ -3,6 +3,11 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-03-05
+
+### Fixed
+- Rimossa directory `commands/` legacy che causava duplicati in Cowork
+
 ## [0.2.0] - 2026-03-05
 
 ### Added

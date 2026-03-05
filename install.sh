@@ -107,7 +107,7 @@ error()   { echo -e "${RED}✖${NC}  $1"; }
 print_banner() {
   echo ""
   echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-  echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.5.0   ║${NC}"
+  echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.5.1   ║${NC}"
   echo -e "${BOLD}║   dev-methodology + brainstorming         ║${NC}"
   echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""
