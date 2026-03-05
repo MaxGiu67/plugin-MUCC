@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Due plugin complementari: brainstorming strutturato (upstream) e sviluppo SDD a 8 fasi (downstream) con 27 agenti AI e supporto multi-LLM",
-    "version": "0.4.3"
+    "version": "0.5.0"
   },
   "plugins": [
     {
