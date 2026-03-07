@@ -1,0 +1,19 @@
+{
+  "name": "meetingmind",
+  "version": "0.1.0",
+  "description": "Tool AI reattivo per consulenti IT: guida la raccolta informazioni durante meeting di pre-analisi, suggerisce domande in real-time, monitora completezza su 10 aree e genera report strutturato delle info raccolte.",
+  "author": {
+    "name": "Nexa Data"
+  },
+  "keywords": [
+    "meeting",
+    "pre-analysis",
+    "consulting",
+    "requirements",
+    "real-time",
+    "questions",
+    "report",
+    "IT",
+    "cowork"
+  ]
+}

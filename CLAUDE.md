@@ -4,12 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Questo repo contiene **due plugin Claude Code** complementari distribuiti nello stesso marketplace:
+Questo repo contiene **tre plugin Claude Code** complementari distribuiti nello stesso marketplace:
 
 | Plugin | Directory | Fase | Skill | Agenti |
 |--------|-----------|------|-------|--------|
 | **dev-methodology** | `dev-methodology/` | Sviluppo (downstream) | 17 | 8 |
 | **brainstorming** | `brainstorming/` | Pre-sviluppo (upstream) | 18 | 19 |
+| **meetingmind** | `meetingmind/` | Meeting pre-analisi | 1 | 1 |
 
 ### Pipeline completo
 
@@ -68,7 +69,7 @@ bash install.sh --check      # verifica quali tool sono installati
 bash install.sh --uninstall  # disinstalla skill (non tool)
 ```
 
-Lo script installa 17 skill dev-methodology + 18 skill brainstorming in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
+Lo script installa 17 skill dev-methodology + 18 skill brainstorming + 1 skill meetingmind in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
 
 ### Aggiornamento
 
@@ -354,7 +355,53 @@ Il file `studio_agenti_mvp.md` (in `/Users/massimilianogiurtelli/Sviluppo/Plugin
 
 ---
 
-## Convenzioni condivise (entrambi i plugin)
+## Plugin 3: meetingmind (Pre-analisi IT)
+
+**meetingmind** e un plugin Claude Code per consulenti IT: guida la raccolta informazioni durante meeting di pre-analisi, suggerisce domande in real-time, monitora completezza su 10 aree e genera report strutturato .docx.
+
+### Architettura meetingmind/
+
+```
+meetingmind/
+├── .claude-plugin/plugin.json     # Plugin manifest (v0.1.0)
+├── agents/
+│   └── meetingmind-assistant.md   # Agente sonnet — conciso, strutturato
+├── hooks/hooks.json               # (vuoto per ora)
+├── scripts/
+│   └── genera-report.py           # Genera report .docx
+└── skills/
+    └── meetingmind/
+        ├── SKILL.md               # Skill principale
+        └── references/
+            ├── aree-preanalisi.md     # Dettaglio 10 aree
+            ├── domande-per-area.md    # Domande calibrate per tipo progetto
+            └── template-report.md     # Template report finale
+```
+
+### Le 10 Aree Monitorate
+
+1. Stack tecnologico — 2. Utenti — 3. Integrazioni — 4. Dati e volumi — 5. Infrastruttura — 6. Sicurezza/Compliance — 7. Governance — 8. Tempi e deadline — 9. Budget — 10. Team cliente
+
+### Comandi
+
+| Comando | Azione |
+|---------|--------|
+| `/meetingmind` | Avvia sessione di pre-analisi |
+| `/report` | Genera report finale + export .docx |
+| `/stato` | Mostra i 4 pannelli (senza aggiungere input) |
+| `/aree` | Dettaglio di tutte le aree con info raccolte |
+| `/reset` | Azzera la sessione |
+
+### Regole fondamentali
+
+- **MAI** suggerire soluzioni tecniche, architetture o stack
+- **MAI** proporre stime di tempi, costi o effort
+- Solo domande informative per colmare gap
+- Risposte sempre con i 4 pannelli strutturati (max 30 righe)
+
+---
+
+## Convenzioni condivise (tutti i plugin)
 
 - **Lingua**: italiano per contenuti, termini tecnici in inglese
 - **Agent files**: Markdown + YAML frontmatter (`name`, `description`, `model`, `color`, `tools`)

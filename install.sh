@@ -63,8 +63,14 @@ BS_SKILLS=(
   bs-status
 )
 
+# ── Plugin: meetingmind ──
+MM_SOURCE="$SCRIPT_DIR/meetingmind/skills"
+MM_SKILLS=(
+  meetingmind
+)
+
 # Tutti i prefissi skill per cleanup obsolete
-ALL_PREFIXES=("dev-" "bs-" "mucc-")
+ALL_PREFIXES=("dev-" "bs-" "mucc-" "meetingmind")
 
 # ============================================================================
 # Tool esterni per /dev-refactor e /dev-security
@@ -108,7 +114,7 @@ print_banner() {
   echo ""
   echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
   echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.5.1   ║${NC}"
-  echo -e "${BOLD}║   dev-methodology + brainstorming         ║${NC}"
+  echo -e "${BOLD}║   dev-methodology + brainstorming + mm     ║${NC}"
   echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""
 }
@@ -166,6 +172,13 @@ check_prerequisites() {
     error "Directory non trovata: $BS_SOURCE"
     error "Esegui lo script dalla root del repository"
     has_errors=1
+  fi
+
+  # Sorgente plugin meetingmind
+  if [ -d "$MM_SOURCE" ]; then
+    success "Sorgente meetingmind trovata"
+  else
+    warn "Sorgente meetingmind non trovata (opzionale)"
   fi
 
   if [ "$has_errors" -eq 1 ]; then
@@ -405,7 +418,7 @@ install_plugin() {
 
   # Verifica se ci sono skill già installate
   local existing=0
-  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
+  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}" "${MM_SKILLS[@]}"; do
     if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
       existing=$((existing + 1))
     fi
@@ -454,7 +467,25 @@ install_plugin() {
   done
   success "${#BS_SKILLS[@]} skill brainstorming installate"
 
-  local total_skills=$((${#DEV_SKILLS[@]} + ${#BS_SKILLS[@]}))
+  # Installa le skill meetingmind
+  if [ -d "$MM_SOURCE" ]; then
+    echo ""
+    info "Plugin: meetingmind (${#MM_SKILLS[@]} skill)"
+    for skill in "${MM_SKILLS[@]}"; do
+      if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
+        rm -rf "$SKILLS_DIR/$skill"
+      fi
+      if [ "$mode" = "copy" ]; then
+        cp -r "$MM_SOURCE/$skill" "$SKILLS_DIR/$skill"
+      else
+        ln -s "$MM_SOURCE/$skill" "$SKILLS_DIR/$skill"
+      fi
+      installed=$((installed + 1))
+    done
+    success "${#MM_SKILLS[@]} skill meetingmind installate"
+  fi
+
+  local total_skills=$((${#DEV_SKILLS[@]} + ${#BS_SKILLS[@]} + ${#MM_SKILLS[@]}))
 
   if [ "$mode" = "copy" ]; then
     success "$total_skills skill totali copiate in $SKILLS_DIR/"
@@ -475,6 +506,13 @@ install_plugin() {
   for skill in "${BS_SKILLS[@]}"; do
     echo "  /$skill"
   done
+  if [ -d "$MM_SOURCE" ]; then
+    echo ""
+    echo -e "${BOLD}meetingmind (${#MM_SKILLS[@]} skill):${NC}"
+    for skill in "${MM_SKILLS[@]}"; do
+      echo "  /$skill"
+    done
+  fi
   echo ""
   echo -e "${BOLD}Prossimi passi:${NC}"
   echo "  1. Riavvia Claude Code (chiudi e riapri la sessione)"
@@ -572,6 +610,11 @@ update_plugin() {
   echo ""
   info "Plugin: brainstorming"
   _update_skills "$BS_SOURCE" "${BS_SKILLS[@]}"
+  if [ -d "$MM_SOURCE" ]; then
+    echo ""
+    info "Plugin: meetingmind"
+    _update_skills "$MM_SOURCE" "${MM_SKILLS[@]}"
+  fi
 
   # ── Rimuovi skill obsolete non più negli array ──
   local removed=0
@@ -581,7 +624,7 @@ update_plugin() {
       local skill_name
       skill_name=$(basename "$existing")
       local found=false
-      for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
+      for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}" "${MM_SKILLS[@]}"; do
         if [ "$skill" = "$skill_name" ]; then
           found=true
           break
@@ -608,13 +651,14 @@ update_plugin() {
   [ "$unchanged" -gt 0 ] && info "$unchanged skill già aggiornate (symlink OK)"
   [ "$removed" -gt 0 ] && warn "$removed skill obsolete rimosse"
 
-  local total_skills=$((${#DEV_SKILLS[@]} + ${#BS_SKILLS[@]}))
+  local total_skills=$((${#DEV_SKILLS[@]} + ${#BS_SKILLS[@]} + ${#MM_SKILLS[@]}))
   echo ""
   echo -e "${GREEN}${BOLD}Aggiornamento completato!${NC}"
   echo ""
   echo -e "${BOLD}Skill attive ($total_skills):${NC}"
   echo "  dev-methodology: ${#DEV_SKILLS[@]} skill"
   echo "  brainstorming:   ${#BS_SKILLS[@]} skill"
+  echo "  meetingmind:     ${#MM_SKILLS[@]} skill"
   echo ""
   info "Riavvia Claude Code per applicare le modifiche."
   echo ""
@@ -630,7 +674,7 @@ uninstall_plugin() {
   echo ""
 
   local found=0
-  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
+  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}" "${MM_SKILLS[@]}"; do
     if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
       found=$((found + 1))
     fi
@@ -651,7 +695,7 @@ uninstall_plugin() {
   fi
 
   local removed=0
-  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}"; do
+  for skill in "${DEV_SKILLS[@]}" "${BS_SKILLS[@]}" "${MM_SKILLS[@]}"; do
     if [ -e "$SKILLS_DIR/$skill" ] || [ -L "$SKILLS_DIR/$skill" ]; then
       rm -rf "$SKILLS_DIR/$skill"
       removed=$((removed + 1))

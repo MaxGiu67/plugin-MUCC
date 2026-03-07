@@ -4,7 +4,7 @@
     "name": "MaxGiu67"
   },
   "metadata": {
-    "description": "Due plugin complementari: brainstorming strutturato (upstream) e sviluppo SDD a 8 fasi (downstream) con 27 agenti AI e supporto multi-LLM",
+    "description": "Suite di 3 plugin: brainstorming strutturato (19 agenti), sviluppo SDD a 8 fasi (8 agenti), MeetingMind per pre-analisi IT (1 agente) — 36 skill, supporto multi-LLM",
     "version": "0.5.1"
   },
   "plugins": [
@@ -17,6 +17,11 @@
       "name": "brainstorming",
       "description": "Brainstorming strutturato e generazione documenti MVP con 19 agenti specializzati, assessment operativo, trio creativo, onboarding repo e handoff verso dev-methodology",
       "source": "./brainstorming"
+    },
+    {
+      "name": "meetingmind",
+      "description": "Tool AI reattivo per consulenti IT: guida raccolta informazioni durante meeting di pre-analisi, domande real-time, monitoraggio 10 aree, report .docx",
+      "source": "./meetingmind"
     }
   ]
 }

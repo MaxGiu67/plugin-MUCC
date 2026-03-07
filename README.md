@@ -1,18 +1,19 @@
 # MUCC Plugin Suite — Claude Code
 
-Due plugin complementari per **brainstorming strutturato** e **sviluppo Spec-Driven** con 27 agenti AI specializzati.
+Tre plugin complementari per **brainstorming strutturato**, **sviluppo Spec-Driven** e **meeting di pre-analisi IT** con 28 agenti AI specializzati.
 
 | Plugin | Skill | Agenti | Versione | Fase |
 |--------|-------|--------|----------|------|
 | **dev-methodology** | 17 | 8 | 0.5.1 | Sviluppo (downstream) |
 | **brainstorming** | 18 | 19 | 0.2.1 | Pre-sviluppo (upstream) |
+| **meetingmind** | 1 | 1 | 0.1.0 | Meeting pre-analisi |
 
 ## Installazione
 
 ```bash
 git clone https://github.com/MaxGiu67/plugin-MUCC.git
 cd plugin-MUCC
-bash install.sh              # installa 35 skill + tool esterni (default)
+bash install.sh              # installa 36 skill + tool esterni (default)
 bash install.sh --copy       # copia indipendente + tool
 bash install.sh --skip-tools # solo skill, senza tool esterni
 bash install.sh --update     # aggiorna: git pull + nuove skill + nuovi tool
@@ -174,6 +175,37 @@ Brainstorming strutturato e generazione documenti MVP. Copre le fasi **pre-svilu
 
 ---
 
+## Plugin 3: meetingmind (Pre-analisi IT)
+
+Tool AI reattivo per consulenti IT: guida la raccolta informazioni durante meeting di pre-analisi, suggerisce domande in real-time, monitora completezza su 10 aree e genera report .docx.
+
+### Agente
+
+| Agente | Modello | Ruolo |
+|--------|---------|-------|
+| **MeetingMind Assistant** | sonnet | Raccolta info, domande, monitoraggio 10 aree |
+
+### Come funziona
+
+```
+/meetingmind              # avvia sessione → setup (tipo progetto, settore, cliente)
+[input libero]            # keyword, frasi, risposte → 4 pannelli aggiornati
+/report                   # genera report finale + export .docx
+/stato                    # mostra pannelli senza aggiungere input
+/aree                     # dettaglio tutte le aree con info raccolte
+/reset                    # azzera sessione
+```
+
+### Le 10 aree monitorate
+
+Stack tecnologico · Utenti · Integrazioni · Dati e volumi · Infrastruttura · Sicurezza/Compliance · Governance · Tempi e deadline · Budget · Team cliente
+
+### Regola chiave
+
+MeetingMind sa quali **informazioni** servono, non quali **risposte** dare. Mai suggerisce soluzioni tecniche, architetture, stime o costi.
+
+---
+
 ## Quick Start
 
 ### Progetto da zero (brainstorming + sviluppo)
@@ -222,7 +254,7 @@ Supporta LLM esterni (Gemini, GPT, Mistral) per task specifici. Copia `CONFIG-EX
 
 ```
 plugin-MUCC/
-├── install.sh                    # Installer (35 skill + tool)
+├── install.sh                    # Installer (36 skill + tool)
 ├── CHANGELOG.md                  # Changelog dev-methodology
 ├── CLAUDE.md                     # Istruzioni per Claude Code
 ├── dev-methodology/              # Plugin sviluppo (v0.5.1)
@@ -238,6 +270,11 @@ plugin-MUCC/
 │   ├── hooks/hooks.json
 │   ├── scripts/                  # 4 script TypeScript
 │   └── skills/                   # 18 skill + references + templates
+├── meetingmind/                  # Plugin pre-analisi IT (v0.1.0)
+│   ├── .claude-plugin/plugin.json
+│   ├── agents/                   # 1 agente (sonnet)
+│   ├── scripts/                  # 1 script Python (genera-report.py)
+│   └── skills/                   # 1 skill + references
 └── tutorial/                     # Tutorial guidato
 ```
 
