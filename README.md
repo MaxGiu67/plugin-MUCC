@@ -208,9 +208,13 @@ MeetingMind sa quali **informazioni** servono, non quali **risposte** dare. Mai 
 
 ## Quick Start
 
-### Progetto da zero (brainstorming + sviluppo)
+### Progetto completo (meeting → brainstorming → sviluppo)
 
 ```
+/meetingmind                 # avvia sessione pre-analisi col cliente
+[input libero durante meeting]
+/report                      # genera report informazioni raccolte
+
 /bs-init "Nome Progetto"     # crea struttura brainstorm/
 /bs-assess                   # scorecard → piano attivazione
 /bs-run                      # esegue workflow raccomandato

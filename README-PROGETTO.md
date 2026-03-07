@@ -2,7 +2,7 @@
 
 ## L'Idea in Una Frase
 
-Due **plugin per Claude Code** che coprono l'intero ciclo di vita di un progetto software: dal brainstorming strutturato (19 agenti) allo sviluppo Spec-Driven a 8 fasi (8 agenti), con 35 skill, tracking persistente in Markdown e supporto multi-LLM.
+Tre **plugin per Claude Code** che coprono l'intero ciclo di vita di un progetto software: dal meeting di pre-analisi con il cliente (MeetingMind, 1 agente), al brainstorming strutturato (19 agenti), allo sviluppo Spec-Driven a 8 fasi (8 agenti) — 36 skill, 28 agenti, tracking persistente in Markdown e supporto multi-LLM.
 
 ---
 
@@ -15,9 +15,10 @@ Quando sviluppi con Claude Code succede spesso che:
 - Il progetto cresce e diventa caotico
 - Il brainstorming resta in testa, non strutturato
 
-La soluzione: **due plugin complementari**.
-1. **brainstorming** — struttura l'ideazione, l'analisi e lo scoping prima di toccare codice
-2. **dev-methodology** — implementa lo Spec-Driven Development (SDD) con file Markdown come "memoria esterna"
+La soluzione: **tre plugin complementari**.
+1. **meetingmind** — guida la raccolta informazioni durante il meeting con il cliente
+2. **brainstorming** — struttura l'ideazione, l'analisi e lo scoping prima di toccare codice
+3. **dev-methodology** — implementa lo Spec-Driven Development (SDD) con file Markdown come "memoria esterna"
 
 ---
 
@@ -164,6 +165,127 @@ specs/
 
 ---
 
+## Plugin 3: meetingmind (Pre-analisi IT, v0.1.0)
+
+### Cosa Fa
+
+MeetingMind e un **tool AI reattivo** per consulenti IT. Si usa **durante** un meeting di pre-analisi con il cliente. Non suggerisce mai soluzioni tecniche — sa solo quali **informazioni** servono per poter redigere un'offerta tecnico-funzionale dopo il meeting.
+
+### L'Agente
+
+- **MeetingMind Assistant** (sonnet) — Strutturato, conciso, a colpo d'occhio. Il consulente alterna lo sguardo tra cliente e schermo: le risposte devono essere comprensibili in 2 secondi.
+
+### Come Si Usa
+
+#### 1. Avvia il meeting
+
+```
+/meetingmind
+```
+
+MeetingMind chiede 3 cose:
+- **Tipo progetto** (migrazione legacy, nuova web app, integrazione, portale, automazione...)
+- **Settore** (energy, retail, finance, PA...)
+- **Nome cliente** (opzionale)
+
+Puoi rispondere sinteticamente: `1, finance, Acme Srl`
+
+#### 2. Durante il meeting: input libero
+
+Scrivi qualsiasi cosa emerga dal meeting. MeetingMind accetta:
+- **Keyword rapide**: `PHP legacy`, `500 utenti`, `no API`, `deadline giugno`
+- **Frasi libere**: `il cliente ha un sistema vecchio che non scala piu`
+- **Mix**: `3 sistemi da integrare - SAP, CRM custom, portale web`
+- **Risposte a domande suggerite**: `il decision maker e il CTO, budget non definito`
+
+Per ogni input, MeetingMind risponde con **4 pannelli**:
+
+```
+┌─ CONTESTO ──────────────────────────────────────┐
+│ Sintesi cumulativa: tutto cio che e emerso       │
+│ finora, aggiornata ad ogni input                 │
+└──────────────────────────────────────────────────┘
+
+DOMANDE SUGGERITE
+1. [ALTA] Domanda informativa specifica
+   → Perche serve questa info
+2. [ALTA] Altra domanda
+   → Motivazione
+3. [MEDIA] Domanda meno urgente
+   → Motivazione
+
+AREE COPERTE
+  ✅ Stack tecnologico (parziale)
+  ✅ Utenti (parziale)
+  ⬚ Integrazioni
+  ⬚ Dati e volumi
+  ... (10 aree totali)
+
+██░░░░░░░░░░░░░░░░░░ 10% completezza
+```
+
+#### 3. Fine meeting: genera report
+
+```
+/report
+```
+
+Genera un report strutturato con tutte le informazioni raccolte organizzate per area, gap informativi e prossimi passi. Poi esporta in `.docx` con:
+
+```bash
+python meetingmind/scripts/genera-report.py --input report.md --output report.docx
+```
+
+Prerequisito: `pip install python-docx`
+
+### Comandi
+
+| Comando | Cosa fa |
+|---------|---------|
+| `/meetingmind` | Avvia sessione di pre-analisi |
+| `/report` | Genera report finale + export .docx |
+| `/stato` | Mostra i 4 pannelli (senza aggiungere input) |
+| `/aree` | Dettaglio completo di tutte le 10 aree con info raccolte |
+| `/reset` | Azzera la sessione e riparte da setup |
+
+### Le 10 Aree Monitorate
+
+| # | Area | Cosa raccogliere |
+|---|------|-----------------|
+| 1 | **Stack tecnologico** | Linguaggi, framework, DB, versioni, architettura, debito tecnico |
+| 2 | **Utenti** | Numero, tipologie, ruoli, dispositivi, pattern d'uso, picchi |
+| 3 | **Integrazioni** | Sistemi esterni, protocolli, direzione dati, frequenza |
+| 4 | **Dati e volumi** | Volume DB, crescita, migrazione, formati, retention |
+| 5 | **Infrastruttura** | Hosting, cloud, ambienti, CI/CD, SLA, disaster recovery |
+| 6 | **Sicurezza/Compliance** | Dati sensibili, GDPR, certificazioni, autenticazione, audit |
+| 7 | **Governance** | Decision maker, stakeholder, processo approvazione, sponsor |
+| 8 | **Tempi e deadline** | Scadenze, milestone, urgenza, vincoli calendario, go-live |
+| 9 | **Budget** | Range, allocazione, modello (T&M/fixed), procurement |
+| 10 | **Team cliente** | Team IT, referente tecnico, disponibilita, competenze post-go-live |
+
+Ogni area vale 10%. Area non toccata = 0%, parziale = 5%, completa = 10%.
+
+### Regole Fondamentali
+
+- **MAI** suggerire soluzioni tecniche, architetture o stack
+- **MAI** proporre stime di tempi, costi o effort
+- **MAI** raccomandare tecnologie o prodotti
+- Solo domande **informative** per colmare gap
+- Risposte sempre con i 4 pannelli (max 30 righe)
+- Le domande cambiano in base a tipo progetto e info gia raccolte
+
+### Calibrazione per Tipo Progetto
+
+Le domande suggerite si adattano automaticamente:
+- **Migrazione legacy** → enfasi su stack attuale, dati da migrare, rischi
+- **Nuova web app** → enfasi su utenti, UX, integrazioni
+- **App mobile** → enfasi su dispositivi, offline, distribuzione
+- **Integrazione sistemi** → enfasi su protocolli, formati, sync/async
+- **Portale/dashboard** → enfasi su dati, ruoli, frequenza aggiornamento
+- **Automazione processi** → enfasi su processo attuale, volumi, eccezioni
+
+---
+
 ## Handoff: Da Brainstorming a Sviluppo
 
 `/bs-handoff` mappa automaticamente i contenuti brainstorming verso specs/:
@@ -213,7 +335,7 @@ npx tsx scripts/call-external-llm.ts --provider gpt --task "Analizza competitor"
 2. Leggi questo file per avere il contesto completo
 3. Verifica i file con `/dev-structure`
 4. Testa con `bash install.sh --check` per verificare tool
-5. Prova il flusso: `/bs-init` → `/bs-assess` → `/bs-run` → `/bs-handoff` → `/dev-vision` → ...
+5. Prova il flusso: `/meetingmind` → `/bs-init` → `/bs-assess` → `/bs-run` → `/bs-handoff` → `/dev-vision` → ...
 
 ### Il principio guida
 
