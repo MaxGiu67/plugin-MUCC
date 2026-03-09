@@ -3,6 +3,17 @@
 Tutte le modifiche rilevanti al plugin sono documentate in questo file.
 Formato: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versionamento: [Semantic Versioning](https://semver.org/).
 
+## [0.2.2] - 2026-03-09
+
+### Added
+- **Skill `/bs-chat`**: Chat libera con gli agenti brainstorming
+  - Dialogo diretto con qualsiasi agente usando `@nome` (es. `@Nicola`, `@Chiara`)
+  - Switch agente nella stessa sessione senza riavviare
+  - Auto-suggerimento agente in base al tema discusso
+  - Catalogo agenti consultabile con `chi c'e?`
+  - Reference `agent-catalog.md` con mappa nome → file → competenza
+- `install.sh`: BS_SKILLS 18 → 19 (+ bs-chat)
+
 ## [0.2.1] - 2026-03-05
 
 ### Fixed

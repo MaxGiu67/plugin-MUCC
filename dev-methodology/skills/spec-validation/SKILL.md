@@ -5,7 +5,7 @@ description: >
   Triggers when user asks "are my specs consistent?", "check my project",
   "validate specs", "is everything aligned?", or when the App Expert needs
   to verify cross-spec references before a phase transition.
-version: 0.5.1
+version: 0.5.2
 ---
 
 # Validazione Specs — Coerenza Cross-File

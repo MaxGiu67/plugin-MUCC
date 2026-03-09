@@ -9,7 +9,7 @@ Questo repo contiene **tre plugin Claude Code** complementari distribuiti nello 
 | Plugin | Directory | Fase | Skill | Agenti |
 |--------|-----------|------|-------|--------|
 | **dev-methodology** | `dev-methodology/` | Sviluppo (downstream) | 17 | 8 |
-| **brainstorming** | `brainstorming/` | Pre-sviluppo (upstream) | 18 | 19 |
+| **brainstorming** | `brainstorming/` | Pre-sviluppo (upstream) | 19 | 19 |
 | **meetingmind** | `meetingmind/` | Meeting pre-analisi | 1 | 1 |
 
 ### Pipeline completo
@@ -69,7 +69,7 @@ bash install.sh --check      # verifica quali tool sono installati
 bash install.sh --uninstall  # disinstalla skill (non tool)
 ```
 
-Lo script installa 17 skill dev-methodology + 18 skill brainstorming + 1 skill meetingmind in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
+Lo script installa 17 skill dev-methodology + 19 skill brainstorming + 1 skill meetingmind in `~/.claude/skills/` e i tool esterni necessari per `/dev-refactor` (Knip, ESLint, tsc, Ruff, mypy, vulture) e `/dev-security` (Semgrep, Bearer, Bandit, retire.js, OSV-Scanner, pip-audit). Riavvia Claude Code dopo l'installazione.
 
 ### Aggiornamento
 
@@ -270,6 +270,7 @@ brainstorming/
 │   ├── bs-assess/                 # Scorecard interattiva
 │   ├── bs-run/                    # Orchestratore automatico
 │   ├── bs-brainstorm/             # Trio creativo (Cowork)
+│   ├── bs-chat/                   # Chat libera con agenti (@nome)
 │   ├── bs-problem/                # JTBD, ipotesi, metriche
 │   ├── bs-research/               # Competitor, pattern
 │   ├── bs-scope/                  # MoSCoW, anti-scope

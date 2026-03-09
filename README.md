@@ -4,8 +4,8 @@ Tre plugin complementari per **brainstorming strutturato**, **sviluppo Spec-Driv
 
 | Plugin | Skill | Agenti | Versione | Fase |
 |--------|-------|--------|----------|------|
-| **dev-methodology** | 17 | 8 | 0.5.1 | Sviluppo (downstream) |
-| **brainstorming** | 18 | 19 | 0.2.1 | Pre-sviluppo (upstream) |
+| **dev-methodology** | 17 | 8 | 0.5.2 | Sviluppo (downstream) |
+| **brainstorming** | 19 | 19 | 0.2.2 | Pre-sviluppo (upstream) |
 | **meetingmind** | 1 | 1 | 0.1.0 | Meeting pre-analisi |
 
 ## Installazione
@@ -13,7 +13,7 @@ Tre plugin complementari per **brainstorming strutturato**, **sviluppo Spec-Driv
 ```bash
 git clone https://github.com/MaxGiu67/plugin-MUCC.git
 cd plugin-MUCC
-bash install.sh              # installa 36 skill + tool esterni (default)
+bash install.sh              # installa 37 skill + tool esterni (default)
 bash install.sh --copy       # copia indipendente + tool
 bash install.sh --skip-tools # solo skill, senza tool esterni
 bash install.sh --update     # aggiorna: git pull + nuove skill + nuovi tool
@@ -133,7 +133,7 @@ Brainstorming strutturato e generazione documenti MVP. Copre le fasi **pre-svilu
 | **Onboarding repo** | Lorenzo (Cartographer), Paola (Auditor), Simone (Bug Triage), Francesca (Refactoring), Giorgio (Docs) | sonnet |
 | **Specialisti** | Claudia (Security), Pietro (Performance), Teresa (Accessibility), Stefano (Analytics), Anna (Copy) | haiku |
 
-### Skill (18)
+### Skill (19)
 
 | Skill | Descrizione |
 |-------|-------------|
@@ -141,6 +141,7 @@ Brainstorming strutturato e generazione documenti MVP. Copre le fasi **pre-svilu
 | `/bs-assess` | Scorecard interattiva per scegliere agenti e workflow |
 | `/bs-run` | Orchestratore automatico (esegue skill raccomandate) |
 | `/bs-brainstorm` | Sessione con trio creativo (divergenza → sfida → 3 concept) |
+| `/bs-chat` | Chat libera con agenti: `@nome` per dialogo diretto |
 | `/bs-problem` | Problem framing: JTBD, ipotesi testabili, metriche |
 | `/bs-research` | Ricerca mercato: competitor, pattern, differenziazione |
 | `/bs-scope` | MVP scoping: MoSCoW, anti-scope, milestone |
@@ -258,22 +259,22 @@ Supporta LLM esterni (Gemini, GPT, Mistral) per task specifici. Copia `CONFIG-EX
 
 ```
 plugin-MUCC/
-├── install.sh                    # Installer (36 skill + tool)
+├── install.sh                    # Installer (37 skill + tool)
 ├── CHANGELOG.md                  # Changelog dev-methodology
 ├── CLAUDE.md                     # Istruzioni per Claude Code
-├── dev-methodology/              # Plugin sviluppo (v0.5.1)
+├── dev-methodology/              # Plugin sviluppo (v0.5.2)
 │   ├── .claude-plugin/plugin.json
 │   ├── agents/                   # 8 agenti con personalita
 │   ├── hooks/hooks.json
 │   ├── scripts/                  # 9 script TypeScript
 │   └── skills/                   # 17 skill + references + templates
-├── brainstorming/                # Plugin brainstorming (v0.2.1)
+├── brainstorming/                # Plugin brainstorming (v0.2.2)
 │   ├── .claude-plugin/plugin.json
 │   ├── CHANGELOG.md
 │   ├── agents/                   # 19 agenti con personalita
 │   ├── hooks/hooks.json
 │   ├── scripts/                  # 4 script TypeScript
-│   └── skills/                   # 18 skill + references + templates
+│   └── skills/                   # 19 skill + references + templates
 ├── meetingmind/                  # Plugin pre-analisi IT (v0.1.0)
 │   ├── .claude-plugin/plugin.json
 │   ├── agents/                   # 1 agente (sonnet)

@@ -1,6 +1,6 @@
 {
   "name": "brainstorming",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Plugin di brainstorming strutturato e generazione documenti MVP con team di agenti specializzati, assessment operativo, onboarding repo e integrazione con dev-methodology (UMCC)",
   "author": {
     "name": "Claude Code Academy"

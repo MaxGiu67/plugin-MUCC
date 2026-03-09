@@ -21,6 +21,7 @@ Plugin di brainstorming strutturato e generazione documenti MVP per Claude Code.
 | Skill | Descrizione |
 |-------|-------------|
 | `/bs-brainstorm` | Trio creativo (Divergent Explorer + Devil's Advocate + Synthesizer) |
+| `/bs-chat` | Chat libera con agenti: `@nome` per dialogo diretto con personalita |
 | `/bs-problem` | Problem Framing: JTBD, ipotesi testabili, metriche |
 | `/bs-research` | Ricerca mercato: competitor, pattern, differenziazione |
 | `/bs-scope` | MVP Scoping: MoSCoW, anti-scope, milestone |

@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Suite di 3 plugin: brainstorming strutturato (19 agenti), sviluppo SDD a 8 fasi (8 agenti), MeetingMind per pre-analisi IT (1 agente) — 36 skill, supporto multi-LLM",
-    "version": "0.5.1"
+    "version": "0.5.2"
   },
   "plugins": [
     {

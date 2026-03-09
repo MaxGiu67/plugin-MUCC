@@ -2,7 +2,7 @@
 
 ## L'Idea in Una Frase
 
-Tre **plugin per Claude Code** che coprono l'intero ciclo di vita di un progetto software: dal meeting di pre-analisi con il cliente (MeetingMind, 1 agente), al brainstorming strutturato (19 agenti), allo sviluppo Spec-Driven a 8 fasi (8 agenti) — 36 skill, 28 agenti, tracking persistente in Markdown e supporto multi-LLM.
+Tre **plugin per Claude Code** che coprono l'intero ciclo di vita di un progetto software: dal meeting di pre-analisi con il cliente (MeetingMind, 1 agente), al brainstorming strutturato (19 agenti), allo sviluppo Spec-Driven a 8 fasi (8 agenti) — 37 skill, 28 agenti, tracking persistente in Markdown e supporto multi-LLM.
 
 ---
 
@@ -22,7 +22,7 @@ La soluzione: **tre plugin complementari**.
 
 ---
 
-## Plugin 1: brainstorming (Pre-sviluppo, v0.2.1)
+## Plugin 1: brainstorming (Pre-sviluppo, v0.2.2)
 
 ### Cosa Fa
 
@@ -57,6 +57,21 @@ Copre le fasi **pre-sviluppo**: ideazione → analisi → scoping → architettu
 - **Stefano** (analytics-agent) — Tracking plan, eventi, KPI, dashboard.
 - **Anna** (copy-agent) — Microcopy, onboarding, empty states, CTA.
 
+### Chat con gli Agenti (`/bs-chat`)
+
+Skill per dialogo libero con qualsiasi agente. Usa `@nome` per invocare un agente specifico:
+
+```
+/bs-chat "architettura API"     # avvia sessione con topic
+@Nicola cosa ne pensi?          # invoca il Devil's Advocate
+@Davide e dal punto di vista tecnico?  # switch al Tech Architect
+@Chiara alternative creative?   # chiedi alla Divergent Explorer
+chi c'e?                        # mostra catalogo agenti
+/fine                           # chiudi sessione
+```
+
+L'agente risponde in-character con il suo stile comunicativo. Se parli di sicurezza senza invocare nessuno, il sistema suggerisce `@Claudia potrebbe avere qualcosa da dire su questo`.
+
 ### 4 Workflow
 
 | Workflow | Quando | Flusso |
@@ -86,7 +101,7 @@ brainstorm/
 
 ---
 
-## Plugin 2: dev-methodology (Sviluppo, v0.5.1)
+## Plugin 2: dev-methodology (Sviluppo, v0.5.2)
 
 ### Cosa Fa
 

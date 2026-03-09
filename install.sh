@@ -48,6 +48,7 @@ BS_SKILLS=(
   bs-assess
   bs-run
   bs-brainstorm
+  bs-chat
   bs-problem
   bs-research
   bs-scope
@@ -113,7 +114,7 @@ error()   { echo -e "${RED}✖${NC}  $1"; }
 print_banner() {
   echo ""
   echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-  echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.5.1   ║${NC}"
+  echo -e "${BOLD}║   MUCC Plugin Suite — Installer v0.5.2   ║${NC}"
   echo -e "${BOLD}║   dev-methodology + brainstorming + mm     ║${NC}"
   echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""
